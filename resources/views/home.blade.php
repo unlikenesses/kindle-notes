@@ -5,9 +5,6 @@
     <div class="container">
         <!-- Application Dashboard -->
         <div class="row">
-            <div id="example">
-                <alex></alex>
-            </div>
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">Dashboard</div>

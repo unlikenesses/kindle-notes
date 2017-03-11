@@ -18,10 +18,11 @@ require('spark-bootstrap');
 
 require('./components/bootstrap');
 
-// require('./components/alex');
-import Alex from './components/Example.vue';
-Vue.component('alex', Alex);
+require('./components/alex');
+// import Alex from './components/Example.vue';
+// Vue.component('alex', Alex);
+// import Alex from './components/Example.vue';
 
 var app = new Vue({
-    mixins: [require('spark')]
+    mixins: [require('spark')],
 });
