@@ -321,4 +321,14 @@ class HomeController extends Controller
             'first_name' => $first_name
         ];
     }
+
+    public function getBookDetails(Request $request) 
+    {
+        $id = $request->id;
+        $book = Book::findOrFail($id);
+        $author = $book->author_first_name . ' ' . $book->author_last_name;
+        $data = ['title' => $book->title, 'author' => $author];
+        // echo '<pre>'; print_r($data); echo '</pre>';
+        return $data;
+    }
 }

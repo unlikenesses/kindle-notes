@@ -17,6 +17,7 @@
                         <ul>
                         @foreach ($books as $book)
                             <li>
+                                <book id="{{ $book->id }}"></book>
                                 <a href="/books/{{ $book->id }}/notes">
                                     @if ($book->title !== '') 
                                         {{ $book->title }}<br>

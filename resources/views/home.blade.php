@@ -3,6 +3,7 @@
 @section('content')
 <home :user="user" inline-template>
     <div class="container">
+        <Alex></Alex>
         <!-- Application Dashboard -->
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
