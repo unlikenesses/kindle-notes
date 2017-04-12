@@ -266,7 +266,7 @@ class HomeController extends Controller
         // The idea is to split the title field into title string + author string.
         // Based on my sample size of 27, authors are typically separated by a hyphen or brackets.
         // Brackets are more common.
-        // Title strings will contain hyphens AND brackets. E.g. a hyphen for a date range, then author in brackets.
+        // Title strings can contain hyphens AND brackets. E.g. a hyphen for a date range, then author in brackets.
         // Title strings can also contain more than 1 instance of the separator used to designate the author:
         // e.g. if the author separator is a hyphen, there may be more than 1 hyphen ("Century of Revolution, 1603-1714 - Christopher Hill").
         // e.g. same for brackets ("Rights of War and Peace (2005 ed.) vol. 1 (Book I) (Hugo Grotius)").
@@ -277,11 +277,9 @@ class HomeController extends Controller
         $title = '';
         $last_name = '';
         $first_name = '';
-        // echo '<strong>' . $original_title . '</strong><br>';
         // Check if the title ends with a closing bracket:
         if (substr($original_title, -1) === ')') {
             preg_match('/\(([^)]*)\)[^(]*$/', $original_title, $out);
-            // print_r($out);
             $author = $out[sizeof($out) - 1];
             $title = trim(str_replace('(' . $author . ')', '', $original_title));
         } else {
@@ -289,7 +287,6 @@ class HomeController extends Controller
             // Don't bother if there's more than one instance, this is too hard to parse.
             if (substr_count($original_title, ' - ') === 1) {
                 list($part_one, $part_two) = explode(' - ', $original_title);
-                // echo 'part one = ' . $part_one . ' & part two = ' . $part_two . '<br>';
                 // Now the problem here is that either part could be the author's name.
                 // For now we have to assume it's part two, and leave it to the user to correct if not.
                 // I think Calibre does that too.
@@ -298,7 +295,6 @@ class HomeController extends Controller
                 $title = trim($part_one);
             }
         }
-        // echo $title . '<br>';
         if ($author !== '') {
             $author = trim($author);
             // Do we have a [last name, first name] format?
@@ -313,7 +309,6 @@ class HomeController extends Controller
             }
             $last_name = trim($last_name);
             $first_name = trim($first_name);
-            // echo '<strong>First:</strong> ' . $first_name . '  <strong>Last:</strong> ' . $last_name . '<br><br>';
         }
         return [
             'title' => $title,
@@ -324,11 +319,19 @@ class HomeController extends Controller
 
     public function getBookDetails(Request $request) 
     {
-        $id = $request->id;
-        $book = Book::findOrFail($id);
-        $author = $book->author_first_name . ' ' . $book->author_last_name;
-        $data = ['title' => $book->title, 'author' => $author];
-        // echo '<pre>'; print_r($data); echo '</pre>';
+        $book = Book::findOrFail($request->id);
+        $data = ['title' => $book->title, 'authorFirstName' => $book->author_first_name, 'authorLastName' => $book->author_last_name];
         return $data;
+    }
+
+    public function storeBookDetails(Request $request) 
+    {
+        $book = Book::findOrFail($request->id);
+        $data = [
+            'title' => $request->title,
+            'author_first_name' => $request->authorFirstName,
+            'author_last_name' => $request->authorLastName
+        ];  
+        $book->update($data);
     }
 }

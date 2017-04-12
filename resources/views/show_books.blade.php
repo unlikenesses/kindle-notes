@@ -16,9 +16,9 @@
                     <div class="panel-body">
                         <ul>
                         @foreach ($books as $book)
-                            <li>
-                                <book id="{{ $book->id }}"></book>
-                                <a href="/books/{{ $book->id }}/notes">
+                            <book id="{{ $book->id }}"></book>
+                            <!--<li>
+                                 <a href="/books/{{ $book->id }}/notes">
                                     @if ($book->title !== '') 
                                         {{ $book->title }}<br>
                                         @if ($book->author_first_name !== '')
@@ -30,8 +30,8 @@
                                     @else
                                         {{ $book->title_string }}
                                     @endif
-                                </a>
-                            </li>
+                                </a> 
+                            </li>-->
                         @endforeach
                         </ul>
 

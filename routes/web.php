@@ -23,4 +23,6 @@ Route::get('/books', 'HomeController@show_books');
 
 Route::get('/books/{book}/notes', 'HomeController@show_notes');
 
-Route::post('/test', 'HomeController@getBookDetails');
+Route::post('/getBookDetails', 'HomeController@getBookDetails');
+
+Route::post('/storeBookDetails', 'HomeController@storeBookDetails');
