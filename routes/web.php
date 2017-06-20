@@ -26,3 +26,5 @@ Route::get('/books/{book}/notes', 'HomeController@show_notes');
 Route::post('/getBookDetails', 'HomeController@getBookDetails');
 
 Route::post('/storeBookDetails', 'HomeController@storeBookDetails');
+
+Route::get('/tag/{tag}', 'HomeController@showBooksByTag');

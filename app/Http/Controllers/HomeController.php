@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Tag;
 use App\Book;
 use App\Note;
 use Illuminate\Http\Request;
@@ -33,6 +34,7 @@ class HomeController extends Controller
         $note_count = auth()->user()->notes()->count();
         $first_book = auth()->user()->books()->orderBy('created_at', 'desc')->first();
         $last_upload = $first_book->created_at->format('l jS \\of F Y, \\a\\t h:i:s A');
+
         return view('home', ['book_count' => $book_count, 'note_count' => $note_count, 'last_upload' => $last_upload]);
     }
 
@@ -44,12 +46,14 @@ class HomeController extends Controller
     public function show_books()
     {
         $books = auth()->user()->books()->with('tags')->get();
+
         return view('show_books', ['books' => $books]);
     }
 
     public function show_notes(Book $book)
     {
         $notes = $book->notes()->get();
+
         return view('show_notes', ['book' => $book, 'notes' => $notes]);
     }
 
@@ -154,6 +158,7 @@ class HomeController extends Controller
     private function get_book_by_title_string($title_string, $user_id)
     {
         $book = Book::where(['title_string' => $title_string, 'user_id' => $user_id])->first();
+
         return $book;
     }
 
@@ -162,9 +167,11 @@ class HomeController extends Controller
         if (isset($note['highlight'])) {
             $test_note = Note::where(['note' => trim($note['highlight']), 'user_id' => $user_id])->first();
         }
+
         if (! $test_note) {
             return false;
         }
+
         return true;
     }
 
@@ -237,6 +244,7 @@ class HomeController extends Controller
             echo 'Error opening file';
         }
         fclose($fh);
+        
         return $books;
     }
 
@@ -258,6 +266,7 @@ class HomeController extends Controller
             preg_match("/Added on (.*)/", $str, $output);
             $return['date'] = $output[1];
         }
+        
         return $return;
     }
 
@@ -310,6 +319,7 @@ class HomeController extends Controller
             $last_name = trim($last_name);
             $first_name = trim($first_name);
         }
+        
         return [
             'title' => $title,
             'last_name' => $last_name,
@@ -321,6 +331,7 @@ class HomeController extends Controller
     {
         $book = Book::findOrFail($request->id);
         $data = ['title' => $book->title, 'authorFirstName' => $book->author_first_name, 'authorLastName' => $book->author_last_name];
+        
         return $data;
     }
 
@@ -333,5 +344,11 @@ class HomeController extends Controller
             'author_last_name' => $request->authorLastName
         ];  
         $book->update($data);
+    }
+
+    public function showBooksByTag(Tag $tag) 
+    {
+        $books = $tag->books()->get();
+        dd($books);
     }
 }

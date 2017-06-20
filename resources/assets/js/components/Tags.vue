@@ -2,7 +2,7 @@
 	<div class="tagsHolder">
 		<ul v-if="numTags > 0">
 			<li v-for="tag in tags">
-				<a href="">
+				<a :href="'tag/' + tag.slug">
 					{{ tag.tag }}
 				</a>
 			</li>
