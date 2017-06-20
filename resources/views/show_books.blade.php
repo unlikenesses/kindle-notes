@@ -16,26 +16,9 @@
                     <div class="panel-body">
                         <ul>
                         @foreach ($books as $book)
-                            <book id="{{ $book->id }}"></book>
-                            <!--<li>
-                                 <a href="/books/{{ $book->id }}/notes">
-                                    @if ($book->title !== '') 
-                                        {{ $book->title }}<br>
-                                        @if ($book->author_first_name !== '')
-                                            {{ $book->author_first_name . ' ' }}
-                                        @endif
-                                        @if ($book->author_last_name !== '')
-                                            {{ $book->author_last_name }}
-                                        @endif
-                                    @else
-                                        {{ $book->title_string }}
-                                    @endif
-                                </a> 
-                            </li>-->
+                            <book id="{{ $book->id }}" :tags="{{ json_encode($book->tags) }}"></book>
                         @endforeach
                         </ul>
-
-                        <?php //dd($books)?>
                     </div>
                 </div>
             </div>

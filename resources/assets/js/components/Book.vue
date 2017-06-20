@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bookHolder">
         <i v-show="loading" class="fa fa-spinner fa-spin"></i>
         <div class="bookElement" v-if="!editing">
             <div class="bookDetails">
@@ -24,13 +24,14 @@
             <button @click="submit" v-text="submitting ? 'Submitting' : 'Submit'" class="btn btn-primary"></button>
             <button @click="cancelEdit" class="btn btn-default">Cancel</button>
         </div>
+        <tags :tags="tags" v-if="tags.length > 0"></tags>
     </div>  
 </template>
 
 <script>
     export default {
 
-        props: ['id'],
+        props: ['id', 'tags'],
 
         data() {
             return {
@@ -91,13 +92,16 @@
 
 <style>
 
+    .bookHolder {
+        border-bottom: 1px solid #DEDEDE;   
+        margin-bottom: 10px;
+        padding-bottom: 10px;     
+    }
+
     .bookElement {
         clear: left;
         overflow: auto;        
         width: 100%;
-        border-bottom: 1px solid #DEDEDE;
-        margin-bottom: 10px;
-        padding-bottom: 10px;
     }
 
     .bookDetails {
@@ -114,10 +118,7 @@
     }
 
     .bookEdit {     
-        width: 100%;
-        border-bottom: 1px solid #DEDEDE;
-        margin-bottom: 10px;
-        padding-bottom: 10px;        
+        width: 100%;     
     }
 
     .bookEdit input {

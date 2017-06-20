@@ -43,7 +43,7 @@ class HomeController extends Controller
 
     public function show_books()
     {
-        $books = auth()->user()->books()->get();
+        $books = auth()->user()->books()->with('tags')->get();
         return view('show_books', ['books' => $books]);
     }
 

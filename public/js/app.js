@@ -27651,6 +27651,8 @@ module.exports = function(module) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Book_vue__ = __webpack_require__(288);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Book_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Book_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Tags_vue__ = __webpack_require__(390);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Tags_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Tags_vue__);
 
 /*
  |--------------------------------------------------------------------------
@@ -27675,7 +27677,9 @@ __webpack_require__(154);
 // import Alex from './components/Example.vue';
 // import Alex from './components/Alex.vue';
 
+
 Vue.component('book', __WEBPACK_IMPORTED_MODULE_0__components_Book_vue___default.a);
+Vue.component('tags', __WEBPACK_IMPORTED_MODULE_1__components_Tags_vue___default.a);
 
 var app = new Vue({
   mixins: [__webpack_require__(260)]
@@ -28636,10 +28640,11 @@ module.exports = function spread(callback) {
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
 
-    props: ['id'],
+    props: ['id', 'tags'],
 
     data: function data() {
         return {
@@ -36312,7 +36317,7 @@ exports = module.exports = __webpack_require__(276)();
 
 
 // module
-exports.push([module.i, "\n.bookElement {\n    clear: left;\n    overflow: auto;        \n    width: 100%;\n    border-bottom: 1px solid #DEDEDE;\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n}\n.bookDetails {\n    float: left;\n    margin-right: 10px;\n}\n.bookControls {\n    float: left;\n}\n.bookControls i {\n    cursor: pointer;\n}\n.bookEdit {     \n    width: 100%;\n    border-bottom: 1px solid #DEDEDE;\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n}\n.bookEdit input {\n    margin-bottom: 3px;\n    padding-left: 6px;\n    padding-right: 6px;\n    color: #666;\n}\n\n/*.bookEdit input[type=\"text\"] {\n    padding: 5px 6px 5px 6px;\n    border-radius: 3px;\n    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35), 0px 1px 1px rgba(255, 255, 255, 0.4);\n    border: 1px solid #999;\n}\n\n.bookEdit input[type=\"text\"]:hover, input[type=\"text\"]:focus {\n    color: #888;\n    border: 1px solid #08c;\n    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.25),inset 0px 3px 6px rgba(0 ,0, 0, 0.25);\n}\n\n.bookEdit input[type=\"text\"]:focus {\n    box-shadow: none;\n    border: 1px solid #08c;\n    outline: none;\n}*/\n\n", ""]);
+exports.push([module.i, "\n.bookHolder {\n    border-bottom: 1px solid #DEDEDE;   \n    margin-bottom: 10px;\n    padding-bottom: 10px;\n}\n.bookElement {\n    clear: left;\n    overflow: auto;        \n    width: 100%;\n}\n.bookDetails {\n    float: left;\n    margin-right: 10px;\n}\n.bookControls {\n    float: left;\n}\n.bookControls i {\n    cursor: pointer;\n}\n.bookEdit {     \n    width: 100%;\n}\n.bookEdit input {\n    margin-bottom: 3px;\n    padding-left: 6px;\n    padding-right: 6px;\n    color: #666;\n}\n\n/*.bookEdit input[type=\"text\"] {\n    padding: 5px 6px 5px 6px;\n    border-radius: 3px;\n    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35), 0px 1px 1px rgba(255, 255, 255, 0.4);\n    border: 1px solid #999;\n}\n\n.bookEdit input[type=\"text\"]:hover, input[type=\"text\"]:focus {\n    color: #888;\n    border: 1px solid #08c;\n    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.25),inset 0px 3px 6px rgba(0 ,0, 0, 0.25);\n}\n\n.bookEdit input[type=\"text\"]:focus {\n    box-shadow: none;\n    border: 1px solid #08c;\n    outline: none;\n}*/\n\n", ""]);
 
 // exports
 
@@ -41077,7 +41082,9 @@ module.exports = function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('i', {
+  return _c('div', {
+    staticClass: "bookHolder"
+  }, [_c('i', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -41184,7 +41191,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.cancelEdit
     }
-  }, [_vm._v("Cancel")])]) : _vm._e()])
+  }, [_vm._v("Cancel")])]) : _vm._e(), _vm._v(" "), (_vm.tags.length > 0) ? _c('tags', {
+    attrs: {
+      "tags": _vm.tags
+    }
+  }) : _vm._e()], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -50071,6 +50082,232 @@ return Vue$3;
 __webpack_require__(132);
 module.exports = __webpack_require__(133);
 
+
+/***/ }),
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */,
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */,
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */,
+/* 382 */,
+/* 383 */,
+/* 384 */,
+/* 385 */,
+/* 386 */,
+/* 387 */,
+/* 388 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+
+       props: ['tags'],
+       mounted: function mounted() {
+              // console.log(this.tags);
+       },
+
+       computed: {
+              numTags: function numTags() {
+                     return this.tags.length;
+              }
+       }
+};
+
+/***/ }),
+/* 389 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(276)();
+// imports
+
+
+// module
+exports.push([module.i, "\n.tagsHolder ul {\n\tlist-style-type: none; \n\tmargin: 0;\n\tpadding: 0;\n}\n.tagsHolder li {\n\tdisplay: inline-block;\n\tmargin-right: 5px;\n}\n.tagsHolder li a {\n\tbackground: #999;\n\tcolor: white;\n\tfont-size: 12px;\n\tfont-weight: bold;\n\tpadding: 2px 7px;\n\tborder-radius: 5px;\n\ttext-decoration: none;\n}\n.tagsHolder li a:hover {\n\tbackground: #666;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 390 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(392)
+
+var Component = __webpack_require__(289)(
+  /* script */
+  __webpack_require__(388),
+  /* template */
+  __webpack_require__(391),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\misc\\kindlenotes\\resources\\assets\\js\\components\\Tags.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Tags.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-39b37115", Component.options)
+  } else {
+    hotAPI.reload("data-v-39b37115", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 391 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "tagsHolder"
+  }, [(_vm.numTags > 0) ? _c('ul', _vm._l((_vm.tags), function(tag) {
+    return _c('li', [_c('a', {
+      attrs: {
+        "href": ""
+      }
+    }, [_vm._v("\n\t\t\t\t" + _vm._s(tag.tag) + "\n\t\t\t")])])
+  })) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-39b37115", module.exports)
+  }
+}
+
+/***/ }),
+/* 392 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(389);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(292)("52c20a24", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-39b37115!./../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Tags.vue", function() {
+     var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-39b37115!./../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Tags.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

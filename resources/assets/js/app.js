@@ -22,7 +22,9 @@ require('./components/bootstrap');
 // import Alex from './components/Example.vue';
 // import Alex from './components/Alex.vue';
 import Book from './components/Book.vue';
+import Tags from './components/Tags.vue';
 Vue.component('book', Book);
+Vue.component('tags', Tags);
 
 var app = new Vue({
     mixins: [require('spark')],
