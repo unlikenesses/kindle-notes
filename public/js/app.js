@@ -29067,17 +29067,19 @@ module.exports = function spread(callback) {
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
 
-    props: ['tags'],
+    props: ['tags', 'bookId'],
     data: function data() {
         return {
-            editing: false
+            editing: false,
+            newTag: null
         };
-    },
-    mounted: function mounted() {
-        // console.log(this.tags);
     },
 
     computed: {
@@ -29089,8 +29091,18 @@ module.exports = function spread(callback) {
         edit: function edit() {
             this.editing = true;
         },
+        addTag: function addTag() {
+            if (this.newTag.length < 128) {
+                var that = this;
+                $.post('/addTagPivot', {
+                    'book_id': that.bookId,
+                    'tag': that.newTag
+                }, function (data) {
+                    that.editing = false;
+                });
+            }
+        },
         deleteTag: function deleteTag(item) {
-            // console.log(item.pivot);
             var that = this;
             $.post('/deleteTagPivot', {
                 'book_id': item.pivot.book_id,
@@ -36717,7 +36729,7 @@ exports = module.exports = __webpack_require__(19)();
 
 
 // module
-exports.push([module.i, "\n.tagsHolder ul {\n\tlist-style-type: none; \n\tmargin: 0;\n\tpadding: 0;\n}\n.tagsHolder li {\n\tdisplay: inline-block;\n\tmargin-right: 5px;\n}\n.tagsHolder li a {\n\tbackground: #999;\n\tcolor: white;\n\tfont-size: 12px;\n\tfont-weight: bold;\n\tpadding: 2px 7px;\n\tborder-radius: 5px;\n\ttext-decoration: none;\n}\n.tagsHolder li a:hover {\n\tbackground: #666;\n}\n", ""]);
+exports.push([module.i, "\n.tagsHolder {\n\t\toverflow: auto;\n}\n.tagsHolder ul {\n\t\tlist-style-type: none; \n\t\tmargin: 0;\n\t\tpadding: 0;\n}\n.tagsHolder li {\n\t\tdisplay: inline-block;\n\t\tmargin-right: 5px;\n}\n.tagsHolder li a {\n\t\tbackground: #999;\n\t\tcolor: white;\n\t\tfont-size: 12px;\n\t\tfont-weight: bold;\n\t\tpadding: 2px 7px;\n\t\tborder-radius: 5px;\n\t\ttext-decoration: none;\n}\n.tagsHolder li a:hover {\n\t\tbackground: #666;\n}\n.tagsControls {\n        display: inline-block;\n}\n.tagsControls i {\n        cursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -41442,7 +41454,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v("\n\t\t\t\t\tx\n\t\t\t\t")]) : _vm._e()])
-  })) : _vm._e(), _vm._v(" "), _c('div', {
+  })) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('div', {
+    staticClass: "addTag"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newTag),
+      expression: "newTag"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Add a tag"
+    },
+    domProps: {
+      "value": _vm._s(_vm.newTag)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newTag = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": _vm.addTag
+    }
+  }, [_vm._v("Add")])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "tagsControls"
   }, [_c('i', {
     staticClass: "fa fa-edit",
@@ -41567,7 +41607,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Cancel")])]) : _vm._e(), _vm._v(" "), (_vm.book.tags.length > 0) ? _c('tags', {
     attrs: {
-      "tags": _vm.book.tags
+      "tags": _vm.book.tags,
+      "bookId": _vm.book.id
     }
   }) : _vm._e()], 1)
 },staticRenderFns: []}

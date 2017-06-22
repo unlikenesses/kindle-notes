@@ -23,7 +23,7 @@
             <button @click="submit" v-text="submitting ? 'Submitting' : 'Submit'" class="btn btn-primary"></button>
             <button @click="cancelEdit" class="btn btn-default">Cancel</button>
         </div>
-        <tags :tags="book.tags" v-if="book.tags.length > 0"></tags>
+        <tags :tags="book.tags" :bookId="book.id" v-if="book.tags.length > 0"></tags>
     </div>  
 </template>
 

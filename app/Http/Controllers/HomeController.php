@@ -352,6 +352,24 @@ class HomeController extends Controller
         dd($books);
     }
 
+    public function addTagPivot(Request $request) 
+    {
+        $tag = $this->addNewTag($request->tag);
+        $book = Book::findOrFail($request->book_id);
+        $book->tags()->attach($tag->id);
+    }
+
+    public function addNewTag($tag) 
+    {
+        $newTag = new Tag;
+        $tag = strtolower($tag);
+        $newTag->tag = $tag;
+        $newTag->slug = str_slug($tag, '-');
+        auth()->user()->tags()->save($newTag);
+
+        return $newTag;
+    }
+
     public function deleteTagPivot(Request $request) 
     {
         $book = Book::findOrFail($request->book_id);

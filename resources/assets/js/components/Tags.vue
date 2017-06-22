@@ -10,6 +10,10 @@
 				</a>
 			</li>
 		</ul>
+		<div class="addTag" v-if="editing">
+			<input type="text" v-model="newTag" placeholder="Add a tag" class="form-control">
+			<button @click="addTag" class="btn btn-primary">Add</button>
+		</div>
         <div class="tagsControls">
             <i class="fa fa-edit" @click="edit"></i>
         </div>
@@ -19,14 +23,12 @@
 <script>
 	export default {
 
-        props: ['tags'],
+        props: ['tags', 'bookId'],
         data() {
             return {
-            	editing: false
+            	editing: false,
+            	newTag: null
             }
-        },
-        mounted() {
-        	// console.log(this.tags);
         },
         computed: {
         	numTags: function() {
@@ -37,8 +39,18 @@
             edit() {
                 this.editing = true;
             },
+            addTag() {
+            	if (this.newTag.length < 128) {
+            		var that = this;
+            		$.post('/addTagPivot', {
+	                    'book_id': that.bookId,
+	                    'tag': that.newTag,
+	                }, function(data) {
+	                    that.editing = false;
+	                });
+            	}
+            },
             deleteTag(item) {
-            	// console.log(item.pivot);
             	var that = this;
             	$.post('/deleteTagPivot', {
                     'book_id': item.pivot.book_id,
@@ -54,6 +66,9 @@
 </script>
 
 <style>
+	.tagsHolder {
+		overflow: auto;
+	}
 	.tagsHolder ul {
 		list-style-type: none; 
 		margin: 0;
@@ -75,4 +90,11 @@
 	.tagsHolder li a:hover {
 		background: #666;
 	}
+	.tagsControls {
+        display: inline-block;
+    }
+
+    .tagsControls i {
+        cursor: pointer;
+    }
 </style>

@@ -53,6 +53,11 @@ class User extends SparkUser
         return $this->hasMany(Book::class);
     }
 
+    public function tags()
+    {
+        return $this->hasMany(Tag::class);
+    }
+
     public function notes()
     {
         return $this->hasMany(Note::class);
