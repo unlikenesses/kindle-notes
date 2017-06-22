@@ -29100,6 +29100,7 @@ module.exports = function spread(callback) {
                     'tag': this.newTag
                 }).then(function () {
                     that.getTags();
+                    that.newTag = null;
                     that.editing = false;
                 });
             }
