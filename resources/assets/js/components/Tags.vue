@@ -11,22 +11,22 @@
 			</li>
 		</ul>
 		<div class="addTag" v-if="editing">
+			<div class="form-inline">
+			<div class="form-group">
 			<input type="text" v-model="newTag" placeholder="Add a tag" class="form-control">
+			</div>
 			<button @click="addTag" class="btn btn-primary">Add</button>
+			</div>
 		</div>
-        <div class="tagsControls">
-            <i class="fa fa-edit" @click="edit"></i>
-        </div>
 	</div>
 </template>
 
 <script>
 	export default {
 
-        props: ['tags', 'bookId'],
+        props: ['tags', 'bookId', 'editing'],
         data() {
             return {
-            	editing: false,
             	newTag: null,
             	newTags: this.tags
             }
@@ -37,9 +37,6 @@
         	}
         },
         methods: {
-            edit() {
-                this.editing = !this.editing;
-            },
             addTag() {
             	if (this.newTag.length < 128) {
             		var that = this;
@@ -49,7 +46,7 @@
 	                }).then(function() {
 	                	that.getTags();
 	                	that.newTag = null;
-	                    that.editing = false;
+	                    // that.editing = false;
 	                });
             	}
             },
@@ -67,7 +64,7 @@
                     'book_id': item.pivot.book_id,
                     'tag_id': item.pivot.tag_id,
                 }, function(data) {
-                    that.editing = false;
+                    // that.editing = false;
                     let i = that.newTags.indexOf(item);
                     that.newTags.splice(i, 1);
                 });
@@ -101,11 +98,4 @@
 	.tagsHolder li a:hover {
 		background: #666;
 	}
-	.tagsControls {
-        display: inline-block;
-    }
-
-    .tagsControls i {
-        cursor: pointer;
-    }
 </style>

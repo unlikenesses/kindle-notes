@@ -29071,13 +29071,13 @@ module.exports = function spread(callback) {
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
 
-    props: ['tags', 'bookId'],
+    props: ['tags', 'bookId', 'editing'],
     data: function data() {
         return {
-            editing: false,
             newTag: null,
             newTags: this.tags
         };
@@ -29089,9 +29089,6 @@ module.exports = function spread(callback) {
         }
     },
     methods: {
-        edit: function edit() {
-            this.editing = !this.editing;
-        },
         addTag: function addTag() {
             if (this.newTag.length < 128) {
                 var that = this;
@@ -29101,7 +29098,7 @@ module.exports = function spread(callback) {
                 }).then(function () {
                     that.getTags();
                     that.newTag = null;
-                    that.editing = false;
+                    // that.editing = false;
                 });
             }
         },
@@ -29119,7 +29116,7 @@ module.exports = function spread(callback) {
                 'book_id': item.pivot.book_id,
                 'tag_id': item.pivot.tag_id
             }, function (data) {
-                that.editing = false;
+                // that.editing = false;
                 var i = that.newTags.indexOf(item);
                 that.newTags.splice(i, 1);
             });
@@ -36740,7 +36737,7 @@ exports = module.exports = __webpack_require__(19)();
 
 
 // module
-exports.push([module.i, "\n.tagsHolder {\n\t\toverflow: auto;\n}\n.tagsHolder ul {\n\t\tlist-style-type: none; \n\t\tmargin: 0;\n\t\tpadding: 0;\n}\n.tagsHolder li {\n\t\tdisplay: inline-block;\n\t\tmargin-right: 5px;\n}\n.tagsHolder li a {\n\t\tbackground: #999;\n\t\tcolor: white;\n\t\tfont-size: 12px;\n\t\tfont-weight: bold;\n\t\tpadding: 2px 7px;\n\t\tborder-radius: 5px;\n\t\ttext-decoration: none;\n}\n.tagsHolder li a:hover {\n\t\tbackground: #666;\n}\n.tagsControls {\n        display: inline-block;\n}\n.tagsControls i {\n        cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.tagsHolder {\n\toverflow: auto;\n}\n.tagsHolder ul {\n\tlist-style-type: none; \n\tmargin: 0;\n\tpadding: 0;\n}\n.tagsHolder li {\n\tdisplay: inline-block;\n\tmargin-right: 5px;\n}\n.tagsHolder li a {\n\tbackground: #999;\n\tcolor: white;\n\tfont-size: 12px;\n\tfont-weight: bold;\n\tpadding: 2px 7px;\n\tborder-radius: 5px;\n\ttext-decoration: none;\n}\n.tagsHolder li a:hover {\n\tbackground: #666;\n}\n", ""]);
 
 // exports
 
@@ -41455,7 +41452,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "href": 'tag/' + tag.slug
       }
-    }, [_vm._v("\n\t\t\t\t\t" + _vm._s(tag.tag) + "\n\t\t\t\t")]), _vm._v(" "), (_vm.editing) ? _c('a', {
+    }, [_vm._v("\n\t\t\t\t" + _vm._s(tag.tag) + "\n\t\t\t")]), _vm._v(" "), (_vm.editing) ? _c('a', {
       attrs: {
         "href": "#"
       },
@@ -41464,9 +41461,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.deleteTag(tag)
         }
       }
-    }, [_vm._v("\n\t\t\t\t\tx\n\t\t\t\t")]) : _vm._e()])
+    }, [_vm._v("\n\t\t\t\tx\n\t\t\t")]) : _vm._e()])
   })) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('div', {
     staticClass: "addTag"
+  }, [_c('div', {
+    staticClass: "form-inline"
+  }, [_c('div', {
+    staticClass: "form-group"
   }, [_c('input', {
     directives: [{
       name: "model",
@@ -41488,19 +41489,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.newTag = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('button', {
+  })]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     on: {
       "click": _vm.addTag
     }
-  }, [_vm._v("Add")])]) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "tagsControls"
-  }, [_c('i', {
-    staticClass: "fa fa-edit",
-    on: {
-      "click": _vm.edit
-    }
-  })])])
+  }, [_vm._v("Add")])])]) : _vm._e()])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -41619,7 +41613,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Cancel")])]) : _vm._e(), _vm._v(" "), (_vm.book.tags.length > 0) ? _c('tags', {
     attrs: {
       "tags": _vm.book.tags,
-      "bookId": _vm.book.id
+      "bookId": _vm.book.id,
+      "editing": _vm.editing
     }
   }) : _vm._e()], 1)
 },staticRenderFns: []}
