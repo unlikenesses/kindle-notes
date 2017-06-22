@@ -16,7 +16,7 @@
                     <div class="panel-body">
                         <ul>
                         @foreach ($books as $book)
-                            <book id="{{ $book->id }}" :tags="{{ json_encode($book->tags) }}"></book>
+                            <book :book="{{ json_encode($book) }}"></book>
                         @endforeach
                         </ul>
                     </div>

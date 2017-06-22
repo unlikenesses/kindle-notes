@@ -28985,17 +28985,17 @@ module.exports = function spread(callback) {
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
 
-    props: ['id', 'tags'],
+    props: ['book', 'tags'],
 
     data: function data() {
         return {
-            title: '',
-            authorFirstName: '',
-            authorLastName: '',
+            id: this.book.id,
+            title: this.book.title,
+            authorFirstName: this.book.author_first_name,
+            authorLastName: this.book.author_last_name,
             loading: true,
             editing: false,
             submitting: false
@@ -29010,17 +29010,10 @@ module.exports = function spread(callback) {
     },
 
     mounted: function mounted() {
-        var that = this;
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-        });
-        $.post('getBookDetails', { 'id': this.id }, function (data) {
-            that.title = data.title;
-            that.authorFirstName = data.authorFirstName;
-            that.authorLastName = data.authorLastName;
-            that.loading = false;
         });
     },
 
@@ -41428,15 +41421,7 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "bookHolder"
-  }, [_c('i', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.loading),
-      expression: "loading"
-    }],
-    staticClass: "fa fa-spinner fa-spin"
-  }), _vm._v(" "), (!_vm.editing) ? _c('div', {
+  }, [(!_vm.editing) ? _c('div', {
     staticClass: "bookElement"
   }, [_c('div', {
     staticClass: "bookDetails"
@@ -41535,9 +41520,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.cancelEdit
     }
-  }, [_vm._v("Cancel")])]) : _vm._e(), _vm._v(" "), (_vm.tags.length > 0) ? _c('tags', {
+  }, [_vm._v("Cancel")])]) : _vm._e(), _vm._v(" "), (_vm.book.tags.length > 0) ? _c('tags', {
     attrs: {
-      "tags": _vm.tags
+      "tags": _vm.book.tags
     }
   }) : _vm._e()], 1)
 },staticRenderFns: []}

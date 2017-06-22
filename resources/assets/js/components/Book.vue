@@ -1,6 +1,5 @@
 <template>
     <div class="bookHolder">
-        <i v-show="loading" class="fa fa-spinner fa-spin"></i>
         <div class="bookElement" v-if="!editing">
             <div class="bookDetails">
                 <a :href="notesLink">{{ title }}</a><br>
@@ -24,20 +23,21 @@
             <button @click="submit" v-text="submitting ? 'Submitting' : 'Submit'" class="btn btn-primary"></button>
             <button @click="cancelEdit" class="btn btn-default">Cancel</button>
         </div>
-        <tags :tags="tags" v-if="tags.length > 0"></tags>
+        <tags :tags="book.tags" v-if="book.tags.length > 0"></tags>
     </div>  
 </template>
 
 <script>
     export default {
 
-        props: ['id', 'tags'],
+        props: ['book', 'tags'],
 
         data() {
             return {
-                title: '',
-                authorFirstName: '',
-                authorLastName: '',
+                id: this.book.id,
+                title: this.book.title,
+                authorFirstName: this.book.author_first_name,
+                authorLastName: this.book.author_last_name,
                 loading: true,
                 editing: false,
                 submitting: false
@@ -51,17 +51,10 @@
         },
 
         mounted() {
-            let that = this;
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            });
-            $.post('getBookDetails', { 'id': this.id }, function(data) {
-                that.title = data.title;
-                that.authorFirstName = data.authorFirstName;
-                that.authorLastName = data.authorLastName;
-                that.loading = false;
             });
         },
 
