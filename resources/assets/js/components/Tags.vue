@@ -5,8 +5,14 @@
 				<a :href="'tag/' + tag.slug">
 					{{ tag.tag }}
 				</a>
+				<a href="#" v-if="editing" @click="deleteTag(tag)">
+					x
+				</a>
 			</li>
 		</ul>
+        <div class="tagsControls">
+            <i class="fa fa-edit" @click="edit"></i>
+        </div>
 	</div>
 </template>
 
@@ -14,6 +20,11 @@
 	export default {
 
         props: ['tags'],
+        data() {
+            return {
+            	editing: false
+            }
+        },
         mounted() {
         	// console.log(this.tags);
         },
@@ -21,6 +32,23 @@
         	numTags: function() {
         		return this.tags.length;
         	}
+        },
+        methods: {
+            edit() {
+                this.editing = true;
+            },
+            deleteTag(item) {
+            	// console.log(item.pivot);
+            	var that = this;
+            	$.post('/deleteTagPivot', {
+                    'book_id': item.pivot.book_id,
+                    'tag_id': item.pivot.tag_id,
+                }, function(data) {
+                    that.editing = false;
+                    let i = that.tags.indexOf(item);
+                    that.tags.splice(i, 1);
+                });
+            }
         }
     }
 </script>

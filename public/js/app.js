@@ -29048,7 +29048,13 @@ module.exports = function spread(callback) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -29064,17 +29070,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = {
 
-       props: ['tags'],
-       mounted: function mounted() {
-              // console.log(this.tags);
-       },
+    props: ['tags'],
+    data: function data() {
+        return {
+            editing: false
+        };
+    },
+    mounted: function mounted() {
+        // console.log(this.tags);
+    },
 
-       computed: {
-              numTags: function numTags() {
-                     return this.tags.length;
-              }
-       }
+    computed: {
+        numTags: function numTags() {
+            return this.tags.length;
+        }
+    },
+    methods: {
+        edit: function edit() {
+            this.editing = true;
+        },
+        deleteTag: function deleteTag(item) {
+            // console.log(item.pivot);
+            var that = this;
+            $.post('/deleteTagPivot', {
+                'book_id': item.pivot.book_id,
+                'tag_id': item.pivot.tag_id
+            }, function (data) {
+                that.editing = false;
+                var i = that.tags.indexOf(item);
+                that.tags.splice(i, 1);
+            });
+        }
+    }
 };
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
 /* 158 */
@@ -41403,8 +41432,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "href": 'tag/' + tag.slug
       }
-    }, [_vm._v("\n\t\t\t\t" + _vm._s(tag.tag) + "\n\t\t\t")])])
-  })) : _vm._e()])
+    }, [_vm._v("\n\t\t\t\t\t" + _vm._s(tag.tag) + "\n\t\t\t\t")]), _vm._v(" "), (_vm.editing) ? _c('a', {
+      attrs: {
+        "href": "#"
+      },
+      on: {
+        "click": function($event) {
+          _vm.deleteTag(tag)
+        }
+      }
+    }, [_vm._v("\n\t\t\t\t\tx\n\t\t\t\t")]) : _vm._e()])
+  })) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "tagsControls"
+  }, [_c('i', {
+    staticClass: "fa fa-edit",
+    on: {
+      "click": _vm.edit
+    }
+  })])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

@@ -351,4 +351,10 @@ class HomeController extends Controller
         $books = $tag->books()->get();
         dd($books);
     }
+
+    public function deleteTagPivot(Request $request) 
+    {
+        $book = Book::findOrFail($request->book_id);
+        $book->tags()->detach($request->tag_id);
+    }
 }
