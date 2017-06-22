@@ -1,7 +1,7 @@
 <template>
 	<div class="tagsHolder">
 		<ul v-if="numTags > 0">
-			<li v-for="tag in tags">
+			<li v-for="tag in newTags">
 				<a :href="'tag/' + tag.slug">
 					{{ tag.tag }}
 				</a>
@@ -27,7 +27,8 @@
         data() {
             return {
             	editing: false,
-            	newTag: null
+            	newTag: null,
+            	newTags: this.tags
             }
         },
         computed: {
@@ -37,18 +38,27 @@
         },
         methods: {
             edit() {
-                this.editing = true;
+                this.editing = !this.editing;
             },
             addTag() {
             	if (this.newTag.length < 128) {
             		var that = this;
             		$.post('/addTagPivot', {
-	                    'book_id': that.bookId,
-	                    'tag': that.newTag,
-	                }, function(data) {
+	                    'book_id': this.bookId,
+	                    'tag': this.newTag,
+	                }).then(function() {
+	                	that.getTags();
 	                    that.editing = false;
 	                });
             	}
+            },
+            getTags() {
+            	var that = this;
+            	$.post('/getTagsForBook', {
+            		'book_id': this.bookId
+            	}, function(data) {
+            		that.newTags = data;
+            	});
             },
             deleteTag(item) {
             	var that = this;
@@ -57,8 +67,8 @@
                     'tag_id': item.pivot.tag_id,
                 }, function(data) {
                     that.editing = false;
-                    let i = that.tags.indexOf(item);
-                    that.tags.splice(i, 1);
+                    let i = that.newTags.indexOf(item);
+                    that.newTags.splice(i, 1);
                 });
             }
         }

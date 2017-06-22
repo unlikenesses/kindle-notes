@@ -29078,7 +29078,8 @@ module.exports = function spread(callback) {
     data: function data() {
         return {
             editing: false,
-            newTag: null
+            newTag: null,
+            newTags: this.tags
         };
     },
 
@@ -29089,18 +29090,27 @@ module.exports = function spread(callback) {
     },
     methods: {
         edit: function edit() {
-            this.editing = true;
+            this.editing = !this.editing;
         },
         addTag: function addTag() {
             if (this.newTag.length < 128) {
                 var that = this;
                 $.post('/addTagPivot', {
-                    'book_id': that.bookId,
-                    'tag': that.newTag
-                }, function (data) {
+                    'book_id': this.bookId,
+                    'tag': this.newTag
+                }).then(function () {
+                    that.getTags();
                     that.editing = false;
                 });
             }
+        },
+        getTags: function getTags() {
+            var that = this;
+            $.post('/getTagsForBook', {
+                'book_id': this.bookId
+            }, function (data) {
+                that.newTags = data;
+            });
         },
         deleteTag: function deleteTag(item) {
             var that = this;
@@ -29109,8 +29119,8 @@ module.exports = function spread(callback) {
                 'tag_id': item.pivot.tag_id
             }, function (data) {
                 that.editing = false;
-                var i = that.tags.indexOf(item);
-                that.tags.splice(i, 1);
+                var i = that.newTags.indexOf(item);
+                that.newTags.splice(i, 1);
             });
         }
     }
@@ -41439,7 +41449,7 @@ module.exports = Component.exports
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "tagsHolder"
-  }, [(_vm.numTags > 0) ? _c('ul', _vm._l((_vm.tags), function(tag) {
+  }, [(_vm.numTags > 0) ? _c('ul', _vm._l((_vm.newTags), function(tag) {
     return _c('li', [_c('a', {
       attrs: {
         "href": 'tag/' + tag.slug

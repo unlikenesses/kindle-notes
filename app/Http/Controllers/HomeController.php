@@ -375,4 +375,10 @@ class HomeController extends Controller
         $book = Book::findOrFail($request->book_id);
         $book->tags()->detach($request->tag_id);
     }
+
+    public function getTagsForBook(Request $request) 
+    {
+        $book = Book::findOrFail($request->book_id);
+        return $book->tags()->get();
+    }
 }

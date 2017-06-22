@@ -32,3 +32,5 @@ Route::get('/tag/{tag}', 'HomeController@showBooksByTag');
 Route::post('/deleteTagPivot', 'HomeController@deleteTagPivot');
 
 Route::post('/addTagPivot', 'HomeController@addTagPivot');
+
+Route::post('/getTagsForBook', 'HomeController@getTagsForBook');
