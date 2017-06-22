@@ -29085,7 +29085,7 @@ module.exports = function spread(callback) {
 
     computed: {
         numTags: function numTags() {
-            return this.tags.length;
+            return this.newTags.length;
         }
     },
     methods: {
@@ -41461,7 +41461,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.deleteTag(tag)
         }
       }
-    }, [_vm._v("\n\t\t\t\tx\n\t\t\t")]) : _vm._e()])
+    }, [_vm._v("\n\t\t\t\t×\n\t\t\t")]) : _vm._e()])
   })) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('div', {
     staticClass: "addTag"
   }, [_c('div', {
@@ -41610,13 +41610,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.cancelEdit
     }
-  }, [_vm._v("Cancel")])]) : _vm._e(), _vm._v(" "), (_vm.book.tags.length > 0) ? _c('tags', {
+  }, [_vm._v("Cancel")])]) : _vm._e(), _vm._v(" "), _c('tags', {
     attrs: {
       "tags": _vm.book.tags,
       "bookId": _vm.book.id,
       "editing": _vm.editing
     }
-  }) : _vm._e()], 1)
+  })], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

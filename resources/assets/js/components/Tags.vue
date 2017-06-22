@@ -6,7 +6,7 @@
 					{{ tag.tag }}
 				</a>
 				<a href="#" v-if="editing" @click="deleteTag(tag)">
-					x
+					&times;
 				</a>
 			</li>
 		</ul>
@@ -33,7 +33,7 @@
         },
         computed: {
         	numTags: function() {
-        		return this.tags.length;
+        		return this.newTags.length;
         	}
         },
         methods: {
