@@ -29001,6 +29001,9 @@ module.exports = function spread(callback) {
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
 
@@ -29065,6 +29068,7 @@ module.exports = function spread(callback) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -36759,7 +36763,7 @@ exports = module.exports = __webpack_require__(19)();
 
 
 // module
-exports.push([module.i, "\n.tagsHolder {\n\toverflow: auto;\n}\n.tagsHolder ul {\n\tlist-style-type: none; \n\tmargin: 0;\n\tpadding: 0;\n}\n.tagsHolder li {\n\tdisplay: inline-block;\n\tmargin-right: 5px;\n}\n.tagsHolder li a.pill {\n\tbackground: #999;\n\tcolor: white;\n\tfont-size: 12px;\n\tfont-weight: bold;\n\tpadding: 2px 7px;\n\tborder-radius: 5px;\n\ttext-decoration: none;\n}\n.tagsHolder li a.pill:hover {\n\tbackground: #666;\n}\n.tagsHolder a.deleteTag {\n\tcolor: #666;\n\tmargin: 0 2px 0 3px;\n\tfont-weight: bold;\n\tfont-size: 16px;\n\ttext-decoration: none;\n}\n.tagsHolder .form-inline {\n\tmargin: 20px 0 20px 0;\n}\n", ""]);
+exports.push([module.i, "\n.tagsHolder {\n\toverflow: auto;\n}\n.tagsHolder ul {\n\tlist-style-type: none; \n\tmargin: 0;\n\tpadding: 0;\n}\n.tagsHolder li {\n\tdisplay: inline-block;\n\tmargin-right: 5px;\n}\n.tagsHolder li a.pill {\n\tbackground: #999;\n\tcolor: white;\n\tfont-size: 12px;\n\tfont-weight: bold;\n\tpadding: 2px 7px;\n\tborder-radius: 5px;\n\ttext-decoration: none;\n}\n.tagsHolder li a.pill:hover {\n\tbackground: #666;\n}\n.tagsHolder a.deleteTag {\n\tcolor: #666;\n\tmargin: 0 2px 0 3px;\n\tfont-weight: bold;\n\tfont-size: 16px;\n\ttext-decoration: none;\n}\n.tagsHolder .form-inline {\n\tmargin: 20px 0 10px 0;\n}\n", ""]);
 
 // exports
 
@@ -41469,7 +41473,7 @@ module.exports = Component.exports
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "tagsHolder container-fluid"
-  }, [_c('div', {
+  }, [(_vm.editing) ? _c('h5', [_vm._v("Tags")]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-12"
@@ -41560,7 +41564,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "bookEdit"
   }, [_c('div', {
     staticClass: "container-fluid"
-  }, [_c('div', {
+  }, [_c('h5', [_vm._v("Book Details")]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "form-group col-md-12"
@@ -41645,7 +41649,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.submit
     }
-  })])])])]) : _vm._e(), _vm._v(" "), _c('tags', {
+  })])]), _vm._v(" "), _c('hr')])]) : _vm._e(), _vm._v(" "), _c('tags', {
     attrs: {
       "tags": _vm.book.tags,
       "bookId": _vm.book.id,
@@ -41653,7 +41657,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), (_vm.editing) ? _c('div', {
     staticClass: "container-fluid"
-  }, [_c('div', {
+  }, [_c('hr'), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "form-group col-md-12"
@@ -41662,7 +41666,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.cancelEdit
     }
-  }, [_vm._v("Cancel")])])])]) : _vm._e()], 1)
+  }, [_vm._v("Finished")])])])]) : _vm._e()], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

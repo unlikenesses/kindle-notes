@@ -1,5 +1,6 @@
 <template>
 	<div class="tagsHolder container-fluid">
+		<h5 v-if="editing">Tags</h5>
 		<div class="row">
 			<div class="col-md-12">
 				<ul v-if="numTags > 0">
@@ -112,6 +113,6 @@
 		text-decoration: none;
 	}
 	.tagsHolder .form-inline {
-		margin: 20px 0 20px 0;
+		margin: 20px 0 10px 0;
 	}
 </style>

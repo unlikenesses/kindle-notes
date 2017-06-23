@@ -12,6 +12,7 @@
         </div>
         <div class="bookEdit" v-if="editing">
             <div class="container-fluid">
+                <h5>Book Details</h5>
                 <div class="row">
                     <div class="form-group col-md-12">
                         <input type="text" placeholder="Title" v-model="title" class="form-control">
@@ -30,13 +31,15 @@
                         <button @click="submit" v-text="submitting ? 'Updating' : 'Update'" class="btn btn-primary"></button>
                     </div>
                 </div>
+                <hr>
             </div>
         </div>
         <tags :tags="book.tags" :bookId="book.id" :editing="editing" />
         <div class="container-fluid" v-if="editing">
+            <hr>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <button @click="cancelEdit" class="btn btn-default">Cancel</button>
+                    <button @click="cancelEdit" class="btn btn-default">Finished</button>
                 </div>
             </div>
         </div>  
