@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<ul v-if="numTags > 0">
 					<li v-for="tag in newTags">
-						<a class="pill" :href="'tag/' + tag.slug">
+						<a class="pill" :href="'/tag/' + tag.slug">
 							{{ tag.tag }}
 						</a>
 						<a href="#" class="deleteTag" v-if="editing" @click="deleteTag(tag)">

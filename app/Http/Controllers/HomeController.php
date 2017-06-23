@@ -348,7 +348,8 @@ class HomeController extends Controller
 
     public function showBooksByTag(Tag $tag) 
     {
-        $books = $tag->books()->get();
-        dd($books);
+        $books = $tag->books()->with('tags')->get();
+        
+        return view('show_books', ['books' => $books, 'tag' => $tag->tag]);
     }
 }

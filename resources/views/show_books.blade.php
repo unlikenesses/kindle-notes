@@ -11,7 +11,12 @@
                     </div>
                 @endif
                 <div class="panel panel-default">
-                    <div class="panel-heading">Your Books</div>
+                    <div class="panel-heading">
+                        Your Books
+                        @if (isset($tag))
+                            tagged &ldquo;{{ $tag }}&rdquo;
+                        @endif
+                    </div>
 
                     <div class="panel-body">
                         <ul>

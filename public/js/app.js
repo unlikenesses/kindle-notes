@@ -41477,7 +41477,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('li', [_c('a', {
       staticClass: "pill",
       attrs: {
-        "href": 'tag/' + tag.slug
+        "href": '/tag/' + tag.slug
       }
     }, [_vm._v("\n\t\t\t\t\t\t" + _vm._s(tag.tag) + "\n\t\t\t\t\t")]), _vm._v(" "), (_vm.editing) ? _c('a', {
       staticClass: "deleteTag",
@@ -41542,7 +41542,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "bookHolder"
   }, [(!_vm.editing) ? _c('div', {
-    staticClass: "bookElement"
+    staticClass: "bookElement container-fluid"
   }, [_c('div', {
     staticClass: "bookDetails"
   }, [_c('a', {

@@ -1,6 +1,6 @@
 <template>
     <div class="bookHolder">
-        <div class="bookElement" v-if="!editing">
+        <div class="bookElement container-fluid" v-if="!editing">
             <div class="bookDetails">
                 <a :href="notesLink">{{ title }}</a><br>
                 {{ authorFirstName }}
