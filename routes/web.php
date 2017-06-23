@@ -34,3 +34,5 @@ Route::post('/deleteTagPivot', 'TagsController@deleteTagPivot');
 Route::post('/addTagPivot', 'TagsController@addTagPivot');
 
 Route::post('/getTagsForBook', 'TagsController@getTagsForBook');
+
+Route::get('/tagAutoComplete', 'TagsController@tagAutoComplete');

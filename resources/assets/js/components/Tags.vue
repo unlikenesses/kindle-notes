@@ -59,7 +59,6 @@
                     'book_id': item.pivot.book_id,
                     'tag_id': item.pivot.tag_id,
                 }, function(data) {
-                    // that.editing = false;
                     let i = that.newTags.indexOf(item);
                     that.newTags.splice(i, 1);
                 });

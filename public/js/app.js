@@ -29134,7 +29134,6 @@ module.exports = function spread(callback) {
                 'book_id': item.pivot.book_id,
                 'tag_id': item.pivot.tag_id
             }, function (data) {
-                // that.editing = false;
                 var i = that.newTags.indexOf(item);
                 that.newTags.splice(i, 1);
             });
@@ -50403,7 +50402,20 @@ module.exports = __webpack_require__(136);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -50421,7 +50433,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
         return {
-            newTag: null
+            newTag: null,
+            results: []
         };
     },
 
@@ -50429,9 +50442,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         addTag: function addTag() {
             this.$emit('addTag', this.newTag);
             this.newTag = null;
+        },
+        autoComplete: function autoComplete() {
+            var that = this;
+            this.results = [];
+            if (this.newTag.length > 2) {
+                $.get('/tagAutoComplete', {
+                    'tag': this.newTag
+                }, function (data) {
+                    that.results = data;
+                });
+            }
         }
     }
 };
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
 /* 394 */
@@ -50496,6 +50521,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": _vm._s(_vm.newTag)
     },
     on: {
+      "keyup": _vm.autoComplete,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.newTag = $event.target.value
@@ -50506,7 +50532,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.addTag
     }
-  }, [_vm._v("Add")])])])])])
+  }, [_vm._v("Add")]), _vm._v(" "), (_vm.results.length) ? _c('div', {
+    staticClass: "panel-footer"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, _vm._l((_vm.results), function(result) {
+    return _c('li', {
+      staticClass: "list-group-item"
+    }, [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(result.tag) + "\n\t\t\t\t\t\t")])
+  }))]) : _vm._e()])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

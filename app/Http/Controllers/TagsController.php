@@ -28,7 +28,7 @@ class TagsController extends Controller
         try {
             $book->tags()->attach($tag->id);
         } catch (\Exception $e) {
-            
+
         }
     }
 
@@ -67,5 +67,13 @@ class TagsController extends Controller
     {
         $book = Book::findOrFail($request->book_id);
         return $book->tags()->get();
+    }
+
+    public function tagAutoComplete(Request $request) 
+    {
+        $tag = $request->tag;
+        $tags = Tag::where('tag', 'like', '%' . $tag . '%')->get();
+
+        return response()->json($tags);
     }
 }
