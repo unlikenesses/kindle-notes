@@ -28985,6 +28985,22 @@ module.exports = function spread(callback) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
 
@@ -29049,6 +29065,12 @@ module.exports = function spread(callback) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -36737,7 +36759,7 @@ exports = module.exports = __webpack_require__(19)();
 
 
 // module
-exports.push([module.i, "\n.tagsHolder {\n\toverflow: auto;\n}\n.tagsHolder ul {\n\tlist-style-type: none; \n\tmargin: 0;\n\tpadding: 0;\n}\n.tagsHolder li {\n\tdisplay: inline-block;\n\tmargin-right: 5px;\n}\n.tagsHolder li a {\n\tbackground: #999;\n\tcolor: white;\n\tfont-size: 12px;\n\tfont-weight: bold;\n\tpadding: 2px 7px;\n\tborder-radius: 5px;\n\ttext-decoration: none;\n}\n.tagsHolder li a:hover {\n\tbackground: #666;\n}\n", ""]);
+exports.push([module.i, "\n.tagsHolder {\n\toverflow: auto;\n}\n.tagsHolder ul {\n\tlist-style-type: none; \n\tmargin: 0;\n\tpadding: 0;\n}\n.tagsHolder li {\n\tdisplay: inline-block;\n\tmargin-right: 5px;\n}\n.tagsHolder li a.pill {\n\tbackground: #999;\n\tcolor: white;\n\tfont-size: 12px;\n\tfont-weight: bold;\n\tpadding: 2px 7px;\n\tborder-radius: 5px;\n\ttext-decoration: none;\n}\n.tagsHolder li a.pill:hover {\n\tbackground: #666;\n}\n.tagsHolder a.deleteTag {\n\tcolor: #666;\n\tmargin: 0 2px 0 3px;\n\tfont-weight: bold;\n\tfont-size: 16px;\n\ttext-decoration: none;\n}\n.tagsHolder .form-inline {\n\tmargin: 20px 0 20px 0;\n}\n", ""]);
 
 // exports
 
@@ -41446,13 +41468,19 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "tagsHolder"
+    staticClass: "tagsHolder container-fluid"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
   }, [(_vm.numTags > 0) ? _c('ul', _vm._l((_vm.newTags), function(tag) {
     return _c('li', [_c('a', {
+      staticClass: "pill",
       attrs: {
         "href": 'tag/' + tag.slug
       }
-    }, [_vm._v("\n\t\t\t\t" + _vm._s(tag.tag) + "\n\t\t\t")]), _vm._v(" "), (_vm.editing) ? _c('a', {
+    }, [_vm._v("\n\t\t\t\t\t\t" + _vm._s(tag.tag) + "\n\t\t\t\t\t")]), _vm._v(" "), (_vm.editing) ? _c('a', {
+      staticClass: "deleteTag",
       attrs: {
         "href": "#"
       },
@@ -41461,13 +41489,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.deleteTag(tag)
         }
       }
-    }, [_vm._v("\n\t\t\t\t×\n\t\t\t")]) : _vm._e()])
-  })) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('div', {
+    }, [_vm._v("\n\t\t\t\t\t\t×\n\t\t\t\t\t")]) : _vm._e()])
+  })) : _vm._e()])]), _vm._v(" "), (_vm.editing) ? _c('div', {
     staticClass: "addTag"
   }, [_c('div', {
     staticClass: "form-inline"
   }, [_c('div', {
-    staticClass: "form-group"
+    staticClass: "form-group row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
   }, [_c('input', {
     directives: [{
       name: "model",
@@ -41489,12 +41519,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.newTag = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('button', {
+  }), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     on: {
       "click": _vm.addTag
     }
-  }, [_vm._v("Add")])])]) : _vm._e()])
+  }, [_vm._v("Add")])])])])]) : _vm._e()])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -41528,6 +41558,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])]) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('div', {
     staticClass: "bookEdit"
+  }, [_c('div', {
+    staticClass: "container-fluid"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "form-group col-md-12"
   }, [_c('input', {
     directives: [{
       name: "model",
@@ -41549,7 +41585,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.title = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('div', {
+  })])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "form-group col-md-6"
@@ -41597,26 +41633,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.authorLastName = $event.target.value
       }
     }
-  })])]), _vm._v(" "), _c('button', {
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "form-group col-md-12"
+  }, [_c('button', {
     staticClass: "btn btn-primary",
     domProps: {
-      "textContent": _vm._s(_vm.submitting ? 'Submitting' : 'Submit')
+      "textContent": _vm._s(_vm.submitting ? 'Updating' : 'Update')
     },
     on: {
       "click": _vm.submit
     }
-  }), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-default",
-    on: {
-      "click": _vm.cancelEdit
-    }
-  }, [_vm._v("Cancel")])]) : _vm._e(), _vm._v(" "), _c('tags', {
+  })])])])]) : _vm._e(), _vm._v(" "), _c('tags', {
     attrs: {
       "tags": _vm.book.tags,
       "bookId": _vm.book.id,
       "editing": _vm.editing
     }
-  })], 1)
+  }), _vm._v(" "), (_vm.editing) ? _c('div', {
+    staticClass: "container-fluid"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "form-group col-md-12"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": _vm.cancelEdit
+    }
+  }, [_vm._v("Cancel")])])])]) : _vm._e()], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

@@ -11,19 +11,35 @@
             </div>
         </div>
         <div class="bookEdit" v-if="editing">
-            <input type="text" placeholder="Title" v-model="title" class="form-control">
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <input type="text" placeholder="Author first name" v-model="authorFirstName" class="form-control">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <input type="text" placeholder="Title" v-model="title" class="form-control">
+                    </div>
                 </div>
-                <div class="form-group col-md-6">
-                    <input type="text" placeholder="Author last name" v-model="authorLastName" class="form-control">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" placeholder="Author first name" v-model="authorFirstName" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" placeholder="Author last name" v-model="authorLastName" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <button @click="submit" v-text="submitting ? 'Updating' : 'Update'" class="btn btn-primary"></button>
+                    </div>
                 </div>
             </div>
-            <button @click="submit" v-text="submitting ? 'Submitting' : 'Submit'" class="btn btn-primary"></button>
-            <button @click="cancelEdit" class="btn btn-default">Cancel</button>
         </div>
         <tags :tags="book.tags" :bookId="book.id" :editing="editing" />
+        <div class="container-fluid" v-if="editing">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <button @click="cancelEdit" class="btn btn-default">Cancel</button>
+                </div>
+            </div>
+        </div>  
     </div>  
 </template>
 
