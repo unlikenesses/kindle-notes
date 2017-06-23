@@ -27998,6 +27998,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Book_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Book_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Tags_vue__ = __webpack_require__(293);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Tags_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Tags_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_AddTag_vue__ = __webpack_require__(394);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_AddTag_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_AddTag_vue__);
 
 /*
  |--------------------------------------------------------------------------
@@ -28023,8 +28025,10 @@ __webpack_require__(158);
 // import Alex from './components/Alex.vue';
 
 
+
 Vue.component('book', __WEBPACK_IMPORTED_MODULE_0__components_Book_vue___default.a);
 Vue.component('tags', __WEBPACK_IMPORTED_MODULE_1__components_Tags_vue___default.a);
+Vue.component('add-tag', __WEBPACK_IMPORTED_MODULE_2__components_AddTag_vue___default.a);
 
 var app = new Vue({
   mixins: [__webpack_require__(264)]
@@ -29089,22 +29093,12 @@ module.exports = function spread(callback) {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
 
     props: ['tags', 'bookId', 'editing'],
     data: function data() {
         return {
-            newTag: null,
             newTags: this.tags
         };
     },
@@ -29115,16 +29109,14 @@ module.exports = function spread(callback) {
         }
     },
     methods: {
-        addTag: function addTag() {
-            if (this.newTag.length < 128) {
+        addTag: function addTag(tag) {
+            if (tag.length < 128) {
                 var that = this;
                 $.post('/addTagPivot', {
                     'book_id': this.bookId,
-                    'tag': this.newTag
+                    'tag': tag
                 }).then(function () {
                     that.getTags();
-                    that.newTag = null;
-                    // that.editing = false;
                 });
             }
         },
@@ -41494,41 +41486,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v("\n\t\t\t\t\t\t×\n\t\t\t\t\t")]) : _vm._e()])
-  })) : _vm._e()])]), _vm._v(" "), (_vm.editing) ? _c('div', {
-    staticClass: "addTag"
-  }, [_c('div', {
-    staticClass: "form-inline"
-  }, [_c('div', {
-    staticClass: "form-group row"
-  }, [_c('div', {
-    staticClass: "col-md-12"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.newTag),
-      expression: "newTag"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "placeholder": "Add a tag"
-    },
-    domProps: {
-      "value": _vm._s(_vm.newTag)
-    },
+  })) : _vm._e()])]), _vm._v(" "), (_vm.editing) ? _c('add-tag', {
     on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.newTag = $event.target.value
-      }
+      "addTag": _vm.addTag
     }
-  }), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
-    on: {
-      "click": _vm.addTag
-    }
-  }, [_vm._v("Add")])])])])]) : _vm._e()])
+  }) : _vm._e()], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -50343,6 +50305,216 @@ return Vue$3;
 __webpack_require__(135);
 module.exports = __webpack_require__(136);
 
+
+/***/ }),
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */,
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */,
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */,
+/* 382 */,
+/* 383 */,
+/* 384 */,
+/* 385 */,
+/* 386 */,
+/* 387 */,
+/* 388 */,
+/* 389 */,
+/* 390 */,
+/* 391 */,
+/* 392 */,
+/* 393 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            newTag: null
+        };
+    },
+
+    methods: {
+        addTag: function addTag() {
+            this.$emit('addTag', this.newTag);
+            this.newTag = null;
+        }
+    }
+};
+
+/***/ }),
+/* 394 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(132)(
+  /* script */
+  __webpack_require__(393),
+  /* template */
+  __webpack_require__(395),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\misc\\kindlenotes\\resources\\assets\\js\\components\\AddTag.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] AddTag.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-26f6f996", Component.options)
+  } else {
+    hotAPI.reload("data-v-26f6f996", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 395 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "addTag"
+  }, [_c('div', {
+    staticClass: "form-inline"
+  }, [_c('div', {
+    staticClass: "form-group row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newTag),
+      expression: "newTag"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Add a tag"
+    },
+    domProps: {
+      "value": _vm._s(_vm.newTag)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newTag = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": _vm.addTag
+    }
+  }, [_vm._v("Add")])])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-26f6f996", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

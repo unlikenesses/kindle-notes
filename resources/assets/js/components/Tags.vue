@@ -15,16 +15,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="addTag" v-if="editing">
-			<div class="form-inline">
-				<div class="form-group row">
-					<div class="col-md-12">
-						<input type="text" v-model="newTag" placeholder="Add a tag" class="form-control">
-						<button @click="addTag" class="btn btn-primary">Add</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<add-tag v-if="editing" v-on:addTag="addTag"></add-tag>
 	</div>
 </template>
 
@@ -34,7 +25,6 @@
         props: ['tags', 'bookId', 'editing'],
         data() {
             return {
-            	newTag: null,
             	newTags: this.tags
             }
         },
@@ -44,16 +34,14 @@
         	}
         },
         methods: {
-            addTag() {
-            	if (this.newTag.length < 128) {
+            addTag(tag) {
+            	if (tag.length < 128) {
             		var that = this;
             		$.post('/addTagPivot', {
 	                    'book_id': this.bookId,
-	                    'tag': this.newTag,
+	                    'tag': tag,
 	                }).then(function() {
 	                	that.getTags();
-	                	that.newTag = null;
-	                    // that.editing = false;
 	                });
             	}
             },
