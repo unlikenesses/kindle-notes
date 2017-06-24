@@ -50442,6 +50442,7 @@ module.exports = __webpack_require__(136);
         addTag: function addTag() {
             this.$emit('addTag', this.newTag);
             this.newTag = null;
+            this.results = [];
         },
         autoComplete: function autoComplete() {
             var that = this;
@@ -50453,6 +50454,10 @@ module.exports = __webpack_require__(136);
                     that.results = data;
                 });
             }
+        },
+        selectTag: function selectTag(tag) {
+            this.newTag = tag.tag;
+            // this.addTag();
         }
     }
 };
@@ -50461,6 +50466,10 @@ module.exports = __webpack_require__(136);
 /***/ }),
 /* 394 */
 /***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(397)
 
 var Component = __webpack_require__(132)(
   /* script */
@@ -50533,12 +50542,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "click": _vm.addTag
     }
   }, [_vm._v("Add")]), _vm._v(" "), (_vm.results.length) ? _c('div', {
-    staticClass: "panel-footer"
+    staticClass: "panel-footer tagsResults"
   }, [_c('ul', {
     staticClass: "list-group"
   }, _vm._l((_vm.results), function(result) {
     return _c('li', {
-      staticClass: "list-group-item"
+      staticClass: "list-group-item",
+      on: {
+        "click": function($event) {
+          _vm.selectTag(result)
+        }
+      }
     }, [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(result.tag) + "\n\t\t\t\t\t\t")])
   }))]) : _vm._e()])])])])
 },staticRenderFns: []}
@@ -50548,6 +50562,46 @@ if (false) {
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-26f6f996", module.exports)
   }
+}
+
+/***/ }),
+/* 396 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(19)();
+// imports
+
+
+// module
+exports.push([module.i, "\n.tagsResults li {\n\tcursor: pointer;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 397 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(396);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(133)("4376e7da", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-26f6f996!./../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddTag.vue", function() {
+     var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-26f6f996!./../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddTag.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
 }
 
 /***/ })
