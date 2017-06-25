@@ -1,7 +1,6 @@
 <template>
-    <div>
-        <i v-show="loading" class="fa fa-spinner fa-spin"></i>
-        <div class="bookElement" v-if="!editing">
+    <div class="bookHolder">
+        <div class="bookElement container-fluid" v-if="!editing">
             <div class="bookDetails">
                 <a :href="notesLink">{{ title }}</a><br>
                 {{ authorFirstName }}
@@ -12,31 +11,52 @@
             </div>
         </div>
         <div class="bookEdit" v-if="editing">
-            <input type="text" placeholder="Title" v-model="title" class="form-control">
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <input type="text" placeholder="Author first name" v-model="authorFirstName" class="form-control">
+            <div class="container-fluid">
+                <h5>Book Details</h5>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <input type="text" placeholder="Title" v-model="title" class="form-control">
+                    </div>
                 </div>
-                <div class="form-group col-md-6">
-                    <input type="text" placeholder="Author last name" v-model="authorLastName" class="form-control">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" placeholder="Author first name" v-model="authorFirstName" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" placeholder="Author last name" v-model="authorLastName" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <button @click="submit" v-text="submitting ? 'Updating' : 'Update'" class="btn btn-primary"></button>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <tags :tags="book.tags" :bookId="book.id" :editing="editing" />
+        <div class="container-fluid" v-if="editing">
+            <hr>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <button @click="cancelEdit" class="btn btn-default">Finished</button>
                 </div>
             </div>
-            <button @click="submit" v-text="submitting ? 'Submitting' : 'Submit'" class="btn btn-primary"></button>
-            <button @click="cancelEdit" class="btn btn-default">Cancel</button>
-        </div>
+        </div>  
     </div>  
 </template>
 
 <script>
     export default {
 
-        props: ['id'],
+        props: ['book', 'tags'],
 
         data() {
             return {
-                title: '',
-                authorFirstName: '',
-                authorLastName: '',
+                id: this.book.id,
+                title: this.book.title,
+                authorFirstName: this.book.author_first_name,
+                authorLastName: this.book.author_last_name,
                 loading: true,
                 editing: false,
                 submitting: false
@@ -50,17 +70,10 @@
         },
 
         mounted() {
-            let that = this;
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            });
-            $.post('getBookDetails', { 'id': this.id }, function(data) {
-                that.title = data.title;
-                that.authorFirstName = data.authorFirstName;
-                that.authorLastName = data.authorLastName;
-                that.loading = false;
             });
         },
 
@@ -91,13 +104,16 @@
 
 <style>
 
+    .bookHolder {
+        border-bottom: 1px solid #DEDEDE;   
+        margin-bottom: 10px;
+        padding-bottom: 10px;     
+    }
+
     .bookElement {
         clear: left;
         overflow: auto;        
         width: 100%;
-        border-bottom: 1px solid #DEDEDE;
-        margin-bottom: 10px;
-        padding-bottom: 10px;
     }
 
     .bookDetails {
@@ -114,10 +130,7 @@
     }
 
     .bookEdit {     
-        width: 100%;
-        border-bottom: 1px solid #DEDEDE;
-        margin-bottom: 10px;
-        padding-bottom: 10px;        
+        width: 100%;     
     }
 
     .bookEdit input {
