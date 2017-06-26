@@ -46,7 +46,7 @@ class ExportController extends Controller
 
         // Notes:
         $notes = $book->notes()->get();
-        $csv->insertOne(['Type', 'Date', 'Note']);
+        $csv->insertOne(['Note', 'Date', 'Type']);
         foreach ($notes as $note) {
             if ($note->type == 1) {
                 $noteType = 'Highlight';
@@ -55,7 +55,7 @@ class ExportController extends Controller
                 $noteType = 'Note';
             }
             $noteDate = date('d M Y, h:m:s',strtotime($note->date));
-            $csv->insertOne([$noteType, $noteDate, $note->note]);
+            $csv->insertOne([$note->note, $noteDate, $noteType]);
         }
 
         $csv->output('notes.csv');
