@@ -23,10 +23,15 @@
                         @endif
                     </div>
                     <div class="panel-body">
+                        <p>
+                            <a href="{{ url('csvExport/' . $book->id ) }}">
+                                <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Export to CSV
+                            </a>
+                        </p>
                         @foreach ($notes as $note)
                             <p>
                                 <strong>
-                                    {{ date('d M Y, h:m:s',strtotime($note->date)) }}
+                                    {{ date('d M Y, h:m:s', strtotime($note->date)) }}
                                     @if ($note->type == 1) (Highlight) @endif
                                     @if ($note->type == 2) (Note) @endif
                                 </strong><br>
