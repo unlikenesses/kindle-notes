@@ -4,7 +4,7 @@
 <home :user="user" inline-template>
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 @if (session('status'))
                     <div class="alert alert-success">
                         {{ session('status') }}
@@ -19,11 +19,11 @@
                     </div>
 
                     <div class="panel-body">
-                        <ul>
+                        <div class="ui relaxed divided list">
                         @foreach ($books as $book)
                             <book :book="{{ json_encode($book) }}"></book>
                         @endforeach
-                        </ul>
+                        </div>
                     </div>
                 </div>
             </div>

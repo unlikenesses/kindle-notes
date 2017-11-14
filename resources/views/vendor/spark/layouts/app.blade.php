@@ -15,6 +15,7 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css" rel="stylesheet">
     <link href="/css/sweetalert.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
 

@@ -1,31 +1,31 @@
 <template>
-	<div class="tagsHolder container-fluid">
-		<h5 v-if="editing">Tags</h5>
-		<div class="row">
-			<div class="col-md-12">
-				<ul v-if="numTags > 0">
-					<li v-for="tag in newTags">
-						<a class="pill" :href="'/tag/' + tag.slug">
-							{{ tag.tag }}
-						</a>
-						<a href="#" class="deleteTag" v-if="editing" @click="deleteTag(tag)">
-							&times;
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+	<div v-if="numTags > 0">
+		<div class="ui hidden divider"></div>
+		<ul>
+			<li v-for="tag in newTags">
+				<span class="ui blue label">
+					<a :href="'/tag/' + tag.slug">{{ tag.tag }}</a>
+					<i class="delete icon" @click="deleteTag(tag)"></i>
+				</span>
+			</li>
+			<a class="ui blue label" @click="showAdd()">
+				<i class="add icon"></i>
+			</a>
+		</ul>
+		<div class="ui hidden divider"></div>
 		<add-tag v-if="editing" v-on:addTag="addTag"></add-tag>
+		<div class="ui hidden divider"></div>
 	</div>
 </template>
 
 <script>
 	export default {
 
-        props: ['tags', 'bookId', 'editing'],
+        props: ['tags', 'bookId'],
         data() {
             return {
-            	newTags: this.tags
+				newTags: this.tags,
+				editing: false
             }
         },
         computed: {
@@ -34,6 +34,9 @@
         	}
         },
         methods: {
+			showAdd() {
+				this.editing = true;
+			},
             addTag(tag) {
             	if (tag.length < 128) {
             		var that = this;
@@ -41,7 +44,8 @@
 	                    'book_id': this.bookId,
 	                    'tag': tag,
 	                }).then(function() {
-	                	that.getTags();
+						that.getTags();
+						that.editing = false;
 	                });
             	}
             },
@@ -69,18 +73,18 @@
 
 <style>
 	.tagsHolder {
-		overflow: auto;
+		/* overflow: auto; */
 	}
-	.tagsHolder ul {
+	ul {
 		list-style-type: none; 
 		margin: 0;
 		padding: 0;
 	}
-	.tagsHolder li {
+	li {
 		display: inline-block;
 		margin-right: 5px;
 	}
-	.tagsHolder li a.pill {
+	li a.pill {
 		background: #999;
 		color: white;
 		font-size: 12px;
@@ -89,17 +93,17 @@
 		border-radius: 5px;
 		text-decoration: none;
 	}
-	.tagsHolder li a.pill:hover {
+	li a.pill:hover {
 		background: #666;
 	}
-	.tagsHolder a.deleteTag {
+	a.deleteTag {
 		color: #666;
 		margin: 0 2px 0 3px;
 		font-weight: bold;
 		font-size: 16px;
 		text-decoration: none;
 	}
-	.tagsHolder .form-inline {
+	.form-inline {
 		margin: 20px 0 10px 0;
 	}
 </style>

@@ -1,23 +1,25 @@
 <template>
-	<div class="addTag">
-		<div class="form-inline">
-			<div class="form-group row">
-				<div class="col-md-12">
+	<div class="ui form big">
+		<div class="fields">
+			<div class="field">
+				<div class="ui right labeled left icon input">
+					<i class="tags icon"></i>
 					<input 
 						type="text" 
 						v-model="newTag" 
 						v-on:keyup="autoComplete"
 						placeholder="Add a tag" 
-						class="form-control"
 						>
-					<button @click="addTag" class="btn btn-primary">Add</button>
-					<div class="panel-footer tagsResults" v-if="results.length">
-						<ul class="list-group">
-							<li class="list-group-item" v-for="result in results" @click="selectTag(result)">
-								{{ result.tag }}
-							</li>
-						</ul>
-					</div>
+					<a class="ui tag label" @click="addTag">
+						Add Tag
+					</a>
+				</div>
+				<div class="panel-footer tagsResults" v-if="results.length">
+					<ul class="list-group">
+						<li class="list-group-item" v-for="result in results" @click="selectTag(result)">
+							{{ result.tag }}
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
