@@ -10,16 +10,16 @@
                         {{ session('status') }}
                     </div>
                 @endif
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+                <div class="ui segments">
+                    <div class="ui segment secondary">
                         Your Books
                         @if (isset($tag))
                             tagged &ldquo;{{ $tag }}&rdquo;
                         @endif
                     </div>
 
-                    <div class="panel-body">
-                        <div class="ui relaxed divided list">
+                    <div class="ui segment">
+                        <div class="ui very relaxed divided list">
                         @foreach ($books as $book)
                             <book :book="{{ json_encode($book) }}"></book>
                         @endforeach
