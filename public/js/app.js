@@ -29165,6 +29165,18 @@ module.exports = function spread(callback) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
   props: ["tags", "bookId"],
@@ -29172,7 +29184,8 @@ module.exports = function spread(callback) {
     return {
       newTags: this.tags,
       editing: false,
-      newTag: null
+      newTag: null,
+      autocompleteTags: []
     };
   },
 
@@ -29188,6 +29201,17 @@ module.exports = function spread(callback) {
     submit: function submit() {
       this.addTag(this.newTag);
       this.newTag = null;
+    },
+    autoComplete: function autoComplete() {
+      var that = this;
+      this.autocompleteTags = [];
+      if (this.newTag.length > 2) {
+        $.get('/tagAutoComplete', {
+          'tag': this.newTag
+        }, function (data) {
+          that.autocompleteTags = data;
+        });
+      }
     },
     addTag: function addTag(tag) {
       if (tag.length < 128) {
@@ -29217,6 +29241,12 @@ module.exports = function spread(callback) {
         var i = that.newTags.indexOf(item);
         that.newTags.splice(i, 1);
       });
+    },
+    selectTag: function selectTag(tag) {
+      this.newTag = tag.tag;
+      this.addTag(this.newTag);
+      this.newTag = null;
+      this.autocompleteTags = [];
     }
   }
 };
@@ -41692,17 +41722,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": _vm._s(_vm.newTag)
     },
     on: {
-      "keyup": function($event) {
+      "keyup": [_vm.autoComplete, function($event) {
         if (_vm._k($event.keyCode, "enter", 13)) { return; }
         _vm.submit($event)
-      },
+      }],
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.newTag = $event.target.value
       }
     }
-  })]) : _vm._e(), _vm._v(" "), (!_vm.editing) ? _c('a', {
+  })]) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('a', {
     staticClass: "ui label",
+    on: {
+      "click": function($event) {
+        _vm.toggleEditing()
+      }
+    }
+  }, [_vm._v("\n\t\t\tDone\n\t\t")]) : _vm._e(), _vm._v(" "), (_vm.editing && _vm.autocompleteTags.length) ? _c('div', {
+    staticClass: "ui fluid vertical menu"
+  }, _vm._l((_vm.autocompleteTags), function(result) {
+    return _c('a', {
+      staticClass: "item",
+      on: {
+        "click": function($event) {
+          _vm.selectTag(result)
+        }
+      }
+    }, [_vm._v(_vm._s(result.tag))])
+  })) : _vm._e(), _vm._v(" "), (!_vm.editing) ? _c('a', {
+    staticClass: "ui basic label",
     on: {
       "click": function($event) {
         _vm.toggleEditing()
@@ -41710,16 +41758,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fitted edit icon"
-  }), _vm._v("\n\t\t\tEdit Tags\n\t\t")]) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('a', {
-    staticClass: "ui label",
-    on: {
-      "click": function($event) {
-        _vm.toggleEditing()
-      }
-    }
-  }, [_c('i', {
-    staticClass: "fitted edit icon"
-  }), _vm._v("\n\t\t\tFinished\n\t\t")]) : _vm._e()], 2) : _vm._e()
+  }), _vm._v("\n\t\t\tEdit Tags\n\t\t")]) : _vm._e()], 2) : _vm._e()
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

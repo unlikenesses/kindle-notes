@@ -6,15 +6,27 @@
 		</span>
     <div class="ui left icon input mini" v-if="editing">
       <i class="tags icon"></i>
-      <input type="text" v-model="newTag" placeholder="Add a tag" v-on:keyup.enter="submit">
+      <input 
+        type="text" 
+        v-model="newTag" 
+        placeholder="Add a tag" 
+        v-on:keyup="autoComplete"
+        v-on:keyup.enter="submit"
+      >
     </div>
-		<a class="ui label" @click="toggleEditing()" v-if="!editing">
+		<a class="ui label" @click="toggleEditing()" v-if="editing">
+			Done
+		</a>
+    <div class="ui fluid vertical menu" v-if="editing && autocompleteTags.length">
+      <a class="item" v-for="result in autocompleteTags" @click="selectTag(result)">{{ result.tag }}</a>
+    </div>
+    <!-- <div class="ui search">
+      <input class="prompt" type="text" placeholder="Add a tag" v-model="newTag">
+      <div class="results"></div>
+    </div> -->
+		<a class="ui basic label" @click="toggleEditing()" v-if="!editing">
 			<i class="fitted edit icon"></i>
 			Edit Tags
-		</a>
-		<a class="ui label" @click="toggleEditing()" v-if="editing">
-			<i class="fitted edit icon"></i>
-			Finished
 		</a>
 	</div>
 </template>
@@ -26,7 +38,8 @@ export default {
     return {
       newTags: this.tags,
       editing: false,
-      newTag: null
+      newTag: null,
+      autocompleteTags: []
     };
   },
   computed: {
@@ -41,6 +54,17 @@ export default {
     submit() {
       this.addTag(this.newTag);
       this.newTag = null;
+    },
+    autoComplete() {
+      var that = this;
+      this.autocompleteTags = [];
+      if (this.newTag.length > 2) {
+        $.get('/tagAutoComplete', {
+          'tag': this.newTag 
+        }, function(data) {
+          that.autocompleteTags = data;
+        });
+      }
     },
     addTag(tag) {
       if (tag.length < 128) {
@@ -78,6 +102,12 @@ export default {
           that.newTags.splice(i, 1);
         }
       );
+    },
+    selectTag(tag) {
+      this.newTag = tag.tag;
+      this.addTag(this.newTag);
+      this.newTag = null;
+      this.autocompleteTags = [];
     }
   }
 };
