@@ -29164,57 +29164,61 @@ module.exports = function spread(callback) {
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
+  props: ["tags", "bookId"],
+  data: function data() {
+    return {
+      newTags: this.tags,
+      editing: false,
+      newTag: null
+    };
+  },
 
-    props: ['tags', 'bookId'],
-    data: function data() {
-        return {
-            newTags: this.tags,
-            editing: false
-        };
-    },
-
-    computed: {
-        numTags: function numTags() {
-            return this.newTags.length;
-        }
-    },
-    methods: {
-        showAdd: function showAdd() {
-            this.editing = true;
-        },
-        addTag: function addTag(tag) {
-            if (tag.length < 128) {
-                var that = this;
-                $.post('/addTagPivot', {
-                    'book_id': this.bookId,
-                    'tag': tag
-                }).then(function () {
-                    that.getTags();
-                    that.editing = false;
-                });
-            }
-        },
-        getTags: function getTags() {
-            var that = this;
-            $.post('/getTagsForBook', {
-                'book_id': this.bookId
-            }, function (data) {
-                that.newTags = data;
-            });
-        },
-        deleteTag: function deleteTag(item) {
-            var that = this;
-            $.post('/deleteTagPivot', {
-                'book_id': item.pivot.book_id,
-                'tag_id': item.pivot.tag_id
-            }, function (data) {
-                var i = that.newTags.indexOf(item);
-                that.newTags.splice(i, 1);
-            });
-        }
+  computed: {
+    numTags: function numTags() {
+      return this.newTags.length;
     }
+  },
+  methods: {
+    toggleEditing: function toggleEditing() {
+      this.editing = !this.editing;
+    },
+    submit: function submit() {
+      this.addTag(this.newTag);
+      this.newTag = null;
+    },
+    addTag: function addTag(tag) {
+      if (tag.length < 128) {
+        var that = this;
+        $.post("/addTagPivot", {
+          book_id: this.bookId,
+          tag: tag
+        }).then(function () {
+          that.getTags();
+        });
+      }
+    },
+    getTags: function getTags() {
+      var that = this;
+      $.post("/getTagsForBook", {
+        book_id: this.bookId
+      }, function (data) {
+        that.newTags = data;
+      });
+    },
+    deleteTag: function deleteTag(item) {
+      var that = this;
+      $.post("/deleteTagPivot", {
+        book_id: item.pivot.book_id,
+        tag_id: item.pivot.tag_id
+      }, function (data) {
+        var i = that.newTags.indexOf(item);
+        that.newTags.splice(i, 1);
+      });
+    }
+  }
 };
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
@@ -36844,7 +36848,7 @@ exports = module.exports = __webpack_require__(10)();
 
 
 // module
-exports.push([module.i, "\n.tagsHolder {\n\t/* overflow: auto; */\n}\nul {\n\tlist-style-type: none; \n\tmargin: 0;\n\tpadding: 0;\n}\nli {\n\tdisplay: inline-block;\n\tmargin-right: 5px;\n}\nli a.pill {\n\tbackground: #999;\n\tcolor: white;\n\tfont-size: 12px;\n\tfont-weight: bold;\n\tpadding: 2px 7px;\n\tborder-radius: 5px;\n\ttext-decoration: none;\n}\nli a.pill:hover {\n\tbackground: #666;\n}\na.deleteTag {\n\tcolor: #666;\n\tmargin: 0 2px 0 3px;\n\tfont-weight: bold;\n\tfont-size: 16px;\n\ttext-decoration: none;\n}\n.form-inline {\n\tmargin: 20px 0 10px 0;\n}\n", ""]);
+exports.push([module.i, "\nul {\r\n  list-style-type: none;\r\n  margin: 0;\r\n  padding: 0;\n}\nli {\r\n  display: inline-block;\r\n  margin-right: 5px;\n}\nli a.pill {\r\n  background: #999;\r\n  color: white;\r\n  font-size: 12px;\r\n  font-weight: bold;\r\n  padding: 2px 7px;\r\n  border-radius: 5px;\r\n  text-decoration: none;\n}\nli a.pill:hover {\r\n  background: #666;\n}\na.deleteTag {\r\n  color: #666;\r\n  margin: 0 2px 0 3px;\r\n  font-weight: bold;\r\n  font-size: 16px;\r\n  text-decoration: none;\n}\n.form-inline {\r\n  margin: 20px 0 10px 0;\n}\r\n", ""]);
 
 // exports
 
@@ -41591,7 +41595,7 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "ui form big"
+    staticClass: "ui form"
   }, [_c('div', {
     staticClass: "fields"
   }, [_c('div', {
@@ -41654,41 +41658,68 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.numTags > 0) ? _c('div', [_c('div', {
-    staticClass: "ui hidden divider"
-  }), _vm._v(" "), _c('ul', [_vm._l((_vm.newTags), function(tag) {
-    return _c('li', [_c('span', {
+  return (_vm.numTags > 0) ? _c('div', [_vm._l((_vm.newTags), function(tag) {
+    return _c('span', {
       staticClass: "ui blue label"
     }, [_c('a', {
       attrs: {
         "href": '/tag/' + tag.slug
       }
-    }, [_vm._v(_vm._s(tag.tag))]), _vm._v(" "), _c('i', {
+    }, [_vm._v(_vm._s(tag.tag))]), _vm._v(" "), (_vm.editing) ? _c('i', {
       staticClass: "delete icon",
       on: {
         "click": function($event) {
           _vm.deleteTag(tag)
         }
       }
-    })])])
-  }), _vm._v(" "), _c('a', {
-    staticClass: "ui blue label",
+    }) : _vm._e()])
+  }), _vm._v(" "), (_vm.editing) ? _c('div', {
+    staticClass: "ui left icon input mini"
+  }, [_c('i', {
+    staticClass: "tags icon"
+  }), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newTag),
+      expression: "newTag"
+    }],
+    attrs: {
+      "type": "text",
+      "placeholder": "Add a tag"
+    },
+    domProps: {
+      "value": _vm._s(_vm.newTag)
+    },
+    on: {
+      "keyup": function($event) {
+        if (_vm._k($event.keyCode, "enter", 13)) { return; }
+        _vm.submit($event)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newTag = $event.target.value
+      }
+    }
+  })]) : _vm._e(), _vm._v(" "), (!_vm.editing) ? _c('a', {
+    staticClass: "ui label",
     on: {
       "click": function($event) {
-        _vm.showAdd()
+        _vm.toggleEditing()
       }
     }
   }, [_c('i', {
-    staticClass: "add icon"
-  })])], 2), _vm._v(" "), _c('div', {
-    staticClass: "ui hidden divider"
-  }), _vm._v(" "), (_vm.editing) ? _c('add-tag', {
+    staticClass: "fitted edit icon"
+  }), _vm._v("\n\t\t\tEdit Tags\n\t\t")]) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('a', {
+    staticClass: "ui label",
     on: {
-      "addTag": _vm.addTag
+      "click": function($event) {
+        _vm.toggleEditing()
+      }
     }
-  }) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "ui hidden divider"
-  })], 1) : _vm._e()
+  }, [_c('i', {
+    staticClass: "fitted edit icon"
+  }), _vm._v("\n\t\t\tFinished\n\t\t")]) : _vm._e()], 2) : _vm._e()
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

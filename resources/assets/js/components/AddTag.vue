@@ -1,5 +1,5 @@
 <template>
-	<div class="ui form big">
+	<div class="ui form">
 		<div class="fields">
 			<div class="field">
 				<div class="ui right labeled left icon input">
