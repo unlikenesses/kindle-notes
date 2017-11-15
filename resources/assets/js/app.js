@@ -21,12 +21,14 @@ require('./components/bootstrap');
 import Book from './components/book/Book.vue';
 import BookDetails from './components/book/BookDetails.vue';
 import BookEdit from './components/book/BookEdit.vue';
-import Tags from './components/book/Tags.vue';
+import Tags from './components/tag/Tags.vue';
+import Tag from './components/tag/Tag.vue';
 
 Vue.component('book', Book);
 Vue.component('bookDetails', BookDetails);
 Vue.component('bookEdit', BookEdit);
 Vue.component('tags', Tags);
+Vue.component('tag', Tag);
 
 var app = new Vue({
     mixins: [require('spark')],

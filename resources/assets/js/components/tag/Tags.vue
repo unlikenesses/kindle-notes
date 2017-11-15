@@ -1,9 +1,10 @@
 <template>
-	<div v-if="numTags > 0">
-		<span class="ui blue label" v-for="tag in newTags">
-			<a :href="'/tag/' + tag.slug">{{ tag.tag }}</a>
-			<i class="delete icon" @click="deleteTag(tag)" v-if="editing"></i>
-		</span>
+	<div>
+    <tag 
+      v-for="tag in newTags" 
+      :tag="tag"
+      :editing="editing"
+    />
     <div class="ui left icon input mini" v-if="editing">
       <i class="tags icon"></i>
       <input 
@@ -53,18 +54,11 @@ export default {
       autocompleteTags: []
     };
   },
-  computed: {
-    numTags: function() {
-      return this.newTags.length;
-    }
-  },
   methods: {
     toggleEditing() {
       this.editing = !this.editing;
       if (!this.editing) {
-        this.newTag = null;
-        this.autocompleteTags = []; 
-        this.tagTooLong = false;
+        this.clearAll();
       }
     },
     submit() {
@@ -77,7 +71,10 @@ export default {
     autoComplete(event) {
       var that = this;
       this.autocompleteTags = [];
-      if (event.key != "Enter" && this.newTag && this.newTag.length > 2) {
+      if (event.key == "Escape") {
+        this.editing = false;
+        this.clearAll();
+      } else if (event.key != "Enter" && this.newTag && this.newTag.length > 2) {
         if (this.newTag.length > 32) {
           this.tagTooLong = true;
         } else {
@@ -130,8 +127,12 @@ export default {
     selectTag(tag) {
       this.newTag = tag.tag;
       this.addTag(this.newTag);
+      this.clearAll();
+    },
+    clearAll() {
       this.newTag = null;
-      this.autocompleteTags = [];
+      this.autocompleteTags = []; 
+      this.tagTooLong = false;
     }
   }
 };

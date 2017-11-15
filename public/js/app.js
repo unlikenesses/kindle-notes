@@ -27710,8 +27710,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_book_BookDetails_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_book_BookDetails_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_book_BookEdit_vue__ = __webpack_require__(411);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_book_BookEdit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_book_BookEdit_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_book_Tags_vue__ = __webpack_require__(418);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_book_Tags_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_book_Tags_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_tag_Tags_vue__ = __webpack_require__(422);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_tag_Tags_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_tag_Tags_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_tag_Tag_vue__ = __webpack_require__(425);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_tag_Tag_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_tag_Tag_vue__);
 
 /*
  |--------------------------------------------------------------------------
@@ -27737,10 +27739,12 @@ __webpack_require__(159);
 
 
 
+
 Vue.component('book', __WEBPACK_IMPORTED_MODULE_0__components_book_Book_vue___default.a);
 Vue.component('bookDetails', __WEBPACK_IMPORTED_MODULE_1__components_book_BookDetails_vue___default.a);
 Vue.component('bookEdit', __WEBPACK_IMPORTED_MODULE_2__components_book_BookEdit_vue___default.a);
-Vue.component('tags', __WEBPACK_IMPORTED_MODULE_3__components_book_Tags_vue___default.a);
+Vue.component('tags', __WEBPACK_IMPORTED_MODULE_3__components_tag_Tags_vue___default.a);
+Vue.component('tag', __WEBPACK_IMPORTED_MODULE_4__components_tag_Tag_vue___default.a);
 
 var app = new Vue({
   mixins: [__webpack_require__(265)]
@@ -50053,11 +50057,17 @@ if (false) {
 
 /***/ }),
 /* 415 */,
-/* 416 */
+/* 416 */,
+/* 417 */,
+/* 418 */,
+/* 419 */,
+/* 420 */,
+/* 421 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -50114,18 +50124,11 @@ if (false) {
     };
   },
 
-  computed: {
-    numTags: function numTags() {
-      return this.newTags.length;
-    }
-  },
   methods: {
     toggleEditing: function toggleEditing() {
       this.editing = !this.editing;
       if (!this.editing) {
-        this.newTag = null;
-        this.autocompleteTags = [];
-        this.tagTooLong = false;
+        this.clearAll();
       }
     },
     submit: function submit() {
@@ -50138,7 +50141,10 @@ if (false) {
     autoComplete: function autoComplete(event) {
       var that = this;
       this.autocompleteTags = [];
-      if (event.key != "Enter" && this.newTag && this.newTag.length > 2) {
+      if (event.key == "Escape") {
+        this.editing = false;
+        this.clearAll();
+      } else if (event.key != "Enter" && this.newTag && this.newTag.length > 2) {
         if (this.newTag.length > 32) {
           this.tagTooLong = true;
         } else {
@@ -50183,29 +50189,32 @@ if (false) {
     selectTag: function selectTag(tag) {
       this.newTag = tag.tag;
       this.addTag(this.newTag);
+      this.clearAll();
+    },
+    clearAll: function clearAll() {
       this.newTag = null;
       this.autocompleteTags = [];
+      this.tagTooLong = false;
     }
   }
 };
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
-/* 417 */,
-/* 418 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(11)(
   /* script */
-  __webpack_require__(416),
+  __webpack_require__(421),
   /* template */
-  __webpack_require__(419),
+  __webpack_require__(423),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\xampp\\htdocs\\MISC\\kindlenotes\\resources\\assets\\js\\components\\book\\Tags.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\MISC\\kindlenotes\\resources\\assets\\js\\components\\tag\\Tags.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Tags.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -50216,9 +50225,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-01913273", Component.options)
+    hotAPI.createRecord("data-v-1978042c", Component.options)
   } else {
-    hotAPI.reload("data-v-01913273", Component.options)
+    hotAPI.reload("data-v-1978042c", Component.options)
   }
 })()}
 
@@ -50226,25 +50235,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 419 */
+/* 423 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.numTags > 0) ? _c('div', [_vm._l((_vm.newTags), function(tag) {
-    return _c('span', {
-      staticClass: "ui blue label"
-    }, [_c('a', {
+  return _c('div', [_vm._l((_vm.newTags), function(tag) {
+    return _c('tag', {
       attrs: {
-        "href": '/tag/' + tag.slug
+        "tag": tag,
+        "editing": _vm.editing
       }
-    }, [_vm._v(_vm._s(tag.tag))]), _vm._v(" "), (_vm.editing) ? _c('i', {
-      staticClass: "delete icon",
-      on: {
-        "click": function($event) {
-          _vm.deleteTag(tag)
-        }
-      }
-    }) : _vm._e()])
+    })
   }), _vm._v(" "), (_vm.editing) ? _c('div', {
     staticClass: "ui left icon input mini"
   }, [_c('i', {
@@ -50308,13 +50309,93 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "fitted edit icon"
   }), _vm._v("\n\t\t\tEdit Tags\n\t\t")]) : _vm._e(), _vm._v(" "), (_vm.editing && _vm.tagTooLong) ? _c('div', {
     staticClass: "ui red message"
-  }, [_vm._v("\n      Tags can be a maximum of 32 characters long.\n    ")]) : _vm._e()], 2) : _vm._e()
+  }, [_vm._v("\n      Tags can be a maximum of 32 characters long.\n    ")]) : _vm._e()], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-01913273", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-1978042c", module.exports)
+  }
+}
+
+/***/ }),
+/* 424 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+  props: ["tag", "editing"]
+};
+
+/***/ }),
+/* 425 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(11)(
+  /* script */
+  __webpack_require__(424),
+  /* template */
+  __webpack_require__(426),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\MISC\\kindlenotes\\resources\\assets\\js\\components\\tag\\Tag.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Tag.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-73156e59", Component.options)
+  } else {
+    hotAPI.reload("data-v-73156e59", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 426 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "ui blue label"
+  }, [_c('a', {
+    attrs: {
+      "href": '/tag/' + _vm.tag.slug
+    }
+  }, [_vm._v(_vm._s(_vm.tag.tag))]), _vm._v(" "), (_vm.editing) ? _c('i', {
+    staticClass: "delete icon",
+    on: {
+      "click": function($event) {
+        _vm.deleteTag(_vm.tag)
+      }
+    }
+  }) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-73156e59", module.exports)
   }
 }
 
