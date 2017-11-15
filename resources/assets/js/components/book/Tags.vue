@@ -8,7 +8,7 @@
       <i class="tags icon"></i>
       <input 
         type="text" 
-        v-model="newTag" 
+        v-model.trim="newTag" 
         placeholder="Add a tag" 
         v-on:keyup="autoComplete"
         v-on:keyup.enter="submit"
@@ -18,7 +18,13 @@
 			Done
 		</a>
     <div class="ui fluid vertical menu" v-if="editing && autocompleteTags.length">
-      <a class="item" v-for="result in autocompleteTags" @click="selectTag(result)">{{ result.tag }}</a>
+      <a 
+        class="item" 
+        v-for="result in autocompleteTags" 
+        @click="selectTag(result)"
+      >
+        {{ result.tag }}
+      </a>
     </div>
     <!-- <div class="ui search">
       <input class="prompt" type="text" placeholder="Add a tag" v-model="newTag">
@@ -28,6 +34,10 @@
 			<i class="fitted edit icon"></i>
 			Edit Tags
 		</a>
+    <div class="ui red message" v-if="editing && tagTooLong">
+      Tags can be a maximum of 32 characters long.
+    </div>
+    <!-- <p>New tag: <strong>{{ newTag }}</strong><br>AC length: <strong>{{autocompleteTags.length}}</strong></p> -->
 	</div>
 </template>
 
@@ -39,6 +49,7 @@ export default {
       newTags: this.tags,
       editing: false,
       newTag: null,
+      tagTooLong: false,
       autocompleteTags: []
     };
   },
@@ -50,15 +61,28 @@ export default {
   methods: {
     toggleEditing() {
       this.editing = !this.editing;
+      if (!this.editing) {
+        this.newTag = null;
+        this.autocompleteTags = []; 
+        this.tagTooLong = false;
+      }
     },
     submit() {
-      this.addTag(this.newTag);
-      this.newTag = null;
+      this.autocompleteTags = [];
+      if (this.newTag && !this.tagTooLong) {
+        this.addTag(this.newTag);
+        this.newTag = null;
+      }
     },
-    autoComplete() {
+    autoComplete(event) {
       var that = this;
       this.autocompleteTags = [];
-      if (this.newTag.length > 2) {
+      if (event.key != "Enter" && this.newTag && this.newTag.length > 2) {
+        if (this.newTag.length > 32) {
+          this.tagTooLong = true;
+        } else {
+          this.tagTooLong = false;
+        }
         $.get('/tagAutoComplete', {
           'tag': this.newTag 
         }, function(data) {
@@ -67,7 +91,7 @@ export default {
       }
     },
     addTag(tag) {
-      if (tag.length < 128) {
+      if (!this.tagTooLong) {
         var that = this;
         $.post("/addTagPivot", {
           book_id: this.bookId,
@@ -112,37 +136,3 @@ export default {
   }
 };
 </script>
-
-<style>
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin-right: 5px;
-}
-li a.pill {
-  background: #999;
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 2px 7px;
-  border-radius: 5px;
-  text-decoration: none;
-}
-li a.pill:hover {
-  background: #666;
-}
-a.deleteTag {
-  color: #666;
-  margin: 0 2px 0 3px;
-  font-weight: bold;
-  font-size: 16px;
-  text-decoration: none;
-}
-.form-inline {
-  margin: 20px 0 10px 0;
-}
-</style>

@@ -21,7 +21,7 @@ require('./components/bootstrap');
 import Book from './components/book/Book.vue';
 import BookDetails from './components/book/BookDetails.vue';
 import BookEdit from './components/book/BookEdit.vue';
-import Tags from './components/Tags.vue';
+import Tags from './components/book/Tags.vue';
 
 Vue.component('book', Book);
 Vue.component('bookDetails', BookDetails);
