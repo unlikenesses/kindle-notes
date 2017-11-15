@@ -4,9 +4,9 @@
 <home :user="user" inline-template>
   <div class="container">
     <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
-          <div class="panel-heading">
+      <div class="col-md-10 col-md-offset-1">
+        <div class="ui segments">
+          <div class="ui segment secondary">
             Your Notes for 
             @if ($book->title !== '') 
               {{ $book->title }}
@@ -22,7 +22,7 @@
               {{ $book->title_string }}
             @endif
           </div>
-          <div class="panel-body">
+          <div class="ui segment">
             <p>
               <a href="{{ url('csvExport/' . $book->id ) }}">
                 <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Export to CSV

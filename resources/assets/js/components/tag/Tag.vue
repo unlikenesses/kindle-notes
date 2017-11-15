@@ -7,6 +7,6 @@
 
 <script>
 export default {
-  props: ["tag", "editing"],
+  props: ["tag", "editing", "deleteTag"]
 };
 </script>

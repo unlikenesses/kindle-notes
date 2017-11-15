@@ -41,7 +41,7 @@
 
 <script>
 export default {
-  props: ["title", "authorFirstName", "authorLastName", "submitting"],
+  props: ["title", "authorFirstName", "authorLastName", "submitting", "cancel"],
 
   data() {
     return {
@@ -53,9 +53,6 @@ export default {
   },
 
   methods: {
-    cancel() {
-      this.$emit("cancel");
-    },
     submit() {
       this.$emit(
         "update",

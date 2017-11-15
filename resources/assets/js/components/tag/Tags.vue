@@ -3,6 +3,7 @@
     <tag 
       v-for="tag in newTags" 
       :tag="tag"
+      :deleteTag="deleteTag"
       :editing="editing"
     />
     <div class="ui left icon input mini" v-if="editing">

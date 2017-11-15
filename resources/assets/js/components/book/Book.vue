@@ -2,6 +2,7 @@
   <div class="item">
     <bookDetails
       v-if="!editing" 
+      :id="id"
       :title="title"
       :authorFirstName="authorFirstName"
       :authorLastName="authorLastName"
@@ -13,8 +14,8 @@
       :authorFirstName="authorFirstName"
       :authorLastName="authorLastName"
       :submitting="submitting"
+      :cancel="cancelEdit"
       v-on:update="update" 
-      v-on:cancel="cancelEdit"
     />
     <div class="ui hidden divider"></div>
     <tags 

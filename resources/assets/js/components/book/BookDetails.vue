@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  props: ["title", "authorFirstName", "authorLastName"],
+  props: ["id", "title", "authorFirstName", "authorLastName"],
   computed: {
     notesLink() {
       return "/books/" + this.id + "/notes";
