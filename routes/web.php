@@ -8,15 +8,15 @@ Route::get('/import', 'HomeController@show_import');
 
 Route::post('/import', 'HomeController@import_file');
 
-Route::get('/books', 'HomeController@show_books');
+Route::get('/books', 'BooksController@index');
 
-Route::get('/books/{book}/notes', 'HomeController@show_notes');
+Route::get('/books/{book}/notes', 'NotesController@index');
 
-Route::post('/getBookDetails', 'HomeController@getBookDetails');
+Route::post('/getBookDetails', 'BooksController@getBookDetails');
 
-Route::post('/storeBookDetails', 'HomeController@storeBookDetails');
+Route::post('/storeBookDetails', 'BooksController@storeBookDetails');
 
-Route::get('/tag/{tag}', 'HomeController@showBooksByTag');
+Route::get('/tag/{tag}', 'BooksController@showBooksByTag');
 
 Route::post('/deleteTagPivot', 'TagsController@deleteTagPivot');
 

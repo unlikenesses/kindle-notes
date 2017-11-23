@@ -33,7 +33,10 @@ class HomeController extends Controller
         $book_count = auth()->user()->books()->count();
         $note_count = auth()->user()->notes()->count();
         $first_book = auth()->user()->books()->orderBy('created_at', 'desc')->first();
-        $last_upload = $first_book->created_at->format('l jS \\of F Y, \\a\\t h:i:s A');
+        $last_upload = '';
+        if ($first_book) {
+            $last_upload = $first_book->created_at->format('l jS \\of F Y, \\a\\t h:i:s A');
+        }
 
         return view('home', ['book_count' => $book_count, 'note_count' => $note_count, 'last_upload' => $last_upload]);
     }
@@ -41,20 +44,6 @@ class HomeController extends Controller
     public function show_import()
     {
         return view('show_import');
-    }
-
-    public function show_books()
-    {
-        $books = auth()->user()->books()->with('tags')->get();
-
-        return view('show_books', ['books' => $books]);
-    }
-
-    public function show_notes(Book $book)
-    {
-        $notes = $book->notes()->get();
-
-        return view('show_notes', ['book' => $book, 'notes' => $notes]);
     }
 
     public function import_file(Request $request)
@@ -325,31 +314,5 @@ class HomeController extends Controller
             'last_name' => $last_name,
             'first_name' => $first_name
         ];
-    }
-
-    public function getBookDetails(Request $request) 
-    {
-        $book = Book::findOrFail($request->id);
-        $data = ['title' => $book->title, 'authorFirstName' => $book->author_first_name, 'authorLastName' => $book->author_last_name];
-        
-        return $data;
-    }
-
-    public function storeBookDetails(Request $request) 
-    {
-        $book = Book::findOrFail($request->id);
-        $data = [
-            'title' => $request->title,
-            'author_first_name' => $request->authorFirstName,
-            'author_last_name' => $request->authorLastName
-        ];  
-        $book->update($data);
-    }
-
-    public function showBooksByTag(Tag $tag) 
-    {
-        $books = $tag->books()->with('tags')->get();
-        
-        return view('show_books', ['books' => $books, 'tag' => $tag->tag]);
     }
 }
