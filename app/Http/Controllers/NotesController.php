@@ -23,10 +23,8 @@ class NotesController extends Controller
 
   public function index(Book $book)
   { 
-    if ($book->user_id != auth()->user()->id) {
-      return redirect('/home');
-    }
-    
+    $this->authorize('view', $book);
+
     $notes = $book->notes()->get();
 
     return view('show_notes', ['book' => $book, 'notes' => $notes]);
