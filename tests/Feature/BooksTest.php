@@ -29,6 +29,17 @@ class BooksTest extends TestCase
   }
 
   /** @test */
+  public function a_user_can_view_their_books_by_tag()
+  {
+    $tag = factory('App\Tag')->create();
+
+    $this->book->tags()->save($tag);
+
+    $this->get('/tag/' . $tag->slug)
+      ->assertSee($this->book->title);
+  }
+
+  /** @test */
   public function a_user_cannot_view_another_users_books()
   {
     $anotherUser = factory('App\User')->create();

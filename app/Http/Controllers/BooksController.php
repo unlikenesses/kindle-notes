@@ -23,7 +23,7 @@ class BooksController extends Controller
 
   public function index()
   {
-    $books = auth()->user()->books()->with('tags')->get();
+    $books = auth()->user()->books()->with('tags')->paginate(10);
 
     return view('show_books', ['books' => $books]);
   }
@@ -31,7 +31,7 @@ class BooksController extends Controller
   public function getBookDetails(Request $request) 
   {
     $book = Book::findOrFail($request->id);
-    
+
     $data = [
       'title' => $book->title, 
       'authorFirstName' => $book->author_first_name, 
@@ -64,7 +64,7 @@ class BooksController extends Controller
 
   public function showBooksByTag(Tag $tag) 
   {
-    $books = $tag->books()->with('tags')->get();
+    $books = $tag->books()->with('tags')->paginate(10);
     
     return view('show_books', ['books' => $books, 'tag' => $tag->tag]);
   }

@@ -24,6 +24,7 @@
               <book :book="{{ json_encode($book) }}"></book>
             @endforeach
             </div>
+            {{ $books->links() }}
           </div>
         </div>
       </div>

@@ -24,4 +24,16 @@ class BookTest extends TestCase
 
     $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $book->notes);
   }
+
+  /** @test */
+  public function it_has_tags()
+  {
+    $book = factory('App\Book')->create();
+
+    $tag = factory('App\Tag')->create();
+
+    $book->tags()->save($tag);
+
+    $this->assertEquals($book->tags->first()->tag, $tag->tag);
+  }
 }
