@@ -28,6 +28,17 @@ class BooksController extends Controller
     return view('show_books', ['books' => $books]);
   }
 
+  public function search()
+  {
+    $searchTerm = request('q');
+    $books = Book::search($searchTerm)->paginate(15);
+    if (request()->expectsJson()) {
+      return $books;
+    }
+
+    return view('show_books', ['searchTerm' => $searchTerm, 'books' => $books]);
+  }
+
   public function getBookDetails(Request $request) 
   {
     $book = Book::findOrFail($request->id);

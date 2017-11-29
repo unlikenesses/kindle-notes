@@ -9,7 +9,7 @@ class Note extends Model
 {
     use Searchable; 
 
-	protected $fillable = ['book_id', 'page', 'location', 'date', 'note', 'type'];
+    protected $fillable = ['book_id', 'page', 'location', 'date', 'note', 'type'];
 
     public function book()
     {

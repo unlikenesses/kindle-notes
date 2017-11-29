@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Note;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -24,7 +23,7 @@ class SearchTest extends TestCase
     
     $searchTerm = 'inaugenscheinnahme';
     factory('App\Note', 2)->create();
-    factory('App\Note', 2)->create(['note' => "This text contains the \"{$searchTerm}\" in it."]);
+    factory('App\Note', 2)->create(['note' => "This text contains the {$searchTerm} in it."]);
 
     do {
       $results = $this->getJson("/notes/search?q={$searchTerm}")->json()['data'];
@@ -37,6 +36,24 @@ class SearchTest extends TestCase
 
     // Again from Laracasts, if we're using a 3rd-party search we'll need to remove 
     // these test items.
-    Note::latest()->take(4)->unsearchable();
+    \App\Note::latest()->take(4)->unsearchable();
+  }
+
+  /** @test */
+  public function a_user_can_search_books()
+  {
+    config(['scout.driver' => 'mysql']);
+    
+    $searchTerm = 'loeschwassereinspeisung';
+    factory('App\Book', 2)->create();
+    factory('App\Book', 2)->create(['title' => "This title contains the {$searchTerm} in it."]);
+
+    do {
+      $results = $this->getJson("/books/search?q={$searchTerm}")->json()['data'];
+    } while (empty($results));
+    
+    $this->assertCount(2, $results);
+
+    \App\Book::latest()->take(4)->unsearchable();
   }
 }

@@ -16,13 +16,24 @@
             @if (isset($tag))
               tagged &ldquo;{{ $tag }}&rdquo;
             @endif
+            <form method="GET" action="/books/search">
+                <div class="form-group">
+                    <input type="text" name="q" placeholder="Search books..." required>
+                </div>
+                <button type="submit" class="">Submit</button>
+                @if (isset($searchTerm))
+                  <a href="/books">Clear search</a>
+                @endif
+            </form> 
           </div>
 
           <div class="ui segment">
             <div class="ui very relaxed divided list">
-            @foreach ($books as $book)
+            @forelse ($books as $book)
               <book :book="{{ json_encode($book) }}"></book>
-            @endforeach
+            @empty
+              <p>You have no books in the system.</p>
+            @endforelse
             </div>
             {{ $books->links() }}
           </div>

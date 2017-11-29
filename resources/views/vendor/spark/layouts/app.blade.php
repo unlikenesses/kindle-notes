@@ -46,6 +46,9 @@
         .dash-icon-text {
             display: inline-flex;
         }
+        .navbar-form {
+            padding-top: 10px;
+        }
     </style>
     <!-- Scripts -->
     @yield('scripts', '')

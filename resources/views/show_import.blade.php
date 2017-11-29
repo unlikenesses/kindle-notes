@@ -26,7 +26,7 @@
                 <input type="file" name="clippings_file">
               </div>
               <div class="field">
-                <input type="checkbox" name="parse_author">
+                <input type="checkbox" name="parse_author" checked>
                 <label>
                   Attempt to extract author and title <kbd data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">?</kbd>
                 </label>

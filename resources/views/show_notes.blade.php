@@ -8,6 +8,7 @@
         <div class="ui segments">
           <div class="ui segment secondary">
             Your Notes for 
+            <strong>
             @if ($book->title !== '') 
               {{ $book->title }}
               @if ($book->author_first_name !== '' || $book->author_last_name !== '')(@endif
@@ -21,6 +22,7 @@
             @else
               {{ $book->title_string }}
             @endif
+            </strong>
           </div>
           <div class="ui segment">
             <p>
