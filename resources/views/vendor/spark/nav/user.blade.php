@@ -29,6 +29,12 @@
                 <ul class="nav navbar-nav">
                     @includeIf('spark::nav.user-left')
                 </ul>
+                <form method="GET" action="/notes/search" class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form> 
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">

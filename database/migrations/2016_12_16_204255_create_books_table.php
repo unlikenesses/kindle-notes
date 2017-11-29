@@ -23,6 +23,7 @@ class CreateBooksTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->timestamps();
         });
+        // DB::statement('ALTER TABLE books ADD FULLTEXT full(title, author_first_name, author_last_name, year)');
     }
 
     /**
