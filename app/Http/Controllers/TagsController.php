@@ -22,7 +22,6 @@ class TagsController extends Controller
 
   public function addTagPivot(Request $request)
   {
-
     $this->validate($request, [
       'tag' => 'required|max:32'
     ]);
@@ -30,9 +29,12 @@ class TagsController extends Controller
     $book = Book::findOrFail($request->book_id);
     try {
       $book->tags()->attach($tag->id);
+      auth()->user()->tags()->attach($tag->id);
     } catch (\Exception $e) {
 
     }
+
+    return response(['id' => $tag->id]);
   }
 
   public function addNewTag($tag)
@@ -48,7 +50,7 @@ class TagsController extends Controller
     $newTag = new Tag;
     $newTag->tag = $tag;
     $newTag->slug = str_slug($tag, '-');
-    auth()->user()->tags()->save($newTag);
+    $newTag->save();
 
     return $newTag;
   }
@@ -76,6 +78,7 @@ class TagsController extends Controller
 
   public function tagAutoComplete(Request $request)
   {
+    $userId = auth()->id();
     $tag = $request->tag;
     $tags = Tag::where('tag', 'like', '%' . $tag . '%')->get();
 

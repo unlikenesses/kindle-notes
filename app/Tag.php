@@ -8,11 +8,16 @@ class Tag extends Model
 {
 	public function getRouteKeyName()
 	{
-	    return 'slug';
+    return 'slug';
 	}
 	
-    public function books() 
-    {
-    	return $this->belongsToMany(Book::class);
-    }
+  public function books() 
+  {
+    return $this->belongsToMany(Book::class);
+	}
+	
+	public function users()
+	{
+		return $this->belongsToMany(User::class);
+	}
 }

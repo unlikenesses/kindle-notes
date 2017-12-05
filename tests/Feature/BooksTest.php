@@ -36,7 +36,7 @@ class BooksTest extends TestCase
     $this->book->tags()->save($tag);
 
     $this->get('/tag/' . $tag->slug)
-      ->assertSee($this->book->title);
+        ->assertSee($this->book->title);
   }
 
   /** @test */

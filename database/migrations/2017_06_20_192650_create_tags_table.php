@@ -17,14 +17,19 @@ class CreateTagsTable extends Migration
             $table->increments('id');
             $table->string('tag')->unique();
             $table->string('slug')->unique();
-            $table->integer('user_id')->unsigned()->index();
             $table->timestamps();
         });
 
         Schema::create('book_tag', function (Blueprint $table) {
-            $table->integer('book_id');
-            $table->integer('tag_id');
+            $table->integer('book_id')->unsigned();
+            $table->integer('tag_id')->unsigned();
             $table->primary(['book_id', 'tag_id']);
+        });
+
+        Schema::create('tag_user', function (Blueprint $table) {
+            $table->integer('user_id')->unsigned();
+            $table->integer('tag_id')->unsigned();
+            $table->primary(['user_id', 'tag_id']);
         });
     }
 
@@ -37,5 +42,6 @@ class CreateTagsTable extends Migration
     {
         Schema::dropIfExists('tags');
         Schema::dropIfExists('book_tag');
+        Schema::dropIfExists('tag_user');
     }
 }
