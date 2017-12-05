@@ -28950,6 +28950,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     toggleEditing: function toggleEditing() {
       this.editing = !this.editing;
       if (!this.editing) {
+        // Add the entered tag if it exists:
+        if (this.newTag && !this.tagTooLong) {
+          this.addTag(this.newTag);
+        }
         this.clearAll();
       }
     },

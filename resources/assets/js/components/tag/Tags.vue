@@ -59,6 +59,10 @@ export default {
     toggleEditing() {
       this.editing = !this.editing;
       if (!this.editing) {
+        // Add the entered tag if it exists:
+        if (this.newTag && !this.tagTooLong) {
+          this.addTag(this.newTag);
+        }
         this.clearAll();
       }
     },

@@ -12,18 +12,18 @@ class ImportTest extends TestCase
   use RefreshDatabase;
 
   /** @test */
-  public function an_authenticated_user_can_upload_a_file()
-  {
-    $this->withoutExceptionHandling();
+  // public function an_authenticated_user_can_upload_a_file()
+  // {
+  //   $this->withoutExceptionHandling();
     
-    $this->signIn();
+  //   $this->signIn();
 
-    Storage::fake('clippings');
+  //   Storage::fake('clippings');
 
-    $this->post('/import', [
-      'clippings_file' => UploadedFile::fake()->create('My Clippings.txt', 256)
-    ]); 
+  //   $this->post('/import', [
+  //     'clippings_file' => UploadedFile::fake()->create('My Clippings.txt', 256)
+  //   ]); 
 
-    Storage::disk('clippings')->assertExists('My Clippings.txt');
-  }
+  //   Storage::disk('clippings')->assertExists('My Clippings.txt');
+  // }
 }
