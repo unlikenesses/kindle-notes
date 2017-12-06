@@ -67,6 +67,9 @@ class TagsController extends Controller
     $book = Book::findOrFail($request->book_id);
 
     $book->tags()->detach($request->tag_id);
+
+    $this->detachTagFromUserIfNecessary($request->tag_id);
+    $this->deleteTagIfLastOfKind($request->tag_id);
   }
 
   public function getTagsForBook(Request $request)
@@ -83,5 +86,31 @@ class TagsController extends Controller
     $tags = Tag::where('tag', 'like', '%' . $tag . '%')->get();
 
     return response()->json($tags);
+  }
+
+  /**
+   * If a tag has been deleted, we need to see if it exists on other books,
+   * and if it doesn't exist on other books, detach it from that user.
+   */
+  protected function detachTagFromUserIfNecessary($tagId)
+  {
+    $bookCount = Book::where('user_id', auth()->id())
+                ->whereHas('tags', function($query) use ($tagId) {
+                  $query->where('id', $tagId);
+                })
+                ->count();
+    
+    if ($bookCount == 0) {
+      auth()->user()->tags()->detach($tagId);
+    }
+  }
+
+  /**
+   * If a given tag that has been removed from one user does not exist for other users, 
+   * delete it from the database.
+   */
+  protected function deleteTagIfLastOfKind($tagId)
+  {
+    
   }
 }
