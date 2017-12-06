@@ -66,6 +66,8 @@ class TagsController extends Controller
   {
     $book = Book::findOrFail($request->book_id);
 
+    $this->authorize('update', $book);
+
     $book->tags()->detach($request->tag_id);
 
     $this->detachTagFromUserIfNecessary($request->tag_id);

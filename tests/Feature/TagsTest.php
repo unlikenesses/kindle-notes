@@ -51,7 +51,7 @@ class TagsTest extends TestCase
   {
     $tagName = "lepidoptera";
     
-    $book = factory('App\Book')->create();
+    $book = factory('App\Book')->create(['user_id' => $this->user->id]);
 
     $response = $this->post('/addTagPivot', [
       'tag' => $tagName,
@@ -114,6 +114,85 @@ class TagsTest extends TestCase
       'tag' => $tagName,
       'book_id' => $book->id
     ]);
+
+    $response = $this->post('/addTagPivot', [
+      'tag' => $tagName,
+      'book_id' => $book2->id
+    ])->getContent();
+
+    $tagId = json_decode($response)->id;
+
+    $this->post('/deleteTagPivot', [
+      'book_id' => $book->id,
+      'tag_id' => $tagId
+    ]);
+
+    // The tag should still have an association with this user because it's still associated with $book2
+    $this->assertDatabaseHas('tag_user', [
+      'user_id' => $this->user->id,
+      'tag_id' => $tagId
+    ]);
+
+    $this->post('/deleteTagPivot', [
+      'book_id' => $book2->id,
+      'tag_id' => $tagId
+    ]);
+
+    // Now the tag should have been detached from the user
+    $this->assertDatabaseMissing('tag_user', [
+      'user_id' => $this->user->id,
+      'tag_id' => $tagId
+    ]);
+  }
+
+  /** @test */
+  public function a_user_cannot_delete_the_tag_association_of_another_users_book()
+  {
+    $tagName = "lepidoptera";
+    
+    $book = factory('App\Book')->create(['user_id' => $this->user->id]);
+
+    $this->post('/addTagPivot', [
+      'tag' => $tagName,
+      'book_id' => $book->id
+    ]);
+
+    $newUser = factory('App\User')->create();
+
+    $book2 = factory('App\Book')->create(['user_id' => $newUser->id]);
+
+    $this->be($newUser);
+
+    $response = $this->post('/addTagPivot', [
+      'tag' => $tagName,
+      'book_id' => $book2->id
+    ])->getContent();
+
+    $tagId = json_decode($response)->id;
+
+    $this->post('/deleteTagPivot', [
+      'book_id' => $book->id,
+      'tag_id' => $tagId
+    ])->assertStatus(403);
+  }
+
+  /** @test */
+  public function a_deleted_tag_with_no_user_associations_will_be_deleted_from_the_database()
+  {
+    $tagName = "lepidoptera";
+
+    $book = factory('App\Book')->create(['user_id' => $this->user->id]);
+
+    $this->post('/addTagPivot', [
+      'tag' => $tagName,
+      'book_id' => $book->id
+    ]);
+
+    $newUser = factory('App\User')->create();
+
+    $book2 = factory('App\Book')->create(['user_id' => $newUser->id]);
+
+    $this->be($newUser);
 
     $response = $this->post('/addTagPivot', [
       'tag' => $tagName,
