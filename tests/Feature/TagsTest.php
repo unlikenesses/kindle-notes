@@ -201,40 +201,47 @@ class TagsTest extends TestCase
 
     $tagId = json_decode($response)->id;
 
-    $this->post('/deleteTagPivot', [
-      'book_id' => $book->id,
-      'tag_id' => $tagId
-    ]);
-
-    // The tag should still have an association with this user because it's still associated with $book2
-    $this->assertDatabaseHas('tag_user', [
-      'user_id' => $this->user->id,
-      'tag_id' => $tagId
-    ]);
-
+    // Now this user deletes his tag:
     $this->post('/deleteTagPivot', [
       'book_id' => $book2->id,
       'tag_id' => $tagId
+    ])->assertStatus(200);
+
+    // The tag should still be in the db:
+    $this->assertDatabaseHas('tags', [
+      'tag' => $tagName
     ]);
 
-    // Now the tag should have been detached from the user
-    $this->assertDatabaseMissing('tag_user', [
-      'user_id' => $this->user->id,
+    // Now the first user deletes his tag:
+    $this->be($this->user);
+
+    $this->post('/deleteTagPivot', [
+      'book_id' => $book->id,
       'tag_id' => $tagId
+    ])->assertStatus(200);
+
+    // Now the tag should be missing from the database:
+    $this->assertDatabaseMissing('tags', [
+      'tag' => $tagName
     ]);
   }
 
   /** @test */
   public function a_tag_can_be_autocompleted()
   {
-    $tagName = "Lepidoptera";
+    $tagName = "lepidoptera";
     $firstLetters = substr($tagName, 0, 4);
 
     // If we don't create the tag, we should expect an empty array:
     $this->get('/tagAutoComplete?tag=' . $firstLetters)
         ->assertExactJson([]);
 
-    factory('App\Tag')->create(['tag' => $tagName]);
+    $book = factory('App\Book')->create(['user_id' => $this->user->id]);
+    
+    $this->post('/addTagPivot', [
+      'tag' => $tagName,
+      'book_id' => $book->id
+    ]);
     
     // Now we should expect an array with the tag in it:
     $this->get('/tagAutoComplete?tag=' . $firstLetters)
@@ -246,22 +253,26 @@ class TagsTest extends TestCase
   /** @test */
   public function autocomplete_only_returns_tags_for_the_authenticated_user()
   {
-    $tagName = "Lepidoptera";
+    $tagName = "lepidoptera";
     $firstLetters = substr($tagName, 0, 4);
+
+    // Add a tag for the first user:
+    
+    $book = factory('App\Book')->create(['user_id' => $this->user->id]);
+    
+    $this->post('/addTagPivot', [
+      'tag' => $tagName,
+      'book_id' => $book->id
+    ]);
+
+    // Now try to get this tag as a new user:
 
     $newUser = factory('App\User')->create();
 
-    factory('App\Tag')->create(['tag' => $tagName, 'user_id' => $newUser->id]);
-    
-    // The first tag belongs to a different user so we should get an empty array:
-    $this->get('/tagAutoComplete?tag=' . $firstLetters)
-        ->assertExactJson([]);
+    $this->be($newUser);
 
-    factory('App\Tag')->create(['tag' => $tagName, 'user_id' => $this->user->id]);
-
-    // Now we should expect an array with the tag in it:
     $this->get('/tagAutoComplete?tag=' . $firstLetters)
-        ->assertJsonFragment([
+        ->assertJsonMissing([
           'tag' => $tagName
         ]);
   }

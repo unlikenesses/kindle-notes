@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tag;
 use App\Book;
+use App\User;
 use Illuminate\Http\Request;
 
 class TagsController extends Controller
@@ -70,8 +71,9 @@ class TagsController extends Controller
 
     $book->tags()->detach($request->tag_id);
 
-    $this->detachTagFromUserIfNecessary($request->tag_id);
-    $this->deleteTagIfLastOfKind($request->tag_id);
+    $detached = $this->detachTagFromUserIfNecessary($request->tag_id);
+    
+    if ($detached) $this->deleteTagIfLastOfKind($request->tag_id);
   }
 
   public function getTagsForBook(Request $request)
@@ -85,7 +87,11 @@ class TagsController extends Controller
   {
     $userId = auth()->id();
     $tag = $request->tag;
-    $tags = Tag::where('tag', 'like', '%' . $tag . '%')->get();
+    $tags = Tag::where('tag', 'like', '%' . $tag . '%')
+              ->whereHas('users', function($query) use ($userId) {
+                $query->where('id', $userId);
+              })
+              ->get();
 
     return response()->json($tags);
   }
@@ -97,14 +103,16 @@ class TagsController extends Controller
   protected function detachTagFromUserIfNecessary($tagId)
   {
     $bookCount = Book::where('user_id', auth()->id())
-                ->whereHas('tags', function($query) use ($tagId) {
-                  $query->where('id', $tagId);
-                })
-                ->count();
+                  ->whereHas('tags', function($query) use ($tagId) {
+                    $query->where('id', $tagId);
+                  })
+                  ->count();
     
     if ($bookCount == 0) {
       auth()->user()->tags()->detach($tagId);
     }
+
+    return $bookCount == 0;
   }
 
   /**
@@ -113,6 +121,13 @@ class TagsController extends Controller
    */
   protected function deleteTagIfLastOfKind($tagId)
   {
+    $userCount = User::whereHas('tags', function($query) use ($tagId) {
+                    $query->where('id', $tagId);
+                  })
+                  ->count();
     
+    if ($userCount == 0) {
+      Tag::findOrFail($tagId)->delete();
+    }
   }
 }
