@@ -4,17 +4,15 @@ Route::get('/', 'WelcomeController@show');
 
 Route::get('/home', 'HomeController@show');
 
-Route::get('/import', 'HomeController@show_import');
+Route::get('/import', 'ImportController@show');
 
-Route::post('/import', 'HomeController@import_file');
+Route::post('/import', 'ImportController@import_file');
 
 Route::get('/books', 'BooksController@index');
 
 Route::get('/books/{book}/notes', 'NotesController@index');
 
-Route::get('/books/search', 'BooksController@search');
-
-Route::get('/notes/search', 'NotesController@search');
+Route::get('/search', 'SearchController@index');
 
 Route::post('/getBookDetails', 'BooksController@getBookDetails');
 

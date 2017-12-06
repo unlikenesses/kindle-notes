@@ -31,6 +31,10 @@ class NotesController extends Controller
     return view('show_notes', ['book' => $book, 'notes' => $notes]);
   }
 
+  /**
+   * Search notes: not used currently because I couldn't get Laravel Scout
+   * to search for both notes and books
+   */
   public function search()
   {
     $searchTerm = request('q');
