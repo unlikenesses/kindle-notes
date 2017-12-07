@@ -35,15 +35,11 @@ class ImportController extends Controller
       return;
     }
 
-    $parse_author = false;
+    $parse_author = true;
 
     $this->validate($request, [
       'clippings_file' => 'required|mimes:txt',
     ]);
-
-    if ($request->parse_author) {
-      $parse_author = true;
-    }
 
     $file = $request->file('clippings_file');
 
