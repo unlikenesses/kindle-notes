@@ -37,10 +37,8 @@
                     <i class="pencil icon"></i>
                   </div>
                   <div class="content">
-                    <div class="date">
-                      {{ date('d F   Y, h:m:s', strtotime($note->date)) }}
-                    </div>
-                    <div class="summary">
+                    <div class="date">{{ date('d F Y, h:m:s', strtotime($note->date)) }}</div>
+                    <div class="extra text">
                       {{ $note->note }}
                     </div>
                     <div class="meta">

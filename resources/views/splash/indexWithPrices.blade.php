@@ -5,7 +5,6 @@
         <title>@yield('title', config('app.name'))</title>
         <meta name="description" content="Download free Bootstrap 4 multipurpose template Comply." />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great" rel="stylesheet">
         <!--Bootstrap 4-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
@@ -29,10 +28,16 @@
                         <a class="nav-link page-scroll" href="#features">Features</a>
                     </li>
                     <li class="nav-item mr-3">
-                        <a class="nav-link" href="/login">Login</a>
+                        <a class="nav-link page-scroll" href="#pricing">Pricing</a>
                     </li>
                     <li class="nav-item mr-3">
-                        <a class="nav-link" href="/register">Register</a>
+                        <a class="nav-link page-scroll" href="#team">Team</a>
+                    </li>
+                    <li class="nav-item mr-3">
+                        <a class="nav-link page-scroll" href="#blog">Blog</a>
+                    </li>
+                    <li class="nav-item mr-3">
+                        <a class="nav-link page-scroll" href="#contact">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -46,9 +51,9 @@
                         <img class="img-fluid mx-auto d-block" src="{{ asset('img/splash/laptop.png') }}"/>
                     </div>
                     <div class="col-md-4 col-sm-12 text-white wow fadeIn">
-                        <h2 class="pt-4">Manage your Kindle <b class="text-primary-light">notes</b> and <b class="text-primary-light">highlights</b>.</h2>
+                        <h2 class="pt-4">Manage your ebook <b class="text-primary-light">notes</b> and <b class="text-primary-light">highlights</b>.</h2>
                         <p class="mt-5">
-                        A free tool to manage your notes and highlights. Store, tag, search and export.
+                        A free tool to download, store and view your notes and highlights.<br>Currently Kindle only.
                         </p>
                         <p class="mt-5">
                             <a href="/login" class="btn btn-primary mr-2 mb-2 page-scroll">Login</a>
@@ -150,19 +155,128 @@
             </div>
         </section>
 
+        <section class="bg-alt p-0">
+            <div class="container-fluid">
+                <div class="row d-md-flex mt-5">
+                    <div class="col-sm-6 p-0 wow fadeInLeft">
+                        <img class="img-fluid" src="img/product2.jpg" alt="Gallery">
+                    </div>
+                    <div class="col-sm-6 pl-5 pr-5 pt-5 pb-4 wow fadeInRight">
+                        <h3><a href="#">What's New in Version 5.0?</a></h3>
+                        <p class="lead pt-4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                        <ul class="pt-4 pb-3 list-default">
+                            <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                            <li>Aenean commodo ligula eget dolor.</li>
+                            <li>Aenean massa.</li>
+                            <li>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
+                            <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                            <li>Aenean commodo ligula eget dolor.</li>
+                            <li>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
+                        </ul>
+                        <a href="#purchase" class="btn btn-primary mr-2 page-scroll">Get Started with Comply</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--pricing-->
+        <section class="bg-faded" id="pricing">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-12 text-center">
+                        <h2 class="text-primary">Pricing</h2>
+                        <p class="lead pt-3">
+                            Our no-nonsense pricing.
+                        </p>
+                    </div>
+                </div>
+                <div class="row d-md-flex mt-4 text-center">
+                    <div class="col-sm-4 mt-4 wow fadeIn">
+                        <div class="card">
+                            <div class="card-block">
+                                <h5 class="card-title pt-4 text-orange">Basic</h5>
+                                <h3 class="card-title text-primary pt-4">FREE</h3>
+                                <p class="card-text text-muted pb-3 border-bottom">per month</p>
+                                <ul class="list-unstyled pricing-list">
+                                    <li>Free setup</li>
+                                    <li>100MB storage</li>
+                                    <li>1GB bandwidth</li>
+                                    <li>Basic support</li>
+                                </ul>
+                                <a href="#" class="btn btn-primary btn-radius">Order Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mt-0 wow fadeIn">
+                        <div class="card pt-4 pb-4">
+                            <div class="card-block">
+                                <h5 class="card-title pt-4 text-orange">Standard <small class="badge bg-primary small-xs">Popular</small></h5>
+                                <h3 class="card-title text-primary pt-4"><sup>$</sup> 9.99</h3>
+                                <p class="card-text text-muted pb-3 border-bottom">per month</p>
+                                <ul class="list-unstyled pricing-list">
+                                    <li>Free setup</li>
+                                    <li>5GB storage</li>
+                                    <li>Unlimited bandwidth</li>
+                                    <li>Priority support</li>
+                                </ul>
+                                <a href="#" class="btn btn-primary btn-radius">Order Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mt-4 wow fadeIn">
+                        <div class="card">
+                            <div class="card-block">
+                                <h5 class="card-title pt-4 text-orange">Advanced</h5>
+                                <h3 class="card-title text-primary pt-4"><sup>$</sup> 19.99</h3>
+                                <p class="card-text text-muted pb-3 border-bottom">per month</p>
+                                <ul class="list-unstyled pricing-list">
+                                    <li>Free setup</li>
+                                    <li>Unlimited storage</li>
+                                    <li>Unlimited bandwidth</li>
+                                    <li>24/7 support</li>
+                                </ul>
+                                <a href="#" class="btn btn-primary btn-radius">Order Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!--download-->
         <section class="bg-orange pt-0" id="download">
             <div class="container">
                 <div class="row d-md-flex text-center wow fadeIn">
                     <div class="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-xs-12">
-                        <h5 class="text-primary">Start archiving your ebook notes now.</h5>
+                        <h5 class="text-primary">Download Our Mobile App</h5>
                         <p class="mt-4">
-                            <a href="/register" class="btn btn-primary mr-2 page-scroll">Get Started with Scrippd</a>
+                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Lorem ipsum dolor sit amet.
+                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Lorem ipsum dolor sit amet.
                         </p>
                         <p class="mt-5">
                             <a href="#" class="mr-2"><img src="" class="store-img"/></a>
                             <a href="#"><img src="" class="store-img"/> </a>
                         </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--contact-->
+        <section class="bg-texture-collage p-0" id="contact">
+            <div class="container">
+                <div class="row d-md-flex text-white text-center wow fadeIn">
+                    <div class="col-sm-4 p-5">
+                        <p><em class="ion-ios-telephone-outline icon-md"></em></p>
+                        <p class="lead">+1 5456 87595</p>
+                    </div>
+                    <div class="col-sm-4 p-5">
+                        <p><em class="ion-ios-email-outline icon-md"></em></p>
+                        <p class="lead">info@comply.com</p>
+                    </div>
+                    <div class="col-sm-4 p-5">
+                        <p><em class="ion-ios-location-outline icon-md"></em></p>
+                        <p class="lead">Austin, Texas</p>
                     </div>
                 </div>
             </div>

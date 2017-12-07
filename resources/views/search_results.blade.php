@@ -47,7 +47,9 @@
                         {{ $note->note }}
                       </div>
                       <div class="meta">
-                        <strong>{{ $note->book->title }}</strong>
+                        <a href="/books/{{ $note->book->id }}/notes">
+                          <strong>{{ $note->book->title }}</strong>
+                        </a>
                         @if ($note->page != '') <small>Page: {{ $note->page}}</small> @endif
                         @if ($note->location != '') <small>Location: {{ $note->location}}</small> @endif
                         @if ($note->type == 1) (Highlight) @endif

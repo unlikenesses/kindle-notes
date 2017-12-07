@@ -16,15 +16,6 @@
             @if (isset($tag))
               tagged &ldquo;{{ $tag }}&rdquo;
             @endif
-            <form method="GET" action="/books/search">
-                <div class="form-group">
-                    <input type="text" name="q" placeholder="Search books..." required>
-                </div>
-                <button type="submit" class="">Submit</button>
-                @if (isset($searchTerm))
-                  <a href="/books">Clear search</a>
-                @endif
-            </form> 
           </div>
 
           <div class="ui segment">
