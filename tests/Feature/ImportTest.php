@@ -12,6 +12,12 @@ class ImportTest extends TestCase
   use RefreshDatabase;
 
   /** @test */
+  public function placeholder()
+  {
+    $this->assertTrue(true);
+  }
+
+  /** @test */
   // public function an_authenticated_user_can_upload_a_file()
   // {
   //   $this->withoutExceptionHandling();

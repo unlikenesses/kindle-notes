@@ -46,7 +46,11 @@ class ImportController extends Controller
 
     $data = array('books' => $this->parse_file($file));
 
-    $result = $this->saveAllData($data, $parseAuthor);
+    try { 
+      $result = $this->saveAllData($data, $parseAuthor);
+    } catch (\Exception $e) {
+      return redirect('/import')->with('status', 'There was an error uploading the file');
+    }
 
     $status = 'Imported ' . $this->numBooks . ' ' . str_plural('book', $this->numBooks);
     $status .= ' and ' . $this->numNotes . ' ' . str_plural('note', $this->numNotes);
@@ -133,8 +137,9 @@ class ImportController extends Controller
       $book->author_first_name = $parsed['first_name'];
       $book->author_last_name = $parsed['last_name'];
     }
+    
     auth()->user()->books()->save($book);
-
+  
     return $book;
   }
 

@@ -129,6 +129,26 @@ class BooksTest extends TestCase
       'title' => 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'
     ])->assertSessionHasErrors('title');
   }
+  
+  /** @test */
+  public function an_authors_first_name_must_not_be_more_than_100_characters_long()
+  {
+    $this->updateBook([
+      'id' => $this->book->id,
+      'title' => $this->newTitle,
+      'authorFirstName' => 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'
+    ])->assertSessionHasErrors('authorFirstName');
+  }
+  
+  /** @test */
+  public function an_authors_last_name_must_not_be_more_than_100_characters_long()
+  {
+    $this->updateBook([
+      'id' => $this->book->id,
+      'title' => $this->newTitle,
+      'authorLastName' => 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'
+    ])->assertSessionHasErrors('authorLastName');
+  }
 
   protected function updateBook($attributes)
   {

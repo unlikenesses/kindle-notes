@@ -44,7 +44,9 @@ class BooksController extends Controller
   public function storeBookDetails(Request $request) 
   {
     $this->validate($request, [
-      'title' => 'required|max:255'
+      'title' => 'required|max:255',
+      'authorFirstName' => 'max:100',
+      'authorLastName' => 'max:100'
     ]);
       
     $book = Book::findOrFail($request->id);
