@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="margin-top:10px">
     <tag 
       v-for="tag in newTags" 
       :tag="tag"

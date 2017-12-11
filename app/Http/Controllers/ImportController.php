@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 
 class ImportController extends Controller
 {
-  public $upload_dir = 'uploads';
+  private $numBooks = 0;
+  private $numNotes = 0;
 
   /**
    * Create a new controller instance.
@@ -35,7 +36,7 @@ class ImportController extends Controller
       return;
     }
 
-    $parse_author = true;
+    $parseAuthor = true;
 
     $this->validate($request, [
       'clippings_file' => 'required|mimes:txt',
@@ -43,98 +44,111 @@ class ImportController extends Controller
 
     $file = $request->file('clippings_file');
 
-    $name = time() . $file->getClientOriginalName();
+    $data = array('books' => $this->parse_file($file));
 
-    $file->move($this->upload_dir, $name);
+    $result = $this->saveAllData($data, $parseAuthor);
 
-    $data = array('books' => $this->parse_file($name));
-
-    $result = $this->save_book_data($data, $parse_author);
-
-    $status = 'Imported ' . $result['books'] . ' book';
-    if ($result['books'] < 1 || $result['books'] > 1) $status .= 's';
-    $status .= ' and ' . $result['notes'] . ' note';
-    if ($result['notes'] < 1 || $result['notes'] > 1) $status .= 's';
+    $status = 'Imported ' . $this->numBooks . ' ' . str_plural('book', $this->numBooks);
+    $status .= ' and ' . $this->numNotes . ' ' . str_plural('note', $this->numNotes);
     $status .= '.';
 
     return redirect('/books')->with('status', $status);
   }
 
-  private function save_book_data($data, $parse_author = false)
+  private function saveAllData($data, $parseAuthor = false)
   {
-    $num_notes = $num_books = 0;
-    $user_id = auth()->user()->id;
     foreach ($data['books'] as $row) {
-      $new_book = false;
-      $book_title = $row['book'];
-      $book = $this->get_book_by_title_string($book_title, $user_id);
-      if (!$book) {
-        $num_books++;
-        $new_book = true;
-        $book = new Book;
-        $book->title_string = $book_title;
-        if ($parse_author) {
-          $parsed = $this->parse_title($book_title);
-          $book->title = $parsed['title'];
-          $book->author_first_name = $parsed['first_name'];
-          $book->author_last_name = $parsed['last_name'];
-        }
-        auth()->user()->books()->save($book);
-      } 
-      foreach ($row['notes'] as $note) {
-        if ($new_book || ! $this->note_exists($note, $user_id)) {
-          $num_notes++;
-          $date = '';
-          $page = '';
-          $location = '';
-          $note_text = '';
-          $note_type = 0;
-          if (isset($note['meta']['date'])) {
-            $timestamp = strtotime($note['meta']['date']);
-            $date = date('Y-m-d H:i:s', $timestamp);
-          }
-          if (isset($note['meta']['page'])) {
-            $page = $note['meta']['page'];
-          }
-          if (isset($note['meta']['location'])) {
-            $location = $note['meta']['location'];
-          }
-          if (isset($note['highlight'])) {
-            $note_text = trim($note['highlight']);
-          }
-          if (isset($note['type'])) {
-            $note_type = trim($note['type']);
-          }
-          $new_note = new Note;
-          $new_note->date = $date;
-          $new_note->page = $page;
-          $new_note->location = $location;
-          $new_note->note = $note_text;
-          $new_note->type = $note_type;
-          $new_note->user_id = $user_id;
-          $book->notes()->save($new_note);
-        } else {
-          if (isset($note['meta'])) {
-            // echo 'Skipping note ' . $note['meta']['date'] . '<br>';
-          }
-        }
-      }
+      $this->saveBookData($row, $parseAuthor);
     }
-
-    return ['books' => $num_books, 'notes' => $num_notes];
   }
 
-  private function get_book_by_title_string($title_string, $user_id)
+  private function saveBookData($row, $parseAuthor)
   {
-    $book = Book::where(['title_string' => $title_string, 'user_id' => $user_id])->first();
+    $newBook = false;
+    
+    $bookTitle = $row['book'];
+    
+    $book = $this->get_book_by_title_string($bookTitle, auth()->id());
+
+    if (!$book) {
+      $newBook = true;
+      $this->numBooks++;
+      $book = $this->addBook($bookTitle, $parseAuthor);
+    }
+
+    foreach ($row['notes'] as $note) {
+      $this->saveNote($note, $book, $newBook);
+    }
+  }
+
+  private function saveNote($note, $book, $newBook)
+  {
+    $userId = auth()->id();
+    
+    if ($newBook || ! $this->note_exists($note, $userId)) {
+      $this->numNotes++;
+      $date = '';
+      $page = '';
+      $location = '';
+      $noteText = '';
+      $noteType = 0;
+      if (isset($note['meta']['date'])) {
+        $timestamp = strtotime($note['meta']['date']);
+        $date = date('Y-m-d H:i:s', $timestamp);
+      }
+      if (isset($note['meta']['page'])) {
+        $page = $note['meta']['page'];
+      }
+      if (isset($note['meta']['location'])) {
+        $location = $note['meta']['location'];
+      }
+      if (isset($note['highlight'])) {
+        $noteText = trim($note['highlight']);
+      }
+      if (isset($note['type'])) {
+        $noteType = trim($note['type']);
+      }
+      $newNote = new Note;
+      $newNote->date = $date;
+      $newNote->page = $page;
+      $newNote->location = $location;
+      $newNote->note = $noteText;
+      $newNote->type = $noteType;
+      $newNote->user_id = $userId;
+      $book->notes()->save($newNote);
+    } else {
+      if (isset($note['meta'])) {
+        // echo 'Skipping note ' . $note['meta']['date'] . '<br>';
+      }
+    }
+  }
+
+  private function addBook($bookTitle, $parseAuthor)
+  {
+    $book = new Book;
+    $book->title_string = $bookTitle;
+    if ($parseAuthor) {
+      $parsed = $this->parse_title($bookTitle);
+      $book->title = $parsed['title'];
+      $book->author_first_name = $parsed['first_name'];
+      $book->author_last_name = $parsed['last_name'];
+    }
+    auth()->user()->books()->save($book);
 
     return $book;
   }
 
-  private function note_exists($note, $user_id)
+  private function get_book_by_title_string($title_string, $userId)
+  {
+    $book = Book::where(['title_string' => $title_string, 'user_id' => $userId])->first();
+
+    return $book;
+  }
+
+  private function note_exists($note, $userId)
   {
     if (isset($note['highlight'])) {
-      $test_note = Note::where(['note' => trim($note['highlight']), 'user_id' => $user_id])->first();
+      $test_note = Note::where(['note' => trim($note['highlight']), 'user_id' => $userId])->first();
     }
 
     if (! $test_note) {
@@ -144,11 +158,12 @@ class ImportController extends Controller
     return true;
   }
 
-  private function parse_file($filename)
+  private function parse_file($file)
   {
     $book = $books = $clipping = array();
     $in_book = FALSE;
-    $fh = fopen($this->upload_dir . '/' . $filename, 'r');
+    $fh = fopen($file, 'r');
+
     if ($fh) {
       while ($line = fgets($fh)) {
         if (!$in_book) {

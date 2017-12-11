@@ -17,7 +17,6 @@
       :cancel="cancelEdit"
       v-on:update="update" 
     />
-    <div class="ui hidden divider"></div>
     <tags 
       v-if="!editing"
       :tags="book.tags" 

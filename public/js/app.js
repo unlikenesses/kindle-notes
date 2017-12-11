@@ -28705,7 +28705,6 @@ module.exports = function spread(callback) {
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
   props: ["book", "tags"],
@@ -41287,7 +41286,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\xampp\\htdocs\\MISC\\kindlenotes\\resources\\assets\\js\\components\\book\\Book.vue"
+Component.options.__file = "/home/vagrant/code/MISC/kindlenotes/resources/assets/js/components/book/Book.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Book.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41321,7 +41320,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\xampp\\htdocs\\MISC\\kindlenotes\\resources\\assets\\js\\components\\book\\BookDetails.vue"
+Component.options.__file = "/home/vagrant/code/MISC/kindlenotes/resources/assets/js/components/book/BookDetails.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] BookDetails.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41355,7 +41354,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\xampp\\htdocs\\MISC\\kindlenotes\\resources\\assets\\js\\components\\book\\BookEdit.vue"
+Component.options.__file = "/home/vagrant/code/MISC/kindlenotes/resources/assets/js/components/book/BookEdit.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] BookEdit.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41389,7 +41388,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\xampp\\htdocs\\MISC\\kindlenotes\\resources\\assets\\js\\components\\tag\\Tag.vue"
+Component.options.__file = "/home/vagrant/code/MISC/kindlenotes/resources/assets/js/components/tag/Tag.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Tag.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41423,7 +41422,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\xampp\\htdocs\\MISC\\kindlenotes\\resources\\assets\\js\\components\\tag\\Tags.vue"
+Component.options.__file = "/home/vagrant/code/MISC/kindlenotes/resources/assets/js/components/tag/Tags.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Tags.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41481,7 +41480,11 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._l((_vm.newTags), function(tag) {
+  return _c('div', {
+    staticStyle: {
+      "margin-top": "10px"
+    }
+  }, [_vm._l((_vm.newTags), function(tag) {
     return _c('tag', {
       attrs: {
         "tag": tag,
@@ -41720,9 +41723,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "update": _vm.update
     }
-  }) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "ui hidden divider"
-  }), _vm._v(" "), (!_vm.editing) ? _c('tags', {
+  }) : _vm._e(), _vm._v(" "), (!_vm.editing) ? _c('tags', {
     attrs: {
       "tags": _vm.book.tags,
       "bookId": _vm.book.id
