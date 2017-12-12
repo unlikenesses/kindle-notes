@@ -2,6 +2,8 @@
 
 Route::get('/', 'WelcomeController@show');
 
+Route::get('/plain', 'WelcomeController@plain');
+
 Route::get('/home', 'HomeController@show');
 
 Route::get('/import', 'ImportController@show');

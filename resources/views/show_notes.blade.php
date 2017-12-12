@@ -37,11 +37,11 @@
                     <i class="pencil icon"></i>
                   </div>
                   <div class="content">
-                    <div class="date">{{ date('d F Y, h:m:s', strtotime($note->date)) }}</div>
-                    <div class="extra text">
+                    <div class="text">
                       {{ $note->note }}
                     </div>
                     <div class="meta">
+                      <small>{{ date('d F Y, h:m:s', strtotime($note->date)) }}</small>
                       @if ($note->page != '') <small>Page: {{ $note->page}}</small> @endif
                       @if ($note->location != '') <small>Location: {{ $note->location}}</small> @endif
                       @if ($note->type == 1) (Highlight) @endif

@@ -13,11 +13,6 @@ class ImportController extends Controller
   private $numBooks = 0;
   private $numNotes = 0;
 
-  /**
-   * Create a new controller instance.
-   *
-   * @return void
-   */
   public function __construct()
   {
     $this->middleware('auth');
@@ -40,7 +35,7 @@ class ImportController extends Controller
     $parseAuthor = true;
 
     $this->validate($request, [
-      'clippings_file' => 'required|mimes:txt',
+      'clippings_file' => 'required|mimes:txt|max:3000',
     ]);
 
     $file = $request->file('clippings_file');

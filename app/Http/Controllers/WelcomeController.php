@@ -15,4 +15,9 @@ class WelcomeController extends Controller
   {
     return view('splash.index');
   }
+
+  public function plain()
+  {
+    return view('splash.plain');
+  }
 }

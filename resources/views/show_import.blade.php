@@ -7,8 +7,17 @@
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         @if (session('status'))
-          <div class="alert alert-success">
+          <div class="alert alert-danger">
             {{ session('status') }}
+          </div>
+        @endif
+        @if (count($errors) > 0)
+          <div class="alert alert-danger">
+            <ul>
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
           </div>
         @endif
         <div class="ui segments">

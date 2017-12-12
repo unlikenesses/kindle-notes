@@ -1,0 +1,36 @@
+.navbar-brand {
+  font-family: 'Fredericka the Great', cursive !important;
+  color: #555!important;
+}
+
+.navbar-form {
+    padding-top: 10px;
+}
+
+/* Dashboard: Idea and colours nicked from Steve Schoger:- */
+/* https://twitter.com/steveschoger/status/931198630333165568 */
+.dash-info {
+  margin-bottom: 20px;
+}
+.dash-icon {
+    display: inline-flex;
+    padding: 12px;
+    border-radius: 50%;
+    background-color: #008DF5;
+    margin-right: 6px;
+}
+.dash-icon.yellow {
+    background-color: #F2B03A;
+}
+.dash-icon.purple {
+    background-color: #B177F3;
+}
+.dash-icon.green {
+    background-color: #4EB94A;
+}
+.dash-icon svg {
+    fill: white;
+}
+.dash-icon-text {
+    display: inline-flex;
+}

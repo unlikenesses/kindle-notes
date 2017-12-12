@@ -19,38 +19,7 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css" rel="stylesheet">
     <link href="/css/sweetalert.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
-    <style>
-        /* Idea and colours nicked from Steve Schoger: */
-        /* https://twitter.com/steveschoger/status/931198630333165568 */
-        .dash-info {
-            margin-bottom: 20px;
-        }
-        .dash-icon {
-            display: inline-flex;
-            padding: 12px;
-            border-radius: 50%;
-            background-color: #008DF5;
-            margin-right: 6px;
-        }
-        .dash-icon.yellow {
-            background-color: #F2B03A;
-        }
-        .dash-icon.purple {
-            background-color: #B177F3;
-        }
-        .dash-icon.green {
-            background-color: #4EB94A;
-        }
-        .dash-icon svg {
-            fill: white;
-        }
-        .dash-icon-text {
-            display: inline-flex;
-        }
-        .navbar-form {
-            padding-top: 10px;
-        }
-    </style>
+    <link href="/css/extensions.css" rel="stylesheet">
     <!-- Scripts -->
     @yield('scripts', '')
 
