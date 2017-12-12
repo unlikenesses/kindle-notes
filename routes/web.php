@@ -6,7 +6,7 @@ Route::get('/home', 'HomeController@show');
 
 Route::get('/import', 'ImportController@show');
 
-Route::post('/import', 'ImportController@import_file');
+Route::post('/import', 'ImportController@importFile');
 
 Route::get('/books', 'BooksController@index');
 

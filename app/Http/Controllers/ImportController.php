@@ -6,6 +6,7 @@ use App\Tag;
 use App\Book;
 use App\Note;
 use Illuminate\Http\Request;
+use App\Exceptions\BookDetailsAreTooLong;
 
 class ImportController extends Controller
 {
@@ -29,7 +30,7 @@ class ImportController extends Controller
     return view('show_import');
   }
 
-  public function import_file(Request $request)
+  public function importFile(Request $request)
   {
     if (!($request->hasFile('clippings_file') && 
           $request->file('clippings_file')->isValid())) {
@@ -44,10 +45,12 @@ class ImportController extends Controller
 
     $file = $request->file('clippings_file');
 
-    $data = array('books' => $this->parse_file($file));
+    $data = array('books' => $this->parseFile($file));
 
     try { 
       $result = $this->saveAllData($data, $parseAuthor);
+    } catch (BookDetailsAreTooLong $e) {
+      return redirect('/import')->with('status', 'Could not upload file: one or more book titles is too long');
     } catch (\Exception $e) {
       return redirect('/import')->with('status', 'There was an error uploading the file');
     }
@@ -71,8 +74,12 @@ class ImportController extends Controller
     $newBook = false;
     
     $bookTitle = $row['book'];
+
+    if (strlen($bookTitle) > 255) {
+      throw new BookDetailsAreTooLong;
+    }
     
-    $book = $this->get_book_by_title_string($bookTitle, auth()->id());
+    $book = $this->getBookByTitleString($bookTitle, auth()->id());
 
     if (!$book) {
       $newBook = true;
@@ -89,7 +96,7 @@ class ImportController extends Controller
   {
     $userId = auth()->id();
     
-    if ($newBook || ! $this->note_exists($note, $userId)) {
+    if ($newBook || ! $this->noteExists($note, $userId)) {
       $this->numNotes++;
       $date = '';
       $page = '';
@@ -120,10 +127,8 @@ class ImportController extends Controller
       $newNote->type = $noteType;
       $newNote->user_id = $userId;
       $book->notes()->save($newNote);
-    } else {
-      if (isset($note['meta'])) {
-        // echo 'Skipping note ' . $note['meta']['date'] . '<br>';
-      }
+    } else if (isset($note['meta'])) {
+      // echo 'Skipping note ' . $note['meta']['date'] . '<br>';
     }
   }
 
@@ -131,11 +136,12 @@ class ImportController extends Controller
   {
     $book = new Book;
     $book->title_string = $bookTitle;
+
     if ($parseAuthor) {
-      $parsed = $this->parse_title($bookTitle);
+      $parsed = $this->parseTitle($bookTitle);
       $book->title = $parsed['title'];
-      $book->author_first_name = $parsed['first_name'];
-      $book->author_last_name = $parsed['last_name'];
+      $book->author_first_name = $parsed['firstName'];
+      $book->author_last_name = $parsed['lastName'];
     }
     
     auth()->user()->books()->save($book);
@@ -143,65 +149,66 @@ class ImportController extends Controller
     return $book;
   }
 
-  private function get_book_by_title_string($title_string, $userId)
+  private function getBookByTitleString($titleString, $userId)
   {
-    $book = Book::where(['title_string' => $title_string, 'user_id' => $userId])->first();
+    $book = Book::where(['title_string' => $titleString, 'user_id' => $userId])->first();
 
     return $book;
   }
 
-  private function note_exists($note, $userId)
+  private function noteExists($note, $userId)
   {
+    $noteExists = false;
+
     if (isset($note['highlight'])) {
-      $test_note = Note::where(['note' => trim($note['highlight']), 'user_id' => $userId])->first();
+      $noteExists = Note::where([
+        'note' => trim($note['highlight']), 
+        'user_id' => $userId
+        ])->exists();
     }
 
-    if (! $test_note) {
-      return false;
-    }
-
-    return true;
+    return $noteExists;
   }
 
-  private function parse_file($file)
+  private function parseFile($file)
   {
     $book = $books = $clipping = array();
-    $in_book = FALSE;
+    $inBook = FALSE;
     $fh = fopen($file, 'r');
 
     if ($fh) {
       while ($line = fgets($fh)) {
-        if (!$in_book) {
-          $existing_book_pos = -1;
+        if (!$inBook) {
+          $existingBookPos = -1;
           // This is a book title. Check if it's already in the `books` array:
           $c = 0;
-          foreach ($books as $temp_book) {
-            if ($temp_book['book'] == trim($line)) {
-              $book = $temp_book;
-              $existing_book_pos = $c;
+          foreach ($books as $tempBook) {
+            if ($tempBook['book'] == trim($line)) {
+              $book = $tempBook;
+              $existingBookPos = $c;
             }
             $c++;
           }
-          if ($existing_book_pos < 0) {
+          if ($existingBookPos < 0) {
             $book['book'] = trim($line);
             $book['notes'] = array();
           }
-          $in_book = TRUE;
+          $inBook = TRUE;
         } else if (trim($line) == '==========') {
           // End of a clipping.
-          $in_book = FALSE;
-          if ($existing_book_pos < 0) {
+          $inBook = FALSE;
+          if ($existingBookPos < 0) {
             $books[] = $book;
           } else {
-            $books[$existing_book_pos] = $book;
+            $books[$existingBookPos] = $book;
           }
           $book = array();
         } else if (stristr($line, 'your highlight')) {
           //  Location:
-          $clipping['meta'] = $this->parse_meta($line);
+          $clipping['meta'] = $this->parseMeta($line);
           $clipping['type'] = 1;
         } else if (stristr($line, 'your note')) {
-          $clipping['meta'] = $this->parse_meta($line);
+          $clipping['meta'] = $this->parseMeta($line);
           $clipping['type'] = 2;
         } else if (strlen(trim($line)) > 0) {
           // Highlight:
@@ -211,7 +218,7 @@ class ImportController extends Controller
         }
       }
     } else {
-      echo 'Error opening file';
+      throw new Exception;
     }
 
     fclose($fh);
@@ -219,18 +226,20 @@ class ImportController extends Controller
     return $books;
   }
 
-  private function parse_meta($str)
+  private function parseMeta($str)
   {
-    $return = array();
+    $return = [];
 
     if (stristr($str, 'page')) {
       preg_match("/page (\d*-?\d*)/", $str, $output);
       $return['page'] = $output[1];
     }
+
     if (stristr($str, 'location')) {
       preg_match("/location (\d*-?\d*)/", $str, $output);
       $return['location'] = $output[1];
     }
+
     if (stristr($str, 'added')) {
       preg_match("/Added on (.*)/", $str, $output);
       $return['date'] = $output[1];
@@ -239,7 +248,7 @@ class ImportController extends Controller
     return $return;
   }
 
-  private function parse_title($original_title)
+  private function parseTitle($titleString)
   {
     // The idea is to split the title field into title string + author string.
     // Based on my sample size of 27, authors are typically separated by a hyphen or brackets.
@@ -253,46 +262,46 @@ class ImportController extends Controller
 
     $author = '';
     $title = '';
-    $last_name = '';
-    $first_name = '';
+    $lastName = '';
+    $firstName = '';
     // Check if the title ends with a closing bracket:
-    if (substr($original_title, -1) === ')') {
-      preg_match('/\(([^)]*)\)[^(]*$/', $original_title, $out);
+    if (substr($titleString, -1) === ')') {
+      preg_match('/\(([^)]*)\)[^(]*$/', $titleString, $out);
       $author = $out[sizeof($out) - 1];
-      $title = trim(str_replace('(' . $author . ')', '', $original_title));
+      $title = trim(str_replace('(' . $author . ')', '', $titleString));
     } else {
       // Check if there's a hyphen separated by spaces:
       // Don't bother if there's more than one instance, this is too hard to parse.
-      if (substr_count($original_title, ' - ') === 1) {
-        list($part_one, $part_two) = explode(' - ', $original_title);
+      if (substr_count($titleString, ' - ') === 1) {
+        list($partOne, $partTwo) = explode(' - ', $titleString);
         // Now the problem here is that either part could be the author's name.
         // For now we have to assume it's part two, and leave it to the user to correct if not.
         // I think Calibre does that too.
         // Maybe later check against a list of common names, e.g. https://github.com/hadley/data-baby-names
-        $author = $part_two;
-        $title = trim($part_one);
+        $author = $partTwo;
+        $title = trim($partOne);
       }
     }
     if ($author !== '') {
       $author = trim($author);
       // Do we have a [last name, first name] format?
       if (strpos($author, ',') !== false) {
-        list($last_name, $first_name) = explode(',', $author);
+        list($lastName, $firstName) = explode(',', $author);
       } else {
         // Use a space:
-        $name_array = explode(' ', $author);
-        $last_name = $name_array[sizeof($name_array) - 1];
-        array_pop($name_array);
-        $first_name = implode(' ', $name_array);
+        $nameArray = explode(' ', $author);
+        $lastName = $nameArray[sizeof($nameArray) - 1];
+        array_pop($nameArray);
+        $firstName = implode(' ', $nameArray);
       }
-      $last_name = trim($last_name);
-      $first_name = trim($first_name);
+      $lastName = trim($lastName);
+      $firstName = trim($firstName);
     }
     
     return [
       'title' => $title,
-      'last_name' => $last_name,
-      'first_name' => $first_name
+      'lastName' => $lastName,
+      'firstName' => $firstName
     ];
   }
 }
