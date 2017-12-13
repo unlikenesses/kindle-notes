@@ -2,12 +2,10 @@
 
 namespace App;
 
-use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
-  // use Searchable; 
 
   protected $fillable = ['title', 'author_first_name', 'author_last_name', 'user_id'];
 
