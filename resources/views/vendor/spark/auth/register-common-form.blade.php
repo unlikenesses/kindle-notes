@@ -87,20 +87,6 @@
 
     <!-- Terms And Conditions -->
     <div v-if=" ! selectedPlan || selectedPlan.price == 0">
-        <div class="form-group" :class="{'has-error': registerForm.errors.has('terms')}">
-            <div class="col-md-6 col-md-offset-4">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="terms" v-model="registerForm.terms">
-                        I Accept The <a href="/terms" target="_blank">Terms Of Service</a>
-                    </label>
-
-                    <span class="help-block" v-show="registerForm.errors.has('terms')">
-                        @{{ registerForm.errors.get('terms') }}
-                    </span>
-                </div>
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="col-md-6 col-md-offset-4">
