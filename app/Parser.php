@@ -51,7 +51,7 @@ class Parser
     ];
   }
 
-  private function parseAuthor($author)
+  public function parseAuthor($author)
   {
     $author = trim($author);
 
