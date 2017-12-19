@@ -2,89 +2,152 @@
 
 namespace App;
 
+use App\Book;
 use App\Parser;
+use Illuminate\Http\UploadedFile;
 
 class Annotations
 {
 
   private $parser;
-  private $parsedData;
+  private $annotations;
+  private $file;
+  public $numBooks;
+  public $numNotes;
 
-  public function __construct($file)
+  public function __construct(UploadedFile $file)
   {
     $this->parser = new Parser();
-    $this->parsedData = $this->parseFile($file);
+    $this->file = $file;
+
+    $this->numBooks = 0;
+    $this->numNotes = 0;
   }
 
-  public function getData()
+  public function processFile()
   {
-    return $this->parsedData;
-  }
-
-  private function parseFile($file)
-  {
-    $book = $books = $clipping = [];
-    $inBook = false;
-
-    if (!$fh = fopen($file, 'r')) {
+    if (!$fileHandle = fopen($this->file, 'r')) {
       throw new Exception;
     }
 
-    while ($line = fgets($fh)) {
-      if (!$inBook) {
-        $bookIndex = $this->bookExists($line, $books);
-        
-        if ($bookIndex < 0) {
-          $parsedTitle = $this->parser->parseTitle(trim($line));
-          $book['book'] = [
-            'titleString' => trim($line),
-            'title' => $parsedTitle['title'],
-            'lastName' => $parsedTitle['lastName'],
-            'firstName' => $parsedTitle['firstName'],
-          ];
-          $book['notes'] = [];
-        } else {
-          $book = $books[$bookIndex];
-        }
-        $inBook = true;
-      } else if (trim($line) == '==========') {
-        // End of a clipping.
-        $inBook = false;
-        if ($bookIndex < 0) {
-          $books[] = $book;
-        } else {
-          $books[$bookIndex] = $book;
-        }
-        $book = [];
-      } else if (stristr($line, 'your highlight')) {
-        $clipping['meta'] = $this->parser->parseMeta($line);
-        $clipping['type'] = 1;
-      } else if (stristr($line, 'your note')) {
-        $clipping['meta'] = $this->parser->parseMeta($line);
-        $clipping['type'] = 2;
-      } else if (strlen(trim($line)) > 0) {
-        $clipping['highlight'] = $line;
-        $book['notes'][] = $clipping;
-        $clipping = [];
-      }
-    }
+    $this->annotations = $this->parser->parseFile($fileHandle);
 
-    fclose($fh);
-    
-    return $books;
+    fclose($fileHandle);
+
+    return $this;
   }
 
-  private function bookExists($bookToFind, $books)
+  public function save()
   {
-    $bookIndex = -1;
-    $i = 0;
-    foreach ($books as $tempBook) {
-      if ($tempBook['book'] == trim($bookToFind)) {
-        $bookIndex = $i;
-      }
-      $i++;
+    foreach ($this->annotations as $data) {
+      $this->saveBookData($data);
+    }
+  }
+
+  private function saveBookData($data)
+  {
+    $bookTitleString = $data['book']['titleString'];
+
+    if (strlen($bookTitleString) > 255) {
+      throw new BookDetailsAreTooLong;
+    }
+    
+    $book = $this->getBookByTitleString($bookTitleString, auth()->id());
+
+    if (!$book) {
+      $this->numBooks++;
+      $book = $this->addBook($data['book']);
     }
 
-    return $bookIndex;
+    foreach ($data['notes'] as $note) {
+      $this->saveNote($note, $book);
+    }
+  }
+
+  public function saveNote($note, $book)
+  {
+    $userId = auth()->id();
+    
+    if (! $this->noteExists($note, $userId)) {
+      $this->numNotes++;
+      $date = '';
+      $page = '';
+      $location = '';
+      $noteText = '';
+      $noteType = 0;
+      if (isset($note['meta']['date'])) {
+        $timestamp = strtotime($note['meta']['date']);
+        $date = date('Y-m-d H:i:s', $timestamp);
+      }
+      if (isset($note['meta']['page'])) {
+        $page = $note['meta']['page'];
+      }
+      if (isset($note['meta']['location'])) {
+        $location = $note['meta']['location'];
+      }
+      if (isset($note['highlight'])) {
+        $noteText = trim($note['highlight']);
+      }
+      if (isset($note['type'])) {
+        $noteType = trim($note['type']);
+      }
+      $newNote = new Note;
+      $newNote->date = $date;
+      $newNote->page = $page;
+      $newNote->location = $location;
+      $newNote->note = $noteText;
+      $newNote->type = $noteType;
+      $newNote->user_id = $userId;
+      $book->notes()->save($newNote);
+    } else if (isset($note['meta'])) {
+      // echo 'Skipping note ' . $note['meta']['date'] . '<br>';
+    }
+  }
+
+  private function addBook($bookData)
+  {
+    $book = new Book;
+    $book->title_string = $bookData['titleString'];
+    $book->title = $bookData['title'];
+    $book->author_first_name = $bookData['firstName'];
+    $book->author_last_name = $bookData['lastName'];
+    
+    auth()->user()->books()->save($book);
+  
+    return $book;
+  }
+
+  private function getBookByTitleString($titleString, $userId)
+  {
+    $book = Book::where(['title_string' => $titleString, 'user_id' => $userId])->first();
+
+    return $book;
+  }
+
+  public function noteExists($note, $userId)
+  {
+    $noteExists = false;
+
+    if (isset($note['highlight']) && isset($note['meta'])) {     
+      
+      $query = Note::where([
+        'note' => trim($note['highlight']), 
+        'date' => $note['meta']['date'],
+        'user_id' => $userId
+        ]);
+
+      if (isset($note['meta']['page'])) {
+        $query->where('page', $note['meta']['page']);
+      }
+      
+      if (isset($note['meta']['location'])) {
+        $query->where('location', $note['meta']['location']);
+      }
+
+      $noteExists = $query->exists();
+      
+    }
+
+    return $noteExists;
   }
 }

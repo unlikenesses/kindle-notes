@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
-    use Searchable; 
+  use Searchable; 
 
-    protected $fillable = ['book_id', 'page', 'location', 'date', 'note', 'type'];
+  protected $fillable = ['book_id', 'page', 'location', 'date', 'note', 'type'];
 
-    public function book()
-    {
-        return $this->belongsTo(Book::class);
-    }
+  public function book()
+  {
+    return $this->belongsTo(Book::class);
+  }
 }

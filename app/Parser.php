@@ -5,6 +5,68 @@ namespace App;
 class Parser
 {
 
+  public function parseFile($fileHandle)
+  {
+    $annotations = $book = $clipping = [];
+    
+    $inBook = false;
+
+    while ($line = fgets($fileHandle)) {
+      if (!$inBook) {
+        $bookIndex = $this->bookExistsInFile($line, $annotations);
+        
+        if ($bookIndex < 0) {
+          $parsedTitle = $this->parseTitle(trim($line));
+          $book['book'] = [
+            'titleString' => trim($line),
+            'title' => $parsedTitle['title'],
+            'lastName' => $parsedTitle['lastName'],
+            'firstName' => $parsedTitle['firstName'],
+          ];
+          $book['notes'] = [];
+        } else {
+          $book = $annotations[$bookIndex];
+        }
+        $inBook = true;
+      } else if (trim($line) == '==========') {
+        // End of a clipping.
+        $inBook = false;
+        if ($bookIndex < 0) {
+          $annotations[] = $book;
+        } else {
+          $annotations[$bookIndex] = $book;
+        }
+        $book = [];
+      } else if (stristr($line, 'your highlight')) {
+        $clipping['meta'] = $this->parseMeta($line);
+        $clipping['type'] = 1;
+      } else if (stristr($line, 'your note')) {
+        $clipping['meta'] = $this->parseMeta($line);
+        $clipping['type'] = 2;
+      } else if (strlen(trim($line)) > 0) {
+        $clipping['highlight'] = $line;
+        $book['notes'][] = $clipping;
+        $clipping = [];
+      }
+    }
+
+    return $annotations;
+  }
+
+  private function bookExistsInFile($bookToFind, $books)
+  {
+    $bookIndex = -1;
+    $i = 0;
+    foreach ($books as $tempBook) {
+      if ($tempBook['book'] == trim($bookToFind)) {
+        $bookIndex = $i;
+      }
+      $i++;
+    }
+
+    return $bookIndex;
+  }
+
   public function parseTitle($titleString)
   {
     // The idea is to split the title field into title string + author string.
