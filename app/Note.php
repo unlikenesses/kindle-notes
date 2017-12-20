@@ -21,28 +21,34 @@ class Note extends Model
     $userId = auth()->id();
     
     if (! static::noteExists($note, $userId)) {
-      // $this->numNotes++;
+      
       $date = '';
       $page = '';
       $location = '';
       $noteText = '';
       $noteType = 0;
+      
       if (isset($note['meta']['date'])) {
         $timestamp = strtotime($note['meta']['date']);
         $date = date('Y-m-d H:i:s', $timestamp);
       }
+      
       if (isset($note['meta']['page'])) {
         $page = $note['meta']['page'];
       }
+      
       if (isset($note['meta']['location'])) {
         $location = $note['meta']['location'];
       }
+      
       if (isset($note['highlight'])) {
         $noteText = trim($note['highlight']);
       }
+      
       if (isset($note['type'])) {
         $noteType = trim($note['type']);
       }
+
       $newNote = new Note;
       $newNote->date = $date;
       $newNote->page = $page;
@@ -50,12 +56,11 @@ class Note extends Model
       $newNote->note = $noteText;
       $newNote->type = $noteType;
       $newNote->user_id = $userId;
+
       $book->notes()->save($newNote);
 
       return true;
-    } else if (isset($note['meta'])) {
-      // echo 'Skipping note ' . $note['meta']['date'] . '<br>';
-    }
+    } 
     
     return false;
   }

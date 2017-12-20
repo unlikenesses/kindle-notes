@@ -18,6 +18,26 @@ class ParserTest extends TestCase
   }
 
   /** @test */
+  public function it_can_parse_a_file()
+  {
+    $pathToFile = __DIR__ . '/files/clippings.txt';
+
+    $fileHandle = fopen($pathToFile, 'r');
+
+    $response = $this->parser->parseFile($fileHandle);
+
+    $this->assertCount(3, $response); 
+
+    $this->assertCount(2, $response[0]['notes']);
+    $this->assertCount(3, $response[1]['notes']); 
+    $this->assertCount(9, $response[2]['notes']);
+
+    $this->assertEquals("Taylor", $response[0]['book']['lastName']);
+
+    $this->assertEquals("From 1633 onwards, when the government was ruling without Parliament, depopulators were prosecuted", $response[2]['notes'][2]['highlight']);
+  }
+
+  /** @test */
   public function it_can_parse_a_book_title_string()
   {
     $titleString = 'Century of Revolution, 1603-1714 - Christopher Hill';

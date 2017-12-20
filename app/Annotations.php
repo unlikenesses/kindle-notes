@@ -9,16 +9,17 @@ use Illuminate\Http\UploadedFile;
 class Annotations
 {
 
+  private $file;
   private $parser;
   private $annotations;
-  private $file;
+
   public $numBooks = 0;
   public $numNotes = 0;
 
   public function __construct(UploadedFile $file)
   {
-    $this->parser = new Parser();
     $this->file = $file;
+    $this->parser = new Parser();
   }
 
   public function processFile()

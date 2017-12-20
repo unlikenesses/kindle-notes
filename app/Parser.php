@@ -12,6 +12,9 @@ class Parser
     $inBook = false;
 
     while ($line = fgets($fileHandle)) {
+
+      $line = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $line); // Remove BOM
+
       if (!$inBook) {
         $bookIndex = $this->bookExistsInFile($line, $annotations);
         
@@ -58,7 +61,7 @@ class Parser
     $bookIndex = -1;
     $i = 0;
     foreach ($books as $tempBook) {
-      if ($tempBook['book'] == trim($bookToFind)) {
+      if ($tempBook['book']['titleString'] == trim($bookToFind)) {
         $bookIndex = $i;
       }
       $i++;

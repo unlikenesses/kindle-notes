@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\Book;
+use App\Note;
 use App\Annotations;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
@@ -23,22 +25,74 @@ class AnnotationsTest extends TestCase
   }
 
   /** @test */
-  public function a_notes_existence_is_based_on_type_date_page_and_location_but_not_the_note()
+  public function it_can_save_a_book()
   {
     $user = factory('App\User')->create();
-
+    
     $this->signIn($user);
 
-    $note = factory('App\Note')->create([
-      'user_id' => $user->id,
-      'page' => '32',
-      'location' => '1883',
-      'date' => '2017-03-01 10:00:03',
-      'note' => 'This is a test',
-      'type' => 1
-    ]);    
+    $title = 'A test of a title string';
+    $firstName = 'Jehoover';
+    $lastName = 'MacDoozlebink';
+    $titleString = $title . ' - ' . $firstName . ' ' . $lastName;
 
-    $newNote = [
+    $book = [
+      'titleString' => $titleString,
+      'title' => $title,
+      'lastName' => $lastName,
+      'firstName' => $firstName
+    ];
+
+    $page = '35';
+    $location = '1883';
+    $date = '2017-03-01 10:00:03';
+    $highlight = 'This is a test note';
+
+    $note = [
+      'type' => 1,
+      'highlight' => $highlight,
+      'meta' => [
+        'page' => $page,
+        'location' => $location,
+        'date' => $date,
+      ]
+    ];
+
+    $data = [
+      'book' => $book,
+      'notes' => [$note]
+    ];
+
+    Book::saveImportedData($data);
+
+    $this->assertDatabaseHas('books', [
+      'title_string' => $titleString,
+      'title' => $title,
+      'author_last_name' => $lastName,
+      'author_first_name' => $firstName
+    ]);
+
+    $bookId = Book::first()->id;
+
+    $this->assertDatabaseHas('notes', [
+      'book_id' => $bookId,
+      'page' => $page,
+      'location' => $location,
+      'date' => $date,
+      'note' => $highlight
+    ]);
+  }
+
+  /** @test */
+  public function it_can_save_a_note()
+  {
+    $user = factory('App\User')->create();
+    
+    $this->signIn($user);
+
+    $book = factory('App\Book')->create();
+
+    $note = [
       'type' => 1,
       'highlight' => 'This is a test',
       'meta' => [
@@ -48,9 +102,12 @@ class AnnotationsTest extends TestCase
       ]
     ];
 
-    $noteExists = $this->annotations->noteExists($newNote, auth()->id());
+    $this->assertCount(0, $book->notes);
 
-    $this->assertFalse($noteExists);
+    Note::saveImportedNote($note, $book);
 
+    $this->assertCount(1, $book->fresh()->notes);
   }
+
+  
 }
