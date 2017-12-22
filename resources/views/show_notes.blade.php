@@ -31,28 +31,12 @@
               </a>
             </p>
             <div class="ui large feed">
-              @foreach ($notes as $note)
-                <div class="event">
-                  <div class="label">
-                    <i class="pencil icon"></i>
-                  </div>
-                  <div class="content">
-                    <div class="text">
-                      {{ $note->note }}
-                    </div>
-                    <div class="meta">
-                      <small>{{ date('d F Y, h:m:s', strtotime($note->date)) }}</small>
-                      @if ($note->page != '') <small>Page: {{ $note->page}}</small> @endif
-                      @if ($note->location != '') <small>Location: {{ $note->location}}</small> @endif
-                      @if ($note->type == 1) (Highlight) @endif
-                      @if ($note->type == 2) (Note) @endif
-                    </div>
-                  </div>
-                </div>
-                <hr>
-              @endforeach
+              @forelse ($notes as $note)
+                <note :note="{{ json_encode($note) }}"></note>
+              @empty
+                <p>There are no notes for this book.</p>
+              @endforelse
             </div>
-            <?php //dd($books)?>
           </div>
         </div>
       </div>

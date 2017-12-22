@@ -44,8 +44,13 @@
 </template>
 
 <script>
+import Tag from './Tag.vue';
+
 export default {
+  components: { Tag },
+
   props: ["tags", "bookId"],
+  
   data() {
     return {
       newTags: this.tags,
@@ -55,6 +60,7 @@ export default {
       autocompleteTags: []
     };
   },
+  
   methods: {
     toggleEditing() {
       this.editing = !this.editing;

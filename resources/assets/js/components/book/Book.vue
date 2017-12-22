@@ -26,7 +26,13 @@
 </template>
 
 <script>
+import BookDetails from './BookDetails.vue';
+import BookEdit from './BookEdit.vue';
+import Tags from '../tag/Tags.vue';
+
 export default {
+  components: { BookDetails, BookEdit, Tags },
+
   props: ["book", "tags"],
 
   data() {

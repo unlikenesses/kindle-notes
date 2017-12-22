@@ -42,7 +42,6 @@ class ImportController extends Controller
     } catch (BookDetailsAreTooLong $e) {
       return redirect('/import')->with('status', 'Could not upload file: one or more book titles is too long');
     } catch (\Exception $e) {
-      dd($e);
       return redirect('/import')->with('status', 'There was an error uploading the file');
     }
 

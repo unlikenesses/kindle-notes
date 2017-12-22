@@ -37,6 +37,7 @@ class StripeObject implements ArrayAccess, JsonSerializable
             'address',
             'address_kana',
             'address_kanji',
+            'card',
             'dob',
             'inventory',
             'legal_entity',
@@ -155,6 +156,12 @@ class StripeObject implements ArrayAccess, JsonSerializable
             Stripe::getLogger()->error("Stripe Notice: Undefined property of $class instance: $k");
             return $nullval;
         }
+    }
+
+    // Magic method for var_dump output. Only works with PHP >= 5.6
+    public function __debugInfo()
+    {
+        return $this->_values;
     }
 
     // ArrayAccess methods
