@@ -14,6 +14,8 @@ Route::get('/books', 'BooksController@index');
 
 Route::get('/books/{book}/notes', 'NotesController@index');
 
+Route::post('/notes/{note}/update', 'NotesController@update');
+
 Route::get('/search', 'SearchController@index');
 
 Route::post('/getBookDetails', 'BooksController@getBookDetails');

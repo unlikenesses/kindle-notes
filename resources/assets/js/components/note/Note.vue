@@ -17,6 +17,7 @@
             :noteText="noteText"
             :submitting="submitting"
             :cancel="cancelEdit"
+            :errorMsg="errorMsg"
             v-on:update="update" 
           />
         </div>
@@ -56,7 +57,8 @@ export default {
       date: this.note.date,
       loading: true,
       editing: false,
-      submitting: false
+      submitting: false,
+      errorMsg: null
     };
   },
 
@@ -73,23 +75,32 @@ export default {
       this.editing = true;
     },
     cancelEdit() {
+      this.errorMsg = null;
       this.editing = false;
     },
     update(note) {
+      if (note.length < 1) {
+        this.errorMsg = 'Please enter some text.';
+        return;
+      }
       let that = this;
+      this.errorMsg = null;
       this.submitting = true;
       $.post(
-        "/storeNoteDetails",
+        '/notes/' + this.id + '/update',
         {
-          id: this.id,
           note: note
         },
         function(data) {
           that.editing = false;
           that.submitting = false;
-          that.note = note;
+          that.noteText = note;
         }
-      );
+      ).fail(function(error) {
+        that.errorMsg = error.responseJSON.errors.note[0];
+        that.submitting = false;
+        // console.log('error', error);
+      });
     }
   }
 };

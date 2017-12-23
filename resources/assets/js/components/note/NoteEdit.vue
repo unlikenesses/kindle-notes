@@ -6,6 +6,7 @@
         <textarea v-model="formNoteText">
       </div>
     </div>
+    <div class="alert alert-danger" v-if="errorMsg" v-text="errorMsg"></div>
     <button 
       @click="submit" 
       v-text="submitting ? 'Updating' : 'Update'" 
@@ -23,7 +24,7 @@
 
 <script>
 export default {
-  props: ["noteText", "submitting", "cancel"],
+  props: ["noteText", "submitting", "cancel", "errorMsg"],
 
   data() {
     return {

@@ -31,6 +31,19 @@ class NotesController extends Controller
     return view('show_notes', ['book' => $book, 'notes' => $notes]);
   }
 
+  public function update(Note $note, Request $request)
+  {
+    if (auth()->id() != $note->user_id) {
+      return;
+    }
+
+    $this->validate($request, [
+      'note' => 'required|max:4000'
+    ]);
+    
+    $note->update(['note' => $request->note]);
+  }
+
   /**
    * Search notes: not used currently because I couldn't get Laravel Scout
    * to search for both notes and books

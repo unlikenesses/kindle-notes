@@ -28907,6 +28907,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -28931,7 +28932,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       date: this.note.date,
       loading: true,
       editing: false,
-      submitting: false
+      submitting: false,
+      errorMsg: null
     };
   },
   mounted: function mounted() {
@@ -28948,18 +28950,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.editing = true;
     },
     cancelEdit: function cancelEdit() {
+      this.errorMsg = null;
       this.editing = false;
     },
     update: function update(note) {
+      if (note.length < 1) {
+        this.errorMsg = 'Please enter some text.';
+        return;
+      }
       var that = this;
+      this.errorMsg = null;
       this.submitting = true;
-      $.post("/storeNoteDetails", {
-        id: this.id,
+      $.post('/notes/' + this.id + '/update', {
         note: note
       }, function (data) {
         that.editing = false;
         that.submitting = false;
-        that.note = note;
+        that.noteText = note;
+      }).fail(function (error) {
+        that.errorMsg = error.responseJSON.errors.note[0];
+        that.submitting = false;
+        // console.log('error', error);
       });
     }
   }
@@ -29025,9 +29036,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
-  props: ["noteText", "submitting", "cancel"],
+  props: ["noteText", "submitting", "cancel", "errorMsg"],
 
   data: function data() {
     return {
@@ -41879,7 +41891,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "noteText": _vm.noteText,
       "submitting": _vm.submitting,
-      "cancel": _vm.cancelEdit
+      "cancel": _vm.cancelEdit,
+      "errorMsg": _vm.errorMsg
     },
     on: {
       "update": _vm.update
@@ -42128,7 +42141,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.formNoteText = $event.target.value
       }
     }
-  })])]), _vm._v(" "), _c('button', {
+  })])]), _vm._v(" "), (_vm.errorMsg) ? _c('div', {
+    staticClass: "alert alert-danger",
+    domProps: {
+      "textContent": _vm._s(_vm.errorMsg)
+    }
+  }) : _vm._e(), _vm._v(" "), _c('button', {
     class: {
       'ui button blue': true, 'loading': _vm.submitting
     },
