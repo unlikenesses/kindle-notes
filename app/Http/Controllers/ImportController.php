@@ -37,7 +37,6 @@ class ImportController extends Controller
     $annotations = (new Annotations($request->file('clippings_file')))->processFile();
     
     try { 
-      // $result = $this->saveAllData($annotations->getData());
       $annotations->save();
     } catch (BookDetailsAreTooLong $e) {
       return redirect('/import')->with('status', 'Could not upload file: one or more book titles is too long');

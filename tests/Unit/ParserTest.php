@@ -26,15 +26,14 @@ class ParserTest extends TestCase
 
     $response = $this->parser->parseFile($fileHandle);
 
-    $this->assertCount(3, $response); 
+    $this->assertCount(2, $response); 
 
-    $this->assertCount(2, $response[0]['notes']);
-    $this->assertCount(3, $response[1]['notes']); 
-    $this->assertCount(9, $response[2]['notes']);
+    $this->assertCount(3, $response[0]['notes']); 
+    $this->assertCount(9, $response[1]['notes']);
 
-    $this->assertEquals("Taylor", $response[0]['book']['lastName']);
+    $this->assertEquals("Hill", $response[0]['book']['lastName']);
 
-    $this->assertEquals("From 1633 onwards, when the government was ruling without Parliament, depopulators were prosecuted", $response[2]['notes'][2]['highlight']);
+    $this->assertEquals("From 1633 onwards, when the government was ruling without Parliament, depopulators were prosecuted", $response[1]['notes'][2]['highlight']);
   }
 
   /** @test */

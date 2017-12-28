@@ -49,4 +49,30 @@ class NoteTest extends TestCase
     $this->assertFalse($noteExists);
 
   }
+
+  /** @test */
+  public function it_can_save_a_note()
+  {
+    $user = factory('App\User')->create();
+    
+    $this->signIn($user);
+
+    $book = factory('App\Book')->create();
+
+    $note = [
+      'type' => 1,
+      'highlight' => 'This is a test',
+      'meta' => [
+        'page' => '35',
+        'location' => '1883',
+        'date' => '2017-03-01 10:00:03',
+      ]
+    ];
+
+    $this->assertCount(0, $book->notes);
+
+    Note::saveImportedNote($note, $book);
+
+    $this->assertCount(1, $book->fresh()->notes);
+  }
 }

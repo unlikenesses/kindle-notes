@@ -22,92 +22,42 @@ class AnnotationsTest extends TestCase
     $file = new UploadedFile($path, 'clippings.txt', filesize($path), null, null, true);
 
     $this->annotations = new Annotations($file);
-  }
+  }  
 
   /** @test */
-  public function it_can_save_a_book()
+  public function a_file_can_be_processed()
+  {
+    // The processFile method is basically tested in ParserTest's it_can_parse_a_file
+
+    $this->assertTrue(true); 
+  }
+  
+  /** @test */
+  public function annotations_can_be_saved()
   {
     $user = factory('App\User')->create();
     
     $this->signIn($user);
 
-    $title = 'A test of a title string';
-    $firstName = 'Jehoover';
-    $lastName = 'MacDoozlebink';
-    $titleString = $title . ' - ' . $firstName . ' ' . $lastName;
+    $this->annotations->processFile();
 
-    $book = [
-      'titleString' => $titleString,
-      'title' => $title,
-      'lastName' => $lastName,
-      'firstName' => $firstName
-    ];
-
-    $page = '35';
-    $location = '1883';
-    $date = '2017-03-01 10:00:03';
-    $highlight = 'This is a test note';
-
-    $note = [
-      'type' => 1,
-      'highlight' => $highlight,
-      'meta' => [
-        'page' => $page,
-        'location' => $location,
-        'date' => $date,
-      ]
-    ];
-
-    $data = [
-      'book' => $book,
-      'notes' => [$note]
-    ];
-
-    Book::saveImportedData($data);
+    $this->annotations->save();
 
     $this->assertDatabaseHas('books', [
-      'title_string' => $titleString,
-      'title' => $title,
-      'author_last_name' => $lastName,
-      'author_first_name' => $firstName
+      'title_string' => 'Puritanism and Revolution (Christopher Hill)',
+      'title' => 'Puritanism and Revolution',
+      'author_last_name' => 'Hill',
+      'author_first_name' => 'Christopher'
     ]);
 
     $bookId = Book::first()->id;
-
+    
     $this->assertDatabaseHas('notes', [
       'book_id' => $bookId,
-      'page' => $page,
-      'location' => $location,
-      'date' => $date,
-      'note' => $highlight
+      'page' => '126',
+      'location' => '1928-1929',
+      'date' => '2015-04-29 00:48:33',
+      'note' => 'The common law was identical with the laws of nature.'
     ]);
   }
-
-  /** @test */
-  public function it_can_save_a_note()
-  {
-    $user = factory('App\User')->create();
-    
-    $this->signIn($user);
-
-    $book = factory('App\Book')->create();
-
-    $note = [
-      'type' => 1,
-      'highlight' => 'This is a test',
-      'meta' => [
-        'page' => '35',
-        'location' => '1883',
-        'date' => '2017-03-01 10:00:03',
-      ]
-    ];
-
-    $this->assertCount(0, $book->notes);
-
-    Note::saveImportedNote($note, $book);
-
-    $this->assertCount(1, $book->fresh()->notes);
-  }
-
-  
 }

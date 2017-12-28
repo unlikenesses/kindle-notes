@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Note;
+use App\Annotations;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -12,24 +14,41 @@ class ImportTest extends TestCase
   use RefreshDatabase;
 
   /** @test */
-  public function placeholder()
+  public function modified_notes_are_not_overwritten_when_their_containing_file_is_reimported()
   {
-    $this->assertTrue(true);
+    $this->importData();
+
+    $note = Note::first();
+
+    $this->assertEquals($note->note, 'The common law was identical with the laws of nature.');
+
+    $newText = 'Here is an updated note';
+
+    $this->post('/notes/' . $note->id . '/update', ['note' => $newText]);
+
+    $note = Note::first();
+    
+    $this->assertEquals($note->note, 'Here is an updated note');
+
+    $this->importData();
+
+    $note = Note::first();
+    
+    $this->assertEquals($note->note, 'Here is an updated note');
   }
 
-  /** @test */
-  // public function an_authenticated_user_can_upload_a_file()
-  // {
-  //   $this->withoutExceptionHandling();
+  private function importData()
+  {
+    $user = factory('App\User')->create();
     
-  //   $this->signIn();
+    $this->signIn($user);
 
-  //   Storage::fake('clippings');
+    $path = __DIR__ . '/files/clippings.txt';
+    
+    $file = new UploadedFile($path, 'clippings.txt', filesize($path), null, null, true);
 
-  //   $this->post('/import', [
-  //     'clippings_file' => UploadedFile::fake()->create('My Clippings.txt', 256)
-  //   ]); 
+    $annotations = (new Annotations($file))->processFile();
 
-  //   Storage::disk('clippings')->assertExists('My Clippings.txt');
-  // }
+    $annotations->save();
+  }
 }
