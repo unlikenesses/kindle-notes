@@ -22,7 +22,7 @@
           />
         </div>
         <div class="meta">
-          <small>{{ date }}</small>
+          <small>{{ niceDate }}</small>
           <small v-if="page != ''">Page: {{ page}}</small>
           <small v-if="location != ''">Location: {{ location}}</small>
           <small>({{ type }})</small>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import NoteDetails from './NoteDetails.vue';
 import NoteEdit from './NoteEdit.vue';
 
@@ -45,6 +46,11 @@ export default {
   computed: {
     type() {
       return this.note.type == 1 ? 'Highlight' : 'Note';
+    },
+    niceDate() {
+      if (!this.date) return null;
+      
+      return moment(this.date).format('MMMM Do YYYY, HH:mm:ss');
     }
   },
 
