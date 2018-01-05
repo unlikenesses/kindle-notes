@@ -10,7 +10,9 @@
             v-if="!editing" 
             :id="id"
             :noteText="noteText"
-            v-on:edit="edit" 
+            :deleting="deleting"
+            v-on:edit="editNote" 
+            v-on:delete="deleteNote"
           />
           <noteEdit 
             v-if="editing" 
@@ -64,6 +66,7 @@ export default {
       loading: true,
       editing: false,
       submitting: false,
+      deleting: false,
       errorMsg: null
     };
   },
@@ -77,8 +80,25 @@ export default {
   },
 
   methods: {
-    edit() {
+    editNote() {
       this.editing = true;
+    },
+    deleteNote() {
+      let that = this;
+      this.deleting = true;
+      $.ajax({
+        url: '/notes/' + this.id,
+        type: 'DELETE',
+        success: (data) => {
+          console.log(data);
+          that.deleting = false;
+          location.reload(); // Temporary measure
+        },
+        fail: (error) => {
+          console.log(error);
+          that.deleting = false;
+        }
+      });
     },
     cancelEdit() {
       this.errorMsg = null;
@@ -97,12 +117,12 @@ export default {
         {
           note: note
         },
-        function(data) {
+        (data) => {
           that.editing = false;
           that.submitting = false;
           that.noteText = note;
         }
-      ).fail(function(error) {
+      ).fail((error) => {
         that.errorMsg = error.responseJSON.errors.note[0];
         that.submitting = false;
         // console.log('error', error);

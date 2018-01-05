@@ -4,11 +4,14 @@ namespace App;
 
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Note extends Model
 {
   use Searchable; 
+  use SoftDeletes;
 
+  protected $dates = ['deleted_at'];
   protected $fillable = ['book_id', 'page', 'location', 'date', 'note', 'type'];
 
   public function book()

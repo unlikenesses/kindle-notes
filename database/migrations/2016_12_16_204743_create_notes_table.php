@@ -23,6 +23,7 @@ class CreateNotesTable extends Migration
             $table->integer('type')->unsigned();
             $table->integer('user_id')->unsigned()->index();
             $table->timestamps();
+            $table->softDeletes();
         });
         // DB::statement('ALTER TABLE notes ADD FULLTEXT full(page, location, note, date)');
     }

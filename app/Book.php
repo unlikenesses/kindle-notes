@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Book extends Model
 {
+  use SoftDeletes;
 
+  protected $dates = ['deleted_at'];
   protected $fillable = ['title', 'author_first_name', 'author_last_name', 'user_id'];
 
   public function notes()

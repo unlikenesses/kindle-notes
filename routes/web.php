@@ -16,6 +16,8 @@ Route::get('/books/{book}/notes', 'NotesController@index');
 
 Route::post('/notes/{note}/update', 'NotesController@update');
 
+Route::delete('/notes/{note}', 'NotesController@delete');
+
 Route::get('/search', 'SearchController@index');
 
 Route::post('/getBookDetails', 'BooksController@getBookDetails');

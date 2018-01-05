@@ -22,6 +22,7 @@ class CreateBooksTable extends Migration
             $table->string('year')->nullable();
             $table->integer('user_id')->unsigned()->index();
             $table->timestamps();
+            $table->softDeletes();
         });
         // DB::statement('ALTER TABLE books ADD FULLTEXT full(title, author_first_name, author_last_name, year)');
     }

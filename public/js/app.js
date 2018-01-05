@@ -28910,6 +28910,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -28941,6 +28943,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       loading: true,
       editing: false,
       submitting: false,
+      deleting: false,
       errorMsg: null
     };
   },
@@ -28954,8 +28957,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
   methods: {
-    edit: function edit() {
+    editNote: function editNote() {
       this.editing = true;
+    },
+    deleteNote: function deleteNote() {
+      var that = this;
+      this.deleting = true;
+      $.ajax({
+        url: '/notes/' + this.id,
+        type: 'DELETE',
+        success: function success(data) {
+          console.log(data);
+          that.deleting = false;
+          location.reload(); // Temporary measure
+        },
+        fail: function fail(error) {
+          console.log(error);
+          that.deleting = false;
+        }
+      });
     },
     cancelEdit: function cancelEdit() {
       this.errorMsg = null;
@@ -29005,12 +29025,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
-  props: ["id", "noteText"],
+  props: ["id", "deleting", "noteText"],
+
   methods: {
-    edit: function edit() {
+    editNote: function editNote() {
       this.$emit('edit');
+    },
+    deleteNote: function deleteNote() {
+      this.$emit('delete');
     }
   }
 };
@@ -30388,51 +30421,51 @@ window.SparkFormErrors = function () {
  * SparkForm helper class. Used to set common properties on all forms.
  */
 window.SparkForm = function (data) {
-    var form = this;
+  var form = this;
 
-    $.extend(this, data);
+  $.extend(this, data);
 
-    /**
-     * Create the form error helper instance.
-     */
-    this.errors = new SparkFormErrors();
+  /**
+   * Create the form error helper instance.
+   */
+  this.errors = new SparkFormErrors();
 
-    this.busy = false;
-    this.successful = false;
+  this.busy = false;
+  this.successful = false;
 
-    /**
-     * Start processing the form.
-     */
-    this.startProcessing = function () {
-        form.errors.forget();
-        form.busy = true;
-        form.successful = false;
-    };
+  /**
+   * Start processing the form.
+   */
+  this.startProcessing = function () {
+    form.errors.forget();
+    form.busy = true;
+    form.successful = false;
+  };
 
-    /**
-     * Finish processing the form.
-     */
-    this.finishProcessing = function () {
-        form.busy = false;
-        form.successful = true;
-    };
+  /**
+   * Finish processing the form.
+   */
+  this.finishProcessing = function () {
+    form.busy = false;
+    form.successful = true;
+  };
 
-    /**
-     * Reset the errors and other state for the form.
-     */
-    this.resetStatus = function () {
-        form.errors.forget();
-        form.busy = false;
-        form.successful = false;
-    };
+  /**
+   * Reset the errors and other state for the form.
+   */
+  this.resetStatus = function () {
+    form.errors.forget();
+    form.busy = false;
+    form.successful = false;
+  };
 
-    /**
-     * Set the errors on the form.
-     */
-    this.setErrors = function (errors) {
-        form.busy = false;
-        form.errors.set(errors);
-    };
+  /**
+   * Set the errors on the form.
+   */
+  this.setErrors = function (errors) {
+    form.busy = false;
+    form.errors.set(errors);
+  };
 };
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
@@ -41890,10 +41923,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [(!_vm.editing) ? _c('noteDetails', {
     attrs: {
       "id": _vm.id,
-      "noteText": _vm.noteText
+      "noteText": _vm.noteText,
+      "deleting": _vm.deleting
     },
     on: {
-      "edit": _vm.edit
+      "edit": _vm.editNote,
+      "delete": _vm.deleteNote
     }
   }) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('noteEdit', {
     attrs: {
@@ -41961,11 +41996,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('button', {
     staticClass: "ui basic button",
     on: {
-      "click": _vm.edit
+      "click": _vm.editNote
     }
   }, [_c('i', {
     staticClass: "edit icon link"
   }), _vm._v("\n      Edit Note\n    ")])]), _vm._v(" "), _c('div', {
+    staticClass: "right floated content"
+  }, [_c('button', {
+    class: {
+      'ui button basic': true, 'loading': _vm.deleting
+    },
+    on: {
+      "click": _vm.deleteNote
+    }
+  }, [_c('i', {
+    staticClass: "delete icon link"
+  }), _vm._v("\n      Delete Note\n    ")])]), _vm._v(" "), _c('div', {
     staticClass: "content"
   }, [_vm._v("\n    " + _vm._s(_vm.noteText) + "\n  ")])])
 },staticRenderFns: []}

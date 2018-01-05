@@ -44,6 +44,15 @@ class NotesController extends Controller
     $note->update(['note' => $request->note]);
   }
 
+  public function delete(Note $note)
+  {
+    if (auth()->id() != $note->user_id) {
+      return;
+    }
+
+    $note->delete();    
+  }
+
   /**
    * Search notes: not used currently because I couldn't get Laravel Scout
    * to search for both notes and books
