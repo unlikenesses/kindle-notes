@@ -16,4 +16,20 @@ abstract class TestCase extends BaseTestCase
 
     return $this;
   }
+
+  /** The following two methods from here:
+   *  https://www.neontsunami.com/posts/asserting-that-an-eloquent-model-soft-deletes
+   */
+  protected function assertSoftDeletes(string $model)
+  {
+      $instance = new $model;
+  
+      $this->assertUsesTrait(\Illuminate\Database\Eloquent\SoftDeletes::class, $instance);
+      $this->assertContains('deleted_at', $instance->getDates());
+  }
+   
+  protected function assertUsesTrait($trait, $class)       
+  {     
+      $this->assertContains($trait, class_uses($class));        
+  }
 }

@@ -37,6 +37,33 @@ class ImportTest extends TestCase
     $this->assertEquals($note->note, 'Here is an updated note');
   }
 
+  /** @test */
+  public function soft_deleted_notes_are_not_reinserted_when_their_containing_file_is_reimported()
+  {
+    $this->importData();
+
+    $note = Note::first();
+
+    $book = $note->book;
+    
+    $this->get('/books/' . $book->id . '/notes')
+      ->assertSee($note->note);
+
+    $this->delete('/notes/' . $note->id);
+
+    $this->assertSoftDeleted('notes', ['id' => $note->id]);
+
+    $this->get('/books/' . $book->id . '/notes')
+      ->assertDontSee($note->note);
+
+    $this->importData();
+
+    $this->assertSoftDeleted('notes', ['id' => $note->id]);
+    
+    $this->get('/books/' . $book->id . '/notes')
+      ->assertDontSee($note->note);
+  }
+
   private function importData()
   {
     $user = factory('App\User')->create();

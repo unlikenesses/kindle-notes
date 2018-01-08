@@ -23,8 +23,7 @@ class Note extends Model
   {
     $userId = auth()->id();
     
-    if (! static::noteExists($note, $userId)) {
-      
+    if (isset($note['highlight']) && isset($note['meta']) && ! static::noteExists($note, $book->id, $userId)) {
       $date = '';
       $page = '';
       $location = '';
@@ -68,30 +67,29 @@ class Note extends Model
     return false;
   }
 
-  public static function noteExists($note, $userId)
+  public static function noteExists($note, $book_id, $userId)
   {
-    $noteExists = false;
+    $date = '';
 
-    if (isset($note['highlight']) && isset($note['meta'])) {     
-      
-      $query = Note::where([
-        'note' => trim($note['highlight']), 
-        'date' => $note['meta']['date'],
-        'user_id' => $userId
-        ]);
-
-      if (isset($note['meta']['page'])) {
-        $query->where('page', $note['meta']['page']);
-      }
-      
-      if (isset($note['meta']['location'])) {
-        $query->where('location', $note['meta']['location']);
-      }
-
-      $noteExists = $query->exists();
-
+    if (isset($note['meta']['date'])) {
+      $timestamp = strtotime($note['meta']['date']);
+      $date = date('Y-m-d H:i:s', $timestamp);
     }
 
-    return $noteExists;
+    $query = Note::where([
+      'book_id' => $book_id, 
+      'date' => $date,
+      'user_id' => $userId
+      ]);
+
+    if (isset($note['meta']['page'])) {
+      $query->where('page', $note['meta']['page']);
+    }
+    
+    if (isset($note['meta']['location'])) {
+      $query->where('location', $note['meta']['location']);
+    }
+
+    return $query->exists();
   }
 }

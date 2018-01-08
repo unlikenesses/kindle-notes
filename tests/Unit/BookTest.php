@@ -97,4 +97,10 @@ class BookTest extends TestCase
       'note' => $highlight
     ]);
   }
+  
+  /** @test */
+  public function it_soft_deletes_books()
+  {
+    $this->assertSoftDeletes(Book::class);
+  }
 }
