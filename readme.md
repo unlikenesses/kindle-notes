@@ -1,5 +1,5 @@
 # Kindle Notes app
 
-Source code for [http://scrippd.com](scrippd.com). Built with Laravel and Vue.
+Source code for [scrippd.com](http://scrippd.com). Built with Laravel and Vue.
 
 `npm run watch` to dev
