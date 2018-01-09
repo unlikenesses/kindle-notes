@@ -76,7 +76,7 @@ class Note extends Model
       $date = date('Y-m-d H:i:s', $timestamp);
     }
 
-    $query = Note::where([
+    $query = Note::withTrashed()->where([
       'book_id' => $book_id, 
       'date' => $date,
       'user_id' => $userId

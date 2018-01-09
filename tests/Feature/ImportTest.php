@@ -13,6 +13,15 @@ class ImportTest extends TestCase
 {
   use RefreshDatabase;
 
+  public function setUp()
+  {
+    parent::setUp();
+
+    $user = factory('App\User')->create();
+    
+    $this->signIn($user);
+  }
+
   /** @test */
   public function modified_notes_are_not_overwritten_when_their_containing_file_is_reimported()
   {
@@ -66,10 +75,6 @@ class ImportTest extends TestCase
 
   private function importData()
   {
-    $user = factory('App\User')->create();
-    
-    $this->signIn($user);
-
     $path = __DIR__ . '/files/clippings.txt';
     
     $file = new UploadedFile($path, 'clippings.txt', filesize($path), null, null, true);
