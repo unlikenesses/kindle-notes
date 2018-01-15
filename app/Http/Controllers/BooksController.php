@@ -78,7 +78,9 @@ class BooksController extends Controller
   public function search()
   {
     $searchTerm = request('q');
+    
     $books = Book::search($searchTerm)->paginate(15);
+
     if (request()->expectsJson()) {
       return $books;
     }

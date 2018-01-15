@@ -108,6 +108,17 @@
 
                             <li class="divider"></li>
 
+                            <!-- Support -->
+                            <li class="dropdown-header">Admin</li>
+
+                            <li>
+                                <a href="/deleted-items" style="cursor: pointer;">
+                                    <i class="fa fa-fw fa-btn fa-trash"></i>Deleted Items
+                                </a>
+                            </li>
+
+                            <li class="divider"></li>
+
                             <!-- Logout -->
                             <li>
                                 <a href="/logout">

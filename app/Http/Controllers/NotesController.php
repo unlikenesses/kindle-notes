@@ -68,6 +68,7 @@ class NotesController extends Controller
     // $query = DB::getQueryLog(); $query = end($query);
     // dd($query);
     $notes = Note::search($searchTerm)->paginate(15);
+    
     if (request()->expectsJson()) {
       return $notes;
     }
