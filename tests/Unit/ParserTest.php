@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Parser;
+use App\PaperwhiteParser;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,7 +14,7 @@ class ParserTest extends TestCase
   {
     parent::setUp();
 
-    $this->parser = new Parser();
+    $this->parser = new PaperwhiteParser();
   }
 
   /** @test */

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Note;
 use App\Annotations;
+use App\PaperwhiteParser;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -76,10 +77,12 @@ class ImportTest extends TestCase
   private function importData()
   {
     $path = __DIR__ . '/files/clippings.txt';
-    
+
+    $parser = new PaperwhiteParser();
+
     $file = new UploadedFile($path, 'clippings.txt', filesize($path), null, null, true);
 
-    $annotations = (new Annotations($file))->processFile();
+    $annotations = (new Annotations($file, $parser))->processFile();
 
     $annotations->save();
   }

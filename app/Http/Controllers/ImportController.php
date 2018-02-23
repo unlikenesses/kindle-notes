@@ -6,6 +6,7 @@ use App\Tag;
 use App\Book;
 use App\Note;
 use App\Annotations;
+use App\PaperwhiteParser;
 use Illuminate\Http\Request;
 use App\Exceptions\BookDetailsAreTooLong;
 
@@ -34,7 +35,9 @@ class ImportController extends Controller
       'clippings_file' => 'required|mimes:txt|max:3000',
     ]);
 
-    $annotations = (new Annotations($request->file('clippings_file')))->processFile();
+    $parser = new PaperwhiteParser();
+
+    $annotations = (new Annotations($request->file('clippings_file'), $parser))->processFile();
     
     try { 
       $annotations->save();

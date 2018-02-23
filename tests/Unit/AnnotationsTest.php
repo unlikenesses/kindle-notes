@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Book;
 use App\Note;
 use App\Annotations;
+use App\PaperwhiteParser;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,9 +20,11 @@ class AnnotationsTest extends TestCase
 
     $path = __DIR__ . '/files/clippings.txt';
 
+    $parser = new PaperwhiteParser();
+
     $file = new UploadedFile($path, 'clippings.txt', filesize($path), null, null, true);
 
-    $this->annotations = new Annotations($file);
+    $this->annotations = new Annotations($file, $parser);
   }  
 
   /** @test */

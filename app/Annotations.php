@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Book;
-use App\Parser;
+use App\PaperwhiteParser;
 use Illuminate\Http\UploadedFile;
 
 class Annotations
@@ -16,10 +16,10 @@ class Annotations
   public $numBooks = 0;
   public $numNotes = 0;
 
-  public function __construct(UploadedFile $file)
+  public function __construct(UploadedFile $file, Parser $parser)
   {
     $this->file = $file;
-    $this->parser = new Parser();
+    $this->parser = $parser;
   }
 
   public function processFile()
