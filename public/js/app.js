@@ -14964,7 +14964,7 @@ module.exports = {
                 Bus.$emit('updateTeam');
             }).catch(function (errors) {
                 if (errors.response.status == 422) {
-                    _this.planForm.errors.set(errors.response.data);
+                    _this.planForm.errors.set(errors.response.data.errors);
                 } else {
                     _this.planForm.errors.set({ plan: ["We were unable to update your subscription. Please contact customer support."] });
                 }
@@ -15410,12 +15410,13 @@ module.exports = {
             this.removeActiveClassFromTabs();
 
             var tab = $(this.pushStateSelector + ' a[href="#' + hash + '"][data-toggle="tab"]');
-
             if (tab.length > 0) {
                 tab.tab('show');
-            }
 
-            this.broadcastTabChange(hash, parameters);
+                this.broadcastTabChange(hash, parameters);
+            } else {
+                this.activateFirstTab();
+            }
         },
 
 
@@ -28960,15 +28961,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     editNote: function editNote() {
       this.editing = true;
     },
-    deleteNote: function deleteNote() {
+    confirmDelete: function confirmDelete() {
+      if (confirm("Are you sure you want to delete this note?")) {
+        this.deleteNote(this.id);
+      }
+    },
+    deleteNote: function deleteNote(id) {
       var that = this;
       this.deleting = true;
       $.ajax({
-        url: '/notes/' + this.id,
+        url: '/notes/' + id,
         type: 'DELETE',
         success: function success(data) {
-          console.log(data);
-          that.deleting = false;
           location.reload(); // Temporary measure
         },
         fail: function fail(error) {
@@ -30132,8 +30136,6 @@ Vue.component('spark-update-team-photo', {
                 }
             }).catch(function (response) {
                 //
-            }).finally(function () {
-                this.refreshStatesAndProvinces();
             });
         },
 
@@ -41928,7 +41930,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "edit": _vm.editNote,
-      "delete": _vm.deleteNote
+      "delete": _vm.confirmDelete
     }
   }) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('noteEdit', {
     attrs: {

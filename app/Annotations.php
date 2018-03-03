@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Book;
-use App\PaperwhiteParser;
 use Illuminate\Http\UploadedFile;
 
 class Annotations
@@ -25,7 +23,7 @@ class Annotations
   public function processFile()
   {
     if (!$fileHandle = fopen($this->file, 'r')) {
-      throw new Exception;
+      throw new Exception();
     }
 
     $this->annotations = $this->parser->parseFile($fileHandle);

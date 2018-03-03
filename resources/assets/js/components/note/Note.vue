@@ -12,7 +12,7 @@
             :noteText="noteText"
             :deleting="deleting"
             v-on:edit="editNote" 
-            v-on:delete="deleteNote"
+            v-on:delete="confirmDelete"
           />
           <noteEdit 
             v-if="editing" 
@@ -83,15 +83,18 @@ export default {
     editNote() {
       this.editing = true;
     },
-    deleteNote() {
+    confirmDelete() {
+      if (confirm("Are you sure you want to delete this note?")) {
+          this.deleteNote(this.id);
+      }
+    },
+    deleteNote(id) {
       let that = this;
       this.deleting = true;
       $.ajax({
-        url: '/notes/' + this.id,
+        url: '/notes/' + id,
         type: 'DELETE',
         success: (data) => {
-          console.log(data);
-          that.deleting = false;
           location.reload(); // Temporary measure
         },
         fail: (error) => {

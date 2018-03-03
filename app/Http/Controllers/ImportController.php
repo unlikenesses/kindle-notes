@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
-use App\Book;
-use App\Note;
 use App\Annotations;
 use App\PaperwhiteParser;
 use Illuminate\Http\Request;
@@ -26,9 +23,9 @@ class ImportController extends Controller
 
   public function importFile(Request $request)
   {
-    if (!($request->hasFile('clippings_file') && 
+    if (!($request->hasFile('clippings_file') &&
           $request->file('clippings_file')->isValid())) {
-      return;
+      return null;
     }
 
     $this->validate($request, [
@@ -37,8 +34,12 @@ class ImportController extends Controller
 
     $parser = new PaperwhiteParser();
 
-    $annotations = (new Annotations($request->file('clippings_file'), $parser))->processFile();
-    
+    try {
+      $annotations = (new Annotations($request->file('clippings_file'), $parser))->processFile();
+    } catch (\Exception $e) {
+      return null;
+    }
+
     try { 
       $annotations->save();
     } catch (BookDetailsAreTooLong $e) {

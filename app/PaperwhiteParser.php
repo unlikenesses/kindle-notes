@@ -85,8 +85,7 @@ class PaperwhiteParser implements Parser
 
     $author = '';
     $title = '';
-    $lastName = '';
-    $firstName = '';
+
     // Check if the title ends with a closing bracket:
     if (substr($titleString, -1) === ')') {
       preg_match('/\(([^)]*)\)[^(]*$/', $titleString, $out);

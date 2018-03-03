@@ -15,7 +15,8 @@
     "underscore": "^1.8.3",
     "urijs": "^1.17.0",
     "vue": "^2.0.8",
-    "vue-template-compiler": "^2.0.8"
+    "vue-template-compiler": "^2.0.8",
+    "vuejs-dialog": "^0.6.1"
   },
   "scripts": {
     "dev": "node node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
