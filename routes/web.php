@@ -29,3 +29,5 @@ Route::get('/search', 'SearchController@index');
 
 Route::get('/deleted-items', 'DeletedItemsController@index');
 Route::get('/restoreNote/{note}', 'DeletedItemsController@restoreNote');
+Route::get('/confirm-delete-note/{note}', 'DeletedItemsController@confirmPermadeleteNote');
+Route::get('/permadeleteNote/{note}', 'DeletedItemsController@permadeleteNote');

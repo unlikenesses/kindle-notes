@@ -26,6 +26,7 @@
                     <p>{{ $note->note }}</p>
                     <p><strong>{{ $note->book->title }}</strong></p>
                     <a href="/restoreNote/{{ $note->id }}" class="btn btn-default">Restore</a>
+                    <a href="/confirm-delete-note/{{ $note->id }}" class="btn btn-danger">Permanently Delete</a>
                     <hr>
                   @endforeach
                 @endif

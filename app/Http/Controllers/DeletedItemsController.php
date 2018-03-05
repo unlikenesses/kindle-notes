@@ -32,6 +32,12 @@ class DeletedItemsController extends Controller
     ]);
   }
 
+  /**
+   * Restore a deleted note
+   *
+   * @param int $deletedNote
+   * @return Response
+   */
   public function restoreNote($deletedNote)
   {
     $note = Note::withTrashed()->findOrFail($deletedNote);
@@ -39,6 +45,34 @@ class DeletedItemsController extends Controller
     $note->restore();
 
     return redirect('/deleted-items')->with('status', 'Your note has been restored.');
+  }
+
+  /**
+   * Show a confirmation page before permanently deleting note
+   *
+   * @param int $deletedNote
+   * @return Response
+   */
+  public function confirmPermadeleteNote($deletedNote)
+  {
+    $note = Note::withTrashed()->findOrFail($deletedNote);
+
+    return view('confirmPermaDeleteNote', ['note' => $note]);
+  }
+  
+  /**
+   * Permanently delete a note
+   *
+   * @param int $deletedNote
+   * @return Response
+   */
+  public function permadeleteNote($deletedNote)
+  {
+    $note = Note::withTrashed()->findOrFail($deletedNote);
+
+    $note->forceDelete();
+
+    return redirect('/deleted-items')->with('status', 'Your note has been permanently deleted.');
   }
 
 }

@@ -75,4 +75,28 @@ class DeletedItemsTest extends TestCase
     ]);
   }
  
+  /** @test */
+  public function a_soft_deleted_note_can_be_permanently_deleted()
+  {
+    $this->delete('/notes/' . $this->note->id);
+
+    $this->get('/deleted-items/')
+      ->assertSee($this->note->note);
+
+    $this->assertDatabaseMissing('notes', [
+      'id' => $this->note->id,
+      'note' => $this->note->note,
+      'deleted_at' => null
+    ]);
+
+    $this->get('/permadeleteNote/' . $this->note->id);
+
+    $this->get('/deleted-items/')
+      ->assertDontSee($this->note->note);
+
+    $this->assertDatabaseMissing('notes', [
+      'id' => $this->note->id,
+      'note' => $this->note->note
+    ]);
+  }
 }
