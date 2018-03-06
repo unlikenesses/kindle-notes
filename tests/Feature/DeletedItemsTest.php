@@ -74,6 +74,24 @@ class DeletedItemsTest extends TestCase
       'deleted_at' => null
     ]);
   }
+
+  /** @test */
+  public function a_soft_deleted_note_cannot_be_restored_by_a_different_user()
+  {
+    $this->delete('/notes/' . $this->note->id);
+
+    $newUser = factory('App\User')->create();
+    $this->be($newUser);
+
+    $this->get('/restoreNote/' . $this->note->id)
+      ->assertStatus(403);
+
+    $this->assertDatabaseMissing('notes', [
+      'id' => $this->note->id,
+      'note' => $this->note->note,
+      'deleted_at' => null
+    ]);
+  }
  
   /** @test */
   public function a_soft_deleted_note_can_be_permanently_deleted()
@@ -95,6 +113,23 @@ class DeletedItemsTest extends TestCase
       ->assertDontSee($this->note->note);
 
     $this->assertDatabaseMissing('notes', [
+      'id' => $this->note->id,
+      'note' => $this->note->note
+    ]);
+  }
+
+  /** @test */
+  public function a_soft_deleted_note_of_another_user_cannot_be_permanently_deleted()
+  {
+    $this->delete('/notes/' . $this->note->id);
+
+    $newUser = factory('App\User')->create();
+    $this->be($newUser);
+
+    $this->get('/permadeleteNote/' . $this->note->id)
+      ->assertStatus(403);
+
+    $this->assertDatabaseHas('notes', [
       'id' => $this->note->id,
       'note' => $this->note->note
     ]);

@@ -42,6 +42,10 @@ class DeletedItemsController extends Controller
   {
     $note = Note::withTrashed()->findOrFail($deletedNote);
     
+    if (auth()->id() != $note->user_id) {
+      return response('Unauthorized', 403);
+    }
+
     $note->restore();
 
     return redirect('/deleted-items')->with('status', 'Your note has been restored.');
@@ -56,6 +60,10 @@ class DeletedItemsController extends Controller
   public function confirmPermadeleteNote($deletedNote)
   {
     $note = Note::withTrashed()->findOrFail($deletedNote);
+    
+    if (auth()->id() != $note->user_id) {
+      return response('Unauthorized', 403);
+    }
 
     return view('confirmPermaDeleteNote', ['note' => $note]);
   }
@@ -69,6 +77,10 @@ class DeletedItemsController extends Controller
   public function permadeleteNote($deletedNote)
   {
     $note = Note::withTrashed()->findOrFail($deletedNote);
+
+    if (auth()->id() != $note->user_id) {
+      return response('Unauthorized', 403);
+    }
 
     $note->forceDelete();
 
